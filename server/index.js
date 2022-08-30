@@ -4,11 +4,20 @@ const cors = require("cors");
 
 const errorHandler = require("./middlewares/error");
 const mongoDB = require("./config/db");
+const ErrorResponse = require("./utils/errorResponse");
 const app = express();
+
+var whitelist = [process.env.CLIENT_URL, process.env.ADMIN_URL];
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: (origin, cb) => {
+      if (whitelist.indexOf(origin) !== 1 || !origin) {
+        cb(null, true);
+      } else {
+        cb(new ErrorResponse("Not allowed by CORS", 400));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
