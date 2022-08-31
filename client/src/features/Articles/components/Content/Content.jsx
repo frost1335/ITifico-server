@@ -8,7 +8,7 @@ const Content = () => {
   const handleClose = () => setOpen(false);
 
   return (
-    <div className="courses__list">
+    <div className="articles__list">
       <Container maxWidth="sm">
         <Button onClick={handleOpen}>Open modal</Button>
         <ModalCourses handleClose={handleClose} open={open} />

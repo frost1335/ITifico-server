@@ -3,6 +3,7 @@ import { TextField, Autocomplete, Modal, Typography, Box } from "@mui/material";
 
 import "./Modal.scss";
 import { useState } from "react";
+import { image4, image5 } from "../../../../assets";
 
 const style = {
   position: "absolute",
@@ -14,18 +15,134 @@ const style = {
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
+  overflow: "auto",
 };
 
 const ModalCourses = ({ handleClose, open }) => {
-    const [fields, setFields] = useState([])
+  const [fields, setFields] = useState([
+    {
+      element: "menu",
+      content: {
+        title: "asdasd",
+        menu: ["asdsad", "asdsad", "asdasd", "asdasdas"],
+      },
+    },
+    {
+      element: "text",
+      content: "There will be text",
+    },
+    {
+      element: "images",
+      content: [
+        { img: image4, description: "2/25 Comment on the image" },
+        { img: image5, description: "1/25 Comment on the image" },
+      ],
+    },
+    {
+      element: "quote",
+      content: {
+        title: "Звенигород Станіславський",
+        desctiption:
+          "Ідейні міркування вищого порядку, а також подальший розвиток різних форм діяльності забезпечує широкому колу (фахівців) участь у формуванні позицій, займаних ",
+      },
+    },
+  ]);
+
+  const renderFields = () => {
+    return fields.map((item, index) => {
+      if (item.element === "menu") {
+        return (
+          <div className="menu__group">
+            <TextField
+              label={`Field menu `}
+              variant="standard"
+              value={item.content.title}
+              name="menu-list"
+            />
+            <ul className="menu__list">
+              {item.content.menu.map((elem, idx) => (
+                <li key={idx}>
+                  <TextField
+                    label={`Menu item ${idx + 1}`}
+                    variant="standard"
+                    value={elem}
+                    name="menu-text"
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+      if (item.element === "text") {
+        return (
+          <div className="text__group">
+            <TextField
+              label={`Field text`}
+              value={item.content}
+              variant="standard"
+              name="field-text"
+            />
+          </div>
+        );
+      }
+      if (item.element === "images") {
+        return (
+          <div className="images__group">
+            {item.content.map((elem, idx) => (
+              <>
+                <h4>Image box </h4>
+                <div className="group__box" key={idx}>
+                  <TextField
+                    label={`image ${index + 1}`}
+                    value={""}
+                    type="file"
+                    variant="standard"
+                    name="field-image"
+                  />
+                  <TextField
+                    label={`Image description ${index + 1}`}
+                    value={elem.description}
+                    variant="standard"
+                    name="image-description"
+                  />
+                </div>
+              </>
+            ))}
+          </div>
+        );
+      }
+      if (item.element === "quote") {
+        return (
+          <div className="quote__group">
+            <TextField
+              label={`Quote title`}
+              value={item.content.title}
+              variant="standard"
+              name="quote-title"
+            />
+            <TextField
+              label={`Quote description`}
+              value={item.content.desctiption}
+              variant="standard"
+              name="quote-description"
+            />
+          </div>
+        );
+      } else {
+        return <p>Element not found</p>;
+      }
+    });
+  };
 
   return (
-    <div className="courses__modal">
+    <div className="articles__modal">
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{ overflow: "auto" }}
       >
         <Box sx={style}>
           <div className="modal__content">
@@ -55,15 +172,36 @@ const ModalCourses = ({ handleClose, open }) => {
                     sx={{ width: "500px" }}
                   />
                 </div>
+                <div className="input__list">{renderFields()}</div>
+              </div>
+              <div className="main__box">
+                <div className="input__group">
+                  <TextField label="Title" variant="standard" />
+                </div>
+                <div className="input__group">
+                  <TextField label="Card description" variant="standard" />
+                </div>
+                <div className="input__group">
+                  <TextField label="Date" variant="standard" />
+                </div>
+                <div className="input__group">
+                  <Autocomplete
+                    multiple
+                    limitTags={2}
+                    options={top100Films}
+                    getOptionLabel={(option) => option.title}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Tags" variant="standard" />
+                    )}
+                    sx={{ width: "500px" }}
+                  />
+                </div>
                 <div className="input__list">
-                    <ul className="list__menu">
-                        <div className="menu__item">
-
-                        </div>
-                    </ul>
+                  <ul className="list__menu">
+                    <div className="menu__item"></div>
+                  </ul>
                 </div>
               </div>
-              <div className="main__box"></div>
             </div>
           </div>
         </Box>

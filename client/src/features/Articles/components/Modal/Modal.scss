@@ -1,0 +1,29 @@
+.modal__content {
+  width: 100%;
+  flex-grow: 1;
+  margin-top: 330px;
+  margin-bottom: 50px;
+
+  .modal__main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+
+    .main__box {
+      display: flex;
+      flex-direction: column;
+
+      .input__group {
+        margin-bottom: 40px;
+
+        .MuiFormControl-root {
+          width: 100%;
+        }
+
+        .MuiAutocomplete-root {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

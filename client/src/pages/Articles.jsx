@@ -1,5 +1,5 @@
 import React from "react";
-import { Content } from "../features/Courses";
+import { Content } from "../features/Articles";
 
 const Articles = () => {
   return (
