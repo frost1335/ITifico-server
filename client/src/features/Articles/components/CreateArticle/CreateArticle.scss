@@ -1,0 +1,52 @@
+.modal__content {
+  width: 100%;
+  flex-grow: 1;
+
+  .modal__main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+
+    .main__box {
+      display: flex;
+      flex-direction: column;
+
+      .input__group {
+        margin-bottom: 40px;
+
+        .MuiFormControl-root {
+          width: 100%;
+        }
+
+        .MuiAutocomplete-root {
+          width: 100%;
+        }
+      }
+
+      .input__list {
+        display: flex;
+        flex-direction: column;
+
+        .MuiFormControl-root {
+          width: 100%;
+          margin-bottom: 30px;
+        }
+
+        h4 {
+          font-style: normal;
+          font-weight: 700;
+          font-size: 22px;
+          line-height: 24px;
+          color: #23262d;
+        }
+      }
+      h3 {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 36px;
+        color: #23262d;
+      }
+    }
+  }
+}
