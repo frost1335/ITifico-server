@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Tabs, Tab, Typography, Box } from "@mui/material";
 import PropTypes from "prop-types";
 import CreateArticle from "../CreateArticle/CreateArticle";
+import ArticleList from "../ArticleList/ArticleList";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,7 +47,7 @@ const Content = () => {
   return (
     <div className="articles__list">
       <Container>
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%" }} paddingTop={4}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
               value={value}
@@ -55,11 +56,11 @@ const Content = () => {
             >
               <Tab label="Articles List" {...a11yProps(0)} />
               <Tab label="Create Article" {...a11yProps(1)} />
-              <Tab label="Tag list" {...a11yProps(2)} />
+              <Tab label="Tag control" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            Item Two
+            <ArticleList />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <CreateArticle />

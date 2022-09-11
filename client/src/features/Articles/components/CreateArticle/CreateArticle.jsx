@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   TextField,
   Autocomplete,
-  Modal,
   Typography,
   Box,
   Button,
@@ -10,9 +9,8 @@ import {
 } from "@mui/material";
 
 import "./CreateArticle.scss";
-import { useState } from "react";
-import { image4, image5 } from "../../../../assets";
 import moment from "moment";
+import { useCreateArticleMutation } from "../../../../services/articleApi";
 
 const style = {
   width: "100%",
@@ -21,72 +19,23 @@ const style = {
 };
 
 const CreateArticle = () => {
+  const [createArticle] = useCreateArticleMutation();
+  const [currentId, setCurrentId] = useState("");
+
   const [article, setArticle] = useState({
     en: {
       title: "",
       description: "",
       date: "",
       tags: [],
-      fields: [
-        {
-          element: "menu",
-          content: {
-            title: "",
-            menu: ["", "", "", ""],
-          },
-        },
-        {
-          element: "text",
-          content: "",
-        },
-        {
-          element: "images",
-          content: [
-            { img: "", description: "" },
-            { img: "", description: "" },
-          ],
-        },
-        {
-          element: "quote",
-          content: {
-            title: "",
-            desctiption: "",
-          },
-        },
-      ],
+      fields: [],
     },
     uk: {
       title: "",
       description: "",
       date: "",
       tags: [],
-      fields: [
-        {
-          element: "menu",
-          content: {
-            title: "",
-            menu: ["", "", "", ""],
-          },
-        },
-        {
-          element: "text",
-          content: "",
-        },
-        {
-          element: "images",
-          content: [
-            { img: "", description: "" },
-            { img: "", description: "" },
-          ],
-        },
-        {
-          element: "quote",
-          content: {
-            title: "",
-            desctiption: "",
-          },
-        },
-      ],
+      fields: [],
     },
   });
 
@@ -94,7 +43,6 @@ const CreateArticle = () => {
     const arg = argument[0];
     const articleClone = { ...article };
     const value = arg.event.target?.value;
-    console.log(arg);
 
     if (arg.element === "menu") {
       if (arg.content === "title") {
@@ -110,9 +58,9 @@ const CreateArticle = () => {
     if (arg.element === "images") {
       if (arg.content === "image") {
         console.log(arg);
-        articleClone["en"].fields[arg.index].content[arg.indx].img =
+        articleClone["en"].fields[arg.index].content[eval(arg.idx)].img =
           arg.event.target.files[0];
-        articleClone["uk"].fields[arg.index].content[arg.idx].img =
+        articleClone["uk"].fields[arg.index].content[eval(arg.idx)].img =
           arg.event.target.files[0];
       }
       if (arg.content === "description") {
@@ -142,9 +90,6 @@ const CreateArticle = () => {
       articleClone["en"].tags = arg.value;
       articleClone["uk"].tags = arg.value;
     }
-    console.log(articleClone);
-
-    arg.idx += 1;
 
     setArticle({ ...articleClone });
   };
@@ -219,12 +164,13 @@ const CreateArticle = () => {
       if (item.element === "images") {
         return (
           <div className="images__group" key={index}>
+            <h4>Image box </h4>
             {item.content.map((elem, idx) => (
-              <div key={idx + "item"}>
-                <h4>Image box {idx + 1} </h4>
+              <div key={idx}>
+                <h4>Image 1</h4>
                 <div className="group__box">
                   <label
-                    htmlFor="contained-button-file"
+                    htmlFor={`contained-button-file${idx}-${index}`}
                     className="form-input"
                     style={{
                       display: "flex",
@@ -232,23 +178,23 @@ const CreateArticle = () => {
                       justifyContent: "flex-end",
                     }}
                   >
-                    {console.log(idx)}
                     <Input
                       accept="image/*"
-                      onChange={(event) =>
-                        onChangeInput({
-                          event,
-                          index,
-                          idx: idx + 1 - 1,
-                          element: "images",
-                          content: "image",
-                          lng,
-                        })
-                      }
-                      id="contained-button-file"
+                      className={idx}
+                      id={`contained-button-file${idx}-${index}`}
                       name="img"
                       type="file"
                       style={{ opacity: 0 }}
+                      onChange={(event) =>
+                        onChangeInput({
+                          index,
+                          event,
+                          element: "images",
+                          content: "image",
+                          lng,
+                          idx,
+                        })
+                      }
                     />
                     <Button
                       variant="outlined"
@@ -259,11 +205,7 @@ const CreateArticle = () => {
                       Image upload
                     </Button>
                   </label>
-                  <TextField
-                    label={` `}
-                    value={elem.img.name}
-                    variant="standard"
-                  />
+                  <TextField value={elem.img.name} variant="standard" />
                   <TextField
                     label={`Image description ${index + 1}`}
                     value={elem.description}
@@ -326,6 +268,118 @@ const CreateArticle = () => {
         return <p>Element not found</p>;
       }
     });
+  };
+
+  const addField = (field) => {
+    const textTemplate = {
+      en: {
+        element: "text",
+        content: "",
+      },
+      uk: {
+        element: "text",
+        content: "",
+      },
+    };
+
+    const menuTemplate = {
+      en: {
+        element: "menu",
+        content: {
+          title: "",
+          menu: [""],
+        },
+      },
+      uk: {
+        element: "menu",
+        content: {
+          title: "",
+          menu: [""],
+        },
+      },
+    };
+
+    const imagesTemplate = {
+      en: {
+        element: "images",
+        content: [{ img: "", description: "" }],
+      },
+      uk: {
+        element: "images",
+        content: [{ img: "", description: "" }],
+      },
+    };
+
+    const quoteTemplate = {
+      en: {
+        element: "quote",
+        content: {
+          title: "",
+          desctiption: "",
+        },
+      },
+      uk: {
+        element: "quote",
+        content: {
+          title: "",
+          desctiption: "",
+        },
+      },
+    };
+
+    let articleClone = { ...article };
+    let enFields = [...articleClone.en.fields];
+    let ukFields = [...articleClone.uk.fields];
+
+    if (field === "text") {
+      enFields.push({ ...textTemplate.en });
+      ukFields.push({ ...textTemplate.uk });
+    }
+    if (field === "menu") {
+      enFields.push({ ...menuTemplate.en });
+      ukFields.push({ ...menuTemplate.uk });
+    }
+    if (field === "images") {
+      enFields.push({ ...imagesTemplate.en });
+      ukFields.push({ ...imagesTemplate.uk });
+    }
+    if (field === "quote") {
+      enFields.push({ ...quoteTemplate.en });
+      ukFields.push({ ...quoteTemplate.uk });
+    }
+
+    articleClone.en.fields = [...enFields];
+    articleClone.uk.fields = [...ukFields];
+
+    setArticle({ ...articleClone });
+  };
+
+  const onSubmitHandler = () => {
+    if (currentId) {
+    } else {
+      createArticle(article);
+    }
+    clean();
+  };
+
+  const clean = () => {
+    setArticle({
+      en: {
+        title: "",
+        description: "",
+        date: "",
+        tags: [],
+        fields: [],
+      },
+      uk: {
+        title: "",
+        description: "",
+        date: "",
+        tags: [],
+        fields: [],
+      },
+    });
+    setCurrentId("");
   };
 
   return (
@@ -405,6 +459,23 @@ const CreateArticle = () => {
               </div>
               <div className="input__list">
                 <h3>Article fields</h3>
+                <div className="article__buttons">
+                  <Button variant="contained" onClick={() => addField("text")}>
+                    Add text
+                  </Button>
+                  <Button variant="contained" onClick={() => addField("menu")}>
+                    Add menu
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => addField("images")}
+                  >
+                    Add images
+                  </Button>
+                  <Button variant="contained" onClick={() => addField("quote")}>
+                    Add quote
+                  </Button>
+                </div>
                 {renderFields("en")}
               </div>
             </div>
@@ -477,8 +548,20 @@ const CreateArticle = () => {
               </div>
               <div className="input__list">
                 <h3>Article fields</h3>
+                <div className="article__buttons">
+                  <Typography variant="h6">Add dynamic input forms</Typography>{" "}
+                </div>
                 {renderFields("uk")}
               </div>
+            </div>
+            <div className="box__submit">
+              <Button
+                onClick={onSubmitHandler}
+                style={{ padding: "15px 45px" }}
+                variant="contained"
+              >
+                {currentId ? "Create article" : "Edit article"}
+              </Button>
             </div>
           </div>
         </div>
