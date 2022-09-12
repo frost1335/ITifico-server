@@ -2,6 +2,7 @@
   .tag__content {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: flex-start;
     gap: 40px;
 
     form.tag__form {
@@ -27,11 +28,38 @@
         margin: 0;
 
         .menu__item {
-          display: flex;
+          display: grid;
           flex-grow: 1;
+          grid-template-columns: 0.3fr 1fr 1fr 1fr;
           border-bottom: 1px solid #444;
           align-items: center;
-          justify-content: space-between;
+          padding-left: 0;
+          list-style: decimal;
+
+          span.bg__box {
+            width: 30px;
+            height: 20px;
+          }
+
+          .tag__buttons {
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-end;
+
+            button {
+              font-size: 20px;
+              min-width: unset;
+              padding: 8px 12px;
+
+              &:first-child:hover {
+                color: #ffdd95;
+              }
+
+              &:last-child:hover {
+                color: #e36f59;
+              }
+            }
+          }
         }
       }
     }

@@ -7,16 +7,16 @@ export const tagApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     headers: {
-      "Content-Type": "application/json; charset=utf-8; charset=utf-8",
+      "Content-Type": "application/json",
     },
   }),
-  tagTypes: ["Tag"],
+  tagTypes: ["Tags"],
   endpoints: (builder) => ({
     getTags: builder.query({
       query: () => ({
         url: "/tag",
       }),
-      providesTags: ["Tag"],
+      providesTags: ["Tags"],
     }),
     createTag: builder.mutation({
       query: (tag) => ({
@@ -24,7 +24,7 @@ export const tagApi = createApi({
         method: "POST",
         body: tag,
       }),
-      invalidatesTags: ["Tag"],
+      invalidatesTags: ["Tags"],
     }),
     editTag: builder.mutation({
       query: (tag) => ({
@@ -32,14 +32,14 @@ export const tagApi = createApi({
         method: "PUT",
         body: tag,
       }),
-      invalidatesTags: ["Tag"],
+      invalidatesTags: ["Tags"],
     }),
     deleteTag: builder.mutation({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `/tag/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Tag"],
+      invalidatesTags: ["Tags"],
     }),
   }),
 });

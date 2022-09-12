@@ -10,5 +10,5 @@ export default configureStore({
     article: articleReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware(articleApi.middleware),
+    getDefaultMiddleware().concat(articleApi.middleware, tagApi.middleware),
 });

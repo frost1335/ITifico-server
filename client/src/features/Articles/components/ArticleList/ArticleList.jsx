@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import {
-  useGetArticleQuery,
+  useDeleteArticleMutation,
   useGetArticlesQuery,
 } from "../../../../services/articleApi";
 
@@ -11,11 +11,18 @@ import { RiEditLine, RiDeleteBinLine } from "react-icons/ri";
 import "./ArticleList.scss";
 import moment from "moment";
 
-const ArticleList = () => {
-  const { data: articlesList, isLoading } = useGetArticlesQuery();
-  const { data: article } = useGetArticleQuery("631deb0a472f0adf58324c54");
+const ArticleList = ({ setCurrentId }) => {
+  const [deleteArticle] = useDeleteArticleMutation();
 
-  console.log(article);
+  const { data: articlesList, isLoading } = useGetArticlesQuery();
+
+  const deleteHandler = (id) => {
+    deleteArticle(id);
+  };
+
+  const onEditHandler = (id) => {
+    setCurrentId(id);
+  };
 
   return (
     <div className="article__list">
@@ -54,10 +61,10 @@ const ArticleList = () => {
                   </div>
                 </div>
                 <div className="item__buttons">
-                  <Button>
+                  <Button onClick={() => onEditHandler(article._id)}>
                     <RiEditLine />
                   </Button>
-                  <Button>
+                  <Button onClick={() => deleteHandler(article._id)}>
                     <RiDeleteBinLine />
                   </Button>
                 </div>

@@ -4,10 +4,7 @@ const ErrorResponse = require("../utils/errorResponse");
 
 exports.getAll = async (re1, res, next) => {
   try {
-    const articles = await Article.find().select({
-      en: { fields: 0 },
-      uk: { fields: 0 },
-    });
+    const articles = await Article.find();
 
     res.status(200).json({ success: true, data: articles });
   } catch (err) {

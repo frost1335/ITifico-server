@@ -6,10 +6,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 import {
   useCreateTagMutation,
+  useDeleteTagMutation,
   useEditTagMutation,
   useGetTagsQuery,
 } from "../../services/tagApi";
@@ -17,14 +19,22 @@ import {
 import "./TagControl.scss";
 
 const TagControl = () => {
+  const [editTag] = useEditTagMutation();
+  const [deleteTag] = useDeleteTagMutation();
+  const [createTag] = useCreateTagMutation();
   const [name, setName] = useState("");
   const [background, setBackground] = useState("");
   const [currentId, setCurrentId] = useState("");
+  const { data: tagList, isLoading,  } = useGetTagsQuery();
 
-  const { data: tagList, isLoading } = useGetTagsQuery();
-  const [editTag] = useEditTagMutation();
-  const [deleteTag] = useEditTagMutation();
-  const [createTag] = useCreateTagMutation();
+  useEffect(() => {
+    if (currentId && !isLoading) {
+      const currentTag = tagList?.data?.find((t) => t._id === currentId);
+
+      setName(currentTag.name);
+      setBackground(currentTag.background);
+    }
+  }, [currentId, isLoading, tagList]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -44,10 +54,9 @@ const TagControl = () => {
     clean();
   };
 
-  console.log(tagList);
-
   const onDeleteHandler = (id) => {
-    deleteTag(id);
+    console.log(id);
+    deleteTag({ id });
     clean();
   };
 
@@ -89,6 +98,7 @@ const TagControl = () => {
                   ? "Loading..."
                   : tagList?.data.map((tag, index) => (
                       <ol className="menu__item" key={index + "tag"}>
+                        {index + 1}.
                         <Typography component={"h6"} variant={"h6"}>
                           {tag.name}
                         </Typography>
@@ -96,6 +106,14 @@ const TagControl = () => {
                           className="bg__box"
                           style={{ background: tag.background }}
                         />
+                        <div className="tag__buttons">
+                          <Button onClick={() => setCurrentId(tag._id)}>
+                            <RiEditLine />
+                          </Button>
+                          <Button onClick={() => onDeleteHandler(tag._id)}>
+                            <RiDeleteBinLine />
+                          </Button>
+                        </div>
                       </ol>
                     ))}
               </ul>
