@@ -29,6 +29,7 @@ mongoDB(process.env.MONGOURI);
 
 app.use("/api/article", require("./routes/article.routes"));
 app.use("/api/course", require("./routes/course.routes"));
+app.use("/api/tag", require("./routes/tag.routes"));
 
 app.use(errorHandler);
 

@@ -3,6 +3,7 @@ import { Container, Tabs, Tab, Typography, Box } from "@mui/material";
 import PropTypes from "prop-types";
 import CreateArticle from "../CreateArticle/CreateArticle";
 import ArticleList from "../ArticleList/ArticleList";
+import TagControl from "../../../../components/TagControl/TagControl";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,7 +67,7 @@ const Content = () => {
             <CreateArticle />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Item Three
+            <TagControl />
           </TabPanel>
         </Box>
       </Container>

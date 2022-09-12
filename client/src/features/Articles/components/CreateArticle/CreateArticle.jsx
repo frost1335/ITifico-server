@@ -560,7 +560,7 @@ const CreateArticle = () => {
                 style={{ padding: "15px 45px" }}
                 variant="contained"
               >
-                {currentId ? "Create article" : "Edit article"}
+                {!currentId ? "Create article" : "Edit article"}
               </Button>
             </div>
           </div>

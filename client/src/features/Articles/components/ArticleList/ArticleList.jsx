@@ -1,5 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   useGetArticleQuery,
   useGetArticlesQuery,
@@ -8,6 +9,7 @@ import {
 import { RiEditLine, RiDeleteBinLine } from "react-icons/ri";
 
 import "./ArticleList.scss";
+import moment from "moment";
 
 const ArticleList = () => {
   const { data: articlesList, isLoading } = useGetArticlesQuery();
@@ -34,11 +36,15 @@ const ArticleList = () => {
                   <img src="not_yet" alt="article-img" />
                 </div>
                 <div className="item__info">
-                  <Typography variant="h6">{article.en.title}</Typography>
+                  <Typography variant="h5" component={"h4"}>
+                    <Link to="/articles/view/id">{article.en.title}</Link>
+                  </Typography>
                   <p className="info__desc">
                     {article.en.description.substring(0, 220)}
                   </p>
-                  <p className="info__date">{article.en.date}</p>
+                  <p className="info__date">
+                    {moment(article.en.date).format("DD.MM.YYYY")}
+                  </p>
                   <div className="info__tags">
                     {article.en.tags.map((tag, idx) => (
                       <span className="tag" key={idx + "tag"}>
