@@ -10,6 +10,7 @@ import { RiEditLine, RiDeleteBinLine } from "react-icons/ri";
 
 import "./ArticleList.scss";
 import moment from "moment";
+import Tag from "../../../../components/Tag/Tag";
 
 const ArticleList = ({ setCurrentId }) => {
   const [deleteArticle] = useDeleteArticleMutation();
@@ -44,7 +45,9 @@ const ArticleList = ({ setCurrentId }) => {
                 </div>
                 <div className="item__info">
                   <Typography variant="h5" component={"h4"}>
-                    <Link to="/articles/view/id">{article.en.title}</Link>
+                    <Link to={`/articles/view/${article._id}`}>
+                      {article.en.title}
+                    </Link>
                   </Typography>
                   <p className="info__desc">
                     {article.en.description.substring(0, 220)}
@@ -54,9 +57,7 @@ const ArticleList = ({ setCurrentId }) => {
                   </p>
                   <div className="info__tags">
                     {article.en.tags.map((tag, idx) => (
-                      <span className="tag" key={idx + "tag"}>
-                        {tag.title}
-                      </span>
+                      <Tag tag={tag} key={idx} />
                     ))}
                   </div>
                 </div>

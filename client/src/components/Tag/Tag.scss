@@ -1,0 +1,21 @@
+.tag__content {
+  padding: 10px 15px;
+  font-family: Bitter, Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 14px;
+  color: #23262d;
+  border-radius: 4px;
+
+  &.tag__content--article {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 14px;
+    font-family: "Segoe UI";
+    font-style: normal;
+    font-weight: 400;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+}

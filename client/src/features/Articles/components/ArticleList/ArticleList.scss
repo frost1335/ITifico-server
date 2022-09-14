@@ -27,6 +27,7 @@
       .item__info {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
 
         a {
           color: #23262d;

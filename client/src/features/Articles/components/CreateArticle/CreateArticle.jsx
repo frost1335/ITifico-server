@@ -17,6 +17,7 @@ import {
   useGetArticlesQuery,
 } from "../../../../services/articleApi";
 import { useGetTagsQuery } from "../../../../services/tagApi";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 const style = {
   width: "100%",
@@ -31,10 +32,11 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
   const [createArticle] = useCreateArticleMutation();
   const [editArticle] = useEditArticleMutation();
 
-  const [article, setArticle] = useState({
+  const [article, setArticle] = useState(() => ({
     en: {
       title: "",
       description: "",
+      image: "",
       date: "",
       tags: [],
       fields: [],
@@ -42,11 +44,12 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     uk: {
       title: "",
       description: "",
+      image: "",
       date: "",
       tags: [],
       fields: [],
     },
-  });
+  }));
 
   useEffect(() => {
     if (articleId && !isLoading) {
@@ -63,6 +66,10 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     const articleClone = { ...article };
     const value = arg.event.target?.value;
 
+    if (arg.element === "card-image") {
+      articleClone["en"].image = arg.event.target.files[0];
+      articleClone["uk"].image = arg.event.target.files[0];
+    }
     if (arg.element === "menu") {
       if (arg.content === "title") {
         articleClone[arg.lng].fields[arg.index].content.title = value;
@@ -118,7 +125,18 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
       if (item.element === "menu") {
         return (
           <div className="menu__group" key={index}>
-            <h4>Menu box</h4>
+            <div className="group__header">
+              <h4>Menu box</h4>
+              <Button onClick={() => removeField("menu", index)}>
+                Delete field
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => addField("menu-item", index)}
+              >
+                Add item
+              </Button>
+            </div>
             <TextField
               label={`Field menu `}
               variant="standard"
@@ -153,6 +171,9 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                       })
                     }
                   />
+                  <Button onClick={() => removeField("menu-item", index, idx)}>
+                    <RiDeleteBinLine />
+                  </Button>
                 </li>
               ))}
             </ol>
@@ -162,7 +183,12 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
       if (item.element === "text") {
         return (
           <div className="text__group" key={index}>
-            <h4>Text box</h4>
+            <div className="group__header">
+              <h4>Text box</h4>
+              <Button onClick={() => removeField("text", index)}>
+                Delete field
+              </Button>
+            </div>
             <TextField
               label={`Field text`}
               value={item.content}
@@ -183,10 +209,26 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
       if (item.element === "images") {
         return (
           <div className="images__group" key={index}>
-            <h4>Image box </h4>
+            <div className="group__header">
+              <h4>Image box </h4>
+              <Button onClick={() => removeField("images", index)}>
+                Delete field
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => addField("image", index)}
+              >
+                Add image
+              </Button>
+            </div>
             {item.content.map((elem, idx) => (
               <div key={idx}>
-                <h4>Image 1</h4>
+                <div className="box_header">
+                  <Typography variant="h6">Image {idx + 1}</Typography>
+                  <Button onClick={() => removeField("image", index, idx)}>
+                    <RiDeleteBinLine />
+                  </Button>
+                </div>
                 <div className="group__box">
                   <label
                     htmlFor={`contained-button-file${idx}-${index}`}
@@ -224,7 +266,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                       Image upload
                     </Button>
                   </label>
-                  <TextField value={elem.img.name} variant="standard" />
+                  <TextField value={elem.img?.name} variant="standard" />
                   <TextField
                     label={`Image description ${index + 1}`}
                     value={elem.description}
@@ -250,7 +292,12 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
       if (item.element === "quote") {
         return (
           <div className="quote__group" key={index}>
-            <h4>Quote box</h4>
+            <div className="group__header">
+              <h4>Quote box</h4>
+              <Button onClick={() => removeField("quote", index)}>
+                Delete field
+              </Button>
+            </div>
             <TextField
               label={`Quote title`}
               value={item.content.title}
@@ -289,7 +336,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     });
   };
 
-  const addField = (field) => {
+  const addField = (field, idx) => {
     const textTemplate = {
       en: {
         element: "text",
@@ -366,9 +413,132 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
       enFields.push({ ...quoteTemplate.en });
       ukFields.push({ ...quoteTemplate.uk });
     }
+    if (field === "menu-item") {
+      enFields = enFields.map((f, index) => {
+        if (f.element === "menu" && index === idx) {
+          return {
+            ...f,
+            content: { ...f.content, menu: [...f.content.menu, ""] },
+          };
+        }
+        return f;
+      });
+      ukFields = ukFields.map((f, index) => {
+        if (f.element === "menu" && index === idx) {
+          return {
+            ...f,
+            content: { ...f.content, menu: [...f.content.menu, ""] },
+          };
+        }
+        return f;
+      });
+    }
+    if (field === "image") {
+      enFields = enFields.map((f, index) => {
+        if (f.element === "images" && index === idx) {
+          return {
+            ...f,
+            content: [...f.content, { img: "", description: "" }],
+          };
+        }
+        return f;
+      });
+      ukFields = ukFields.map((f, index) => {
+        if (f.element === "images" && index === idx) {
+          return {
+            ...f,
+            content: [...f.content, { img: "", description: "" }],
+          };
+        }
+        return f;
+      });
+    }
 
     articleClone.en.fields = [...enFields];
     articleClone.uk.fields = [...ukFields];
+
+    setArticle({ ...articleClone });
+  };
+
+  const removeField = (field, idx, i) => {
+    let articleClone = { ...article };
+    let enFields = [...articleClone.en.fields];
+    let ukFields = [...articleClone.uk.fields];
+    let filteredEnFields = [];
+    let filteredUkFields = [];
+
+    if (
+      field === "menu" ||
+      field === "images" ||
+      field === "quote" ||
+      field === "text"
+    ) {
+      filteredEnFields = enFields.filter((f, index) => {
+        console.log(index, idx, f);
+        return index !== idx;
+      });
+
+      filteredUkFields = ukFields.filter((f, index) => {
+        console.log(index, idx, f);
+        return index !== idx;
+      });
+    } else if (field === "menu-item") {
+      filteredEnFields = enFields.map((f, index) => {
+        if (f.element === "menu" && index === idx) {
+          let fieldContentMenu = f.content.menu.filter(
+            (item, idxI) => idxI !== i
+          );
+          return {
+            ...f,
+            content: { ...f.content, menu: [...fieldContentMenu] },
+          };
+        } else {
+          return f;
+        }
+      });
+      filteredUkFields = ukFields.map((f, index) => {
+        if (f.element === "menu" && index === idx) {
+          let fieldContentMenu = f.content.menu.filter(
+            (item, idxI) => idxI !== i
+          );
+          return {
+            ...f,
+            content: { ...f.content, menu: [...fieldContentMenu] },
+          };
+        } else {
+          return f;
+        }
+      });
+    } else if (field === "image") {
+      filteredEnFields = enFields.map((f, index) => {
+        if (f.element === "images" && index === idx) {
+          let fieldContent = f.content.filter((item, idxI) => idxI !== i);
+          return {
+            ...f,
+            content: [...fieldContent],
+          };
+        } else {
+          return f;
+        }
+      });
+
+      filteredUkFields = ukFields.map((f, index) => {
+        if (f.element === "images" && index === idx) {
+          let fieldContent = f.content.filter((item, idxI) => idxI !== i);
+          return {
+            ...f,
+            content: [...fieldContent],
+          };
+        } else {
+          return f;
+        }
+      });
+    }
+    console.log(enFields);
+    console.log(ukFields);
+
+    articleClone.en.fields = [...filteredEnFields];
+    articleClone.uk.fields = [...filteredUkFields];
 
     setArticle({ ...articleClone });
   };
@@ -440,6 +610,45 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                     })
                   }
                 />
+              </div>
+              <div className="input__group" key={"234"}>
+                <div className="group__box">
+                  <label
+                    htmlFor={`contained-button-file-card`}
+                    className="form-input"
+                    style={{
+                      display: "flex",
+                      flexDirection: "row-reverse",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Input
+                      accept="image/*"
+                      id={`contained-button-file-card`}
+                      name="img"
+                      type="file"
+                      style={{ opacity: 0 }}
+                      onChange={(event) =>
+                        onChangeInput({
+                          event,
+                          element: "card-image",
+                        })
+                      }
+                    />
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      type="button"
+                      size="large"
+                    >
+                      Image upload
+                    </Button>
+                  </label>
+                  <TextField
+                    value={article.en?.image?.name}
+                    variant="standard"
+                  />
+                </div>
               </div>
               <div className="input__group" key={"3"}>
                 <TextField
@@ -529,6 +738,45 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                   }
                   value={article.uk.description}
                 />
+              </div>
+              <div className="input__group" key={"234"}>
+                <div className="group__box">
+                  <label
+                    htmlFor={`contained-button-file-card`}
+                    className="form-input"
+                    style={{
+                      display: "flex",
+                      flexDirection: "row-reverse",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Input
+                      accept="image/*"
+                      id={`contained-button-file-card`}
+                      name="img"
+                      type="file"
+                      style={{ opacity: 0 }}
+                      onChange={(event) =>
+                        onChangeInput({
+                          event,
+                          element: "card-image",
+                        })
+                      }
+                    />
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      type="button"
+                      size="large"
+                    >
+                      Image upload
+                    </Button>
+                  </label>
+                  <TextField
+                    value={article.uk?.image?.name}
+                    variant="standard"
+                  />
+                </div>
               </div>
               <div className="input__group" key={"3"}>
                 <TextField

@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./layout/Layout";
-import { Articles, Auth, Courses } from "./pages";
+import { ArticleDetail, Articles, Auth, Courses } from "./pages";
 
 const App = () => {
   return (
@@ -9,6 +9,7 @@ const App = () => {
       <Route path="/auth" element={<Auth />} />
       <Route path="/" element={<Layout />}>
         <Route path="articles" element={<Articles />} />
+        <Route path="articles/view/:articleId" element={<ArticleDetail />} />
         <Route path="courses" element={<Courses />} />
       </Route>
     </Routes>

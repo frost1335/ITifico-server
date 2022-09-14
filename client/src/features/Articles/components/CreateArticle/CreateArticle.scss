@@ -27,6 +27,23 @@
         display: flex;
         flex-direction: column;
 
+        .group__header {
+          display: flex;
+          align-items: center;
+
+          button {
+            margin-left: 20px;
+          }
+        }
+
+        .box_header {
+          display: flex;
+
+          & > button {
+            font-size: 20px;
+          }
+        }
+
         .MuiFormControl-root {
           width: 100%;
           margin-bottom: 30px;
@@ -40,7 +57,7 @@
           color: #23262d;
         }
 
-        .images__group > div {
+        .images__group > div:not(.group__header) {
           padding-left: 20px;
         }
 
@@ -49,6 +66,14 @@
 
           button {
             margin-right: 15px;
+          }
+        }
+
+        .menu__group .menu__list li {
+          display: flex;
+
+          & > button {
+            font-size: 20px;
           }
         }
       }
