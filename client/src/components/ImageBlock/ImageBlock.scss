@@ -1,0 +1,54 @@
+@import "../../assets/styles/global";
+
+.image__block {
+  display: flex;
+  align-items: center;
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 40px;
+
+  .block__picture {
+    width: 100%;
+    margin: 0 15px;
+
+    img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    p {
+      @include img-desc;
+    }
+  }
+
+  @media (max-width: $maxWidthLaptop) {
+    margin-bottom: 50px;
+  }
+
+  @media (max-width: $maxWidthMobile) {
+    flex-direction: column;
+    margin-bottom: 40px;
+    margin-left: 0;
+    margin-right: 0;
+
+    .block__picture {
+      img {
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin-bottom: 30px;
+      }
+
+      &:last-of-type {
+        img {
+          margin-bottom: 0;
+        }
+
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,391 @@
+@import "./colors";
+
+@mixin grid-menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 30px;
+
+  @media screen and (max-width: $maxWidthLaptop2) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@mixin titleH1($part: "strong") {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 60px;
+  line-height: 72px;
+  letter-spacing: 0.005em;
+  color: $black-color;
+
+  #{$part} {
+    color: $red-color;
+  }
+
+  @media screen and (max-width: $maxWidthLaptop) {
+    font-size: 70px;
+    line-height: 84px;
+  }
+
+  @media screen and (max-width: $maxWidthLaptop2) {
+    font-size: 50px;
+    line-height: 50px;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    font-size: 30px;
+    line-height: 36px;
+  }
+}
+
+@mixin titleH2 {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 50px;
+  letter-spacing: 0.01em;
+  position: relative;
+  color: $black-color;
+
+  @media screen and (max-width: $maxWidthLaptop) {
+    line-height: 60px;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 40px;
+    line-height: 45px;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
+@mixin titleH3 {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+  color: $black-color;
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
+
+@mixin titleH4 {
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+  color: $black-color;
+}
+
+@mixin titleH5 {
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 22px;
+  color: $black-color;
+
+  @media screen and (max-width: $maxWidthMobile) {
+    line-height: 20px;
+  }
+}
+
+@mixin textH6 {
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: $black-color;
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    line-height: 22px;
+  }
+}
+
+@mixin textH7($color: $txt-color) {
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: $color;
+
+  @media screen and (max-width: $maxWidthMobile) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+@mixin text-menu() {
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 34px;
+  letter-spacing: -0.01em;
+  color: $txt-color;
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 16px;
+    line-height: 32px;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    font-size: 14px;
+    line-height: 30px;
+  }
+}
+
+@mixin text($color: $txt-color) {
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+  color: $color;
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    font-size: 14px;
+    line-height: 22px;
+  }
+}
+
+@mixin text-big {
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  color: $txt-color;
+
+  @media screen and (max-width: $maxWidthLaptop) {
+    font-size: 24px;
+    line-height: 34px;
+  }
+
+  @media screen and (max-width: $maxWidthLaptop2) {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 16px;
+    line-height: 20px;
+
+    color: $black-color;
+  }
+}
+
+@mixin img-desc {
+  font-family: "Segoe UI";
+  font-style: italic;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 26px;
+  color: $black-color;
+
+  @media screen and (max-width: $maxWidthMobile) {
+    font-size: 12px;
+    line-height: 12px;
+  }
+}
+
+@mixin button1($icon, $iconDisplay) {
+  font-family: "Bitter";
+  padding: 20px 30px;
+  width: 240px;
+  border: none;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $red-color;
+  border-radius: 8px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  color: $white-color;
+
+  [alt="button-arrow"] {
+    display: $iconDisplay;
+  }
+
+  svg {
+    display: $iconDisplay;
+  }
+
+  @media screen and (max-width: $maxWidthLaptop) {
+    width: 250px;
+    height: 60px;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    width: 180px;
+    height: 50px;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@mixin button-more {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: $red-color;
+  display: flex;
+  padding: 16px 30px 15px;
+  background: $white-color;
+  border: 2px solid $red-color;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 8px;
+
+  @media screen and (max-width: $maxWidthTablet) {
+    padding: 12px 30px 11px;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    padding: 0;
+    border: none;
+    text-decoration: underline;
+  }
+}
+
+@mixin slider-title($color: $red-color) {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 50px;
+  letter-spacing: 0.01em;
+  position: relative;
+  color: $black-color;
+
+  &::before {
+    content: "";
+    width: 111px;
+    height: 16px;
+    display: block;
+    z-index: -1;
+    left: -10px;
+    position: absolute;
+    background: $red-color;
+    opacity: 0.5;
+    border-radius: 4px;
+    bottom: 0px;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    font-size: 24px;
+    line-height: 24px;
+
+    &::before {
+      width: 49px;
+      height: 8px;
+      left: -4px;
+      border-radius: 2px;
+    }
+  }
+}
+
+@mixin send-input {
+  width: 100%;
+  padding: 11px 20px 10px 20px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: "Segoe UI";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  color: $black-color;
+
+  &::placeholder {
+    font-family: "Segoe UI";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16px;
+    color: $txt-color;
+  }
+
+  @media screen and (max-width: $maxWidthTablet) {
+    padding: 9px 20px 8px 20px;
+    background: transparent;
+  }
+
+  @media screen and (max-width: $maxWidthMobile) {
+    font-size: 14px;
+    line-height: 14px;
+    padding: 6px 20px 7px 20px;
+  }
+}
+
+@mixin input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px 8px 16px;
+  color: $gray2-color;
+  border-left: 2px solid $border-color;
+}

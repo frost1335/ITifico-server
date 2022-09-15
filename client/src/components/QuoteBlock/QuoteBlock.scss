@@ -1,0 +1,93 @@
+@import "../../assets/styles/global";
+
+.quote__block {
+  background: $quote-color;
+  border-radius: 10px;
+  padding: 36px 50px 43px 52px;
+  margin-bottom: 50px;
+  position: relative;
+  margin-top: 82px;
+
+  .quoto__icon {
+    position: absolute;
+    left: 40px;
+    top: -45px;
+
+    svg {
+      path {
+        fill: $red-color;
+      }
+    }
+  }
+
+  .quote__content {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    .quote__name {
+      @include text-big;
+
+      max-width: 170px;
+      font-weight: 700;
+      position: relative;
+      margin-right: 36px;
+
+      &::before {
+        position: absolute;
+        display: block;
+        content: "";
+        width: 3px;
+        height: 70%;
+        background: $red-color;
+        left: -9px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    .quote__text {
+      @include text($black-color);
+    }
+  }
+
+  @media (max-width: $maxWidthTablet) {
+    .quoto__icon {
+      top: 5px;
+      transform: scale(0.93);
+    }
+  }
+
+  @media (max-width: $maxWidthMobile) {
+    margin-top: 40px;
+    padding: 20px 15px;
+    margin-bottom: 40px;
+
+    .quoto__icon {
+      width: 60px;
+      height: 50px;
+      left: unset;
+      right: 15px;
+      top: 0px;
+
+      svg {
+        width: 100%;
+      }
+    }
+
+    .quote__content {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .quote__name {
+        margin-left: 15px;
+        margin-right: auto;
+        margin-bottom: 19px;
+
+        &::before {
+          left: -14px;
+        }
+      }
+    }
+  }
+}

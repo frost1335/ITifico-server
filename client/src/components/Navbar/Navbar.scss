@@ -1,0 +1,14 @@
+.navbar__content {
+  .detect__lng {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+
+    button {
+      border: none;
+      padding: 6px 14px;
+      font-size: 18px;
+      transition: all 0.3s;
+    }
+  }
+}

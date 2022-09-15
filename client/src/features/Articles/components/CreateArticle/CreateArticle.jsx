@@ -33,20 +33,17 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
   const [editArticle] = useEditArticleMutation();
 
   const [article, setArticle] = useState(() => ({
+    image: "",
+    date: "",
+    tags: [],
     en: {
       title: "",
       description: "",
-      image: "",
-      date: "",
-      tags: [],
       fields: [],
     },
     uk: {
       title: "",
       description: "",
-      image: "",
-      date: "",
-      tags: [],
       fields: [],
     },
   }));
@@ -67,8 +64,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     const value = arg.event.target?.value;
 
     if (arg.element === "card-image") {
-      articleClone["en"].image = arg.event.target.files[0];
-      articleClone["uk"].image = arg.event.target.files[0];
+      articleClone.image = arg.event.target.files[0];
     }
     if (arg.element === "menu") {
       if (arg.content === "title") {
@@ -99,7 +95,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
         articleClone[arg.lng].fields[arg.index].content.title = value;
       }
       if (arg.content === "description") {
-        articleClone[arg.lng].fields[arg.index].content.desctiption = value;
+        articleClone[arg.lng].fields[arg.index].content.description = value;
       }
     }
     if (arg.element === "title") {
@@ -109,12 +105,10 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
       articleClone[arg.lng].description = value;
     }
     if (arg.element === "date") {
-      articleClone["en"].date = new Date(value);
-      articleClone["uk"].date = new Date(value);
+      articleClone.date = new Date(value);
     }
     if (arg.element === "tags") {
-      articleClone["en"].tags = arg.value;
-      articleClone["uk"].tags = arg.value;
+      articleClone.tags = arg.value;
     }
 
     setArticle({ ...articleClone });
@@ -139,7 +133,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
             </div>
             <TextField
               label={`Field menu `}
-              variant="standard"
+              variant="outlined"
               value={item.content.title}
               name="menu-list"
               onChange={(event) =>
@@ -157,7 +151,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                 <li key={idx}>
                   <TextField
                     label={`Menu item ${idx + 1}`}
-                    variant="standard"
+                    variant="outlined"
                     value={elem}
                     name="menu-text"
                     onChange={(event) =>
@@ -192,7 +186,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
             <TextField
               label={`Field text`}
               value={item.content}
-              variant="standard"
+              variant="outlined"
               name="field-text"
               onChange={(event) =>
                 onChangeInput({
@@ -266,11 +260,11 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                       Image upload
                     </Button>
                   </label>
-                  <TextField value={elem.img?.name} variant="standard" />
+                  <TextField value={elem.img?.name} variant="outlined" />
                   <TextField
                     label={`Image description ${index + 1}`}
                     value={elem.description}
-                    variant="standard"
+                    variant="outlined"
                     name="image-description"
                     onChange={(event) =>
                       onChangeInput({
@@ -301,7 +295,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
             <TextField
               label={`Quote title`}
               value={item.content.title}
-              variant="standard"
+              variant="outlined"
               name="quote-title"
               onChange={(event) =>
                 onChangeInput({
@@ -315,8 +309,8 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
             />
             <TextField
               label={`Quote description`}
-              value={item.content.desctiption}
-              variant="standard"
+              value={item.content.description}
+              variant="outlined"
               name="quote-description"
               onChange={(event) =>
                 onChangeInput({
@@ -381,14 +375,14 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
         element: "quote",
         content: {
           title: "",
-          desctiption: "",
+          description: "",
         },
       },
       uk: {
         element: "quote",
         content: {
           title: "",
-          desctiption: "",
+          description: "",
         },
       },
     };
@@ -555,18 +549,17 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
 
   const clean = () => {
     setArticle({
+      image: "",
+      date: "",
+      tags: [],
       en: {
         title: "",
         description: "",
-        date: "",
-        tags: [],
         fields: [],
       },
       uk: {
         title: "",
         description: "",
-        date: "",
-        tags: [],
         fields: [],
       },
     });
@@ -586,7 +579,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
               <div className="input__group" key={"1"}>
                 <TextField
                   label="Title"
-                  variant="standard"
+                  variant="outlined"
                   value={article.en.title}
                   onChange={(event) =>
                     onChangeInput({
@@ -601,7 +594,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                 <TextField
                   label="Card description"
                   value={article.en.description}
-                  variant="standard"
+                  variant="outlined"
                   onChange={(event) =>
                     onChangeInput({
                       element: "description",
@@ -644,18 +637,15 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                       Image upload
                     </Button>
                   </label>
-                  <TextField
-                    value={article.en?.image?.name}
-                    variant="standard"
-                  />
+                  <TextField value={article.image?.name} variant="outlined" />
                 </div>
               </div>
               <div className="input__group" key={"3"}>
                 <TextField
                   label="Date"
                   type="date"
-                  variant="standard"
-                  value={moment(new Date(article.uk.date)).format("yyyy-MM-DD")}
+                  variant="outlined"
+                  value={moment(new Date(article.date)).format("yyyy-MM-DD")}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -671,7 +661,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                 <Autocomplete
                   multiple
                   limitTags={2}
-                  value={article.en.tags}
+                  value={article.tags}
                   options={tagList?.data || []}
                   getOptionLabel={(option) => option.name}
                   onChange={(event, value) =>
@@ -682,7 +672,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                     })
                   }
                   renderInput={(params) => (
-                    <TextField {...params} label="Tags" variant="standard" />
+                    <TextField {...params} label="Tags" variant="outlined" />
                   )}
                   sx={{ width: "500px" }}
                 />
@@ -714,7 +704,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
               <div className="input__group" key={"1"}>
                 <TextField
                   label="Title"
-                  variant="standard"
+                  variant="outlined"
                   value={article.uk.title}
                   onChange={(event) =>
                     onChangeInput({
@@ -728,7 +718,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
               <div className="input__group" key={"2"}>
                 <TextField
                   label="Card description"
-                  variant="standard"
+                  variant="outlined"
                   onChange={(event) =>
                     onChangeInput({
                       element: "description",
@@ -772,18 +762,15 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                       Image upload
                     </Button>
                   </label>
-                  <TextField
-                    value={article.uk?.image?.name}
-                    variant="standard"
-                  />
+                  <TextField value={article.image?.name} variant="outlined" />
                 </div>
               </div>
               <div className="input__group" key={"3"}>
                 <TextField
                   label="Date"
                   type="date"
-                  value={moment(new Date(article.uk.date)).format("yyyy-MM-DD")}
-                  variant="standard"
+                  value={moment(new Date(article.date)).format("yyyy-MM-DD")}
+                  variant="outlined"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -799,8 +786,8 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                 <Autocomplete
                   multiple
                   limitTags={2}
+                  value={article.tags}
                   options={tagList?.data || []}
-                  value={article.uk.tags}
                   getOptionLabel={(option) => option.name}
                   onChange={(event, value) =>
                     onChangeInput({
@@ -810,7 +797,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                     })
                   }
                   renderInput={(params) => (
-                    <TextField {...params} label="Tags" variant="standard" />
+                    <TextField {...params} label="Tags" variant="outlined" />
                   )}
                   sx={{ width: "500px" }}
                 />

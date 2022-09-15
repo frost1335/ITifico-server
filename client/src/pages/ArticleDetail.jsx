@@ -1,10 +1,10 @@
 import React from "react";
-import { Card } from "../features/ArticleDetail";
+import Content from "../features/ArticleDetail/components/Content/Content";
 
 const ArticleDetail = () => {
   return (
     <>
-      <Card />
+      <Content />
     </>
   );
 };

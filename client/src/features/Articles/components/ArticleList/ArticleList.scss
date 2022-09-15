@@ -1,8 +1,8 @@
 .article__list {
   .list__menu {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 30px;
 
     .menu__item {
       width: 100%;

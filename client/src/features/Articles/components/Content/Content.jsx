@@ -55,7 +55,7 @@ const Content = () => {
 
   return (
     <div className="articles__list">
-      <Container>
+      <Container maxWidth={'xl'}>
         <Box sx={{ width: "100%" }} paddingTop={4}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs

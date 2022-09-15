@@ -1,0 +1,43 @@
+@import "../../assets/styles/global";
+
+.menu__block {
+  margin-bottom: 50px;
+
+  h2.menu__title {
+    @include titleH3;
+    margin-bottom: 10px;
+  }
+
+  .menu__list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 20px;
+
+    .list__item {
+      @include text-menu;
+
+      &::marker {
+        color: $red-color;
+      }
+    }
+  }
+
+  @media (max-width: $maxWidthTablet) {
+    margin-bottom: 40px;
+
+    h2.menu__title {
+      margin-bottom: 5px;
+    }
+  }
+
+  @media (max-width: $maxWidthMobile) {
+    h2.menu__title {
+      margin-bottom: 5px;
+    }
+
+    .menu__list {
+      padding-left: 18px;
+    }
+  }
+}

@@ -1,8 +1,16 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 
 const Layout = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("authorization") !== "authen") {
+      navigate("/auth");
+    }
+  });
+
   return (
     <div className="layout">
       <div className="layout__navbar">

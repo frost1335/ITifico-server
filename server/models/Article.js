@@ -1,6 +1,25 @@
 const mongoose = require("mongoose");
 
 const articleSchema = mongoose.Schema({
+  image: {
+    type: Object,
+    required: true,
+    default: "Img doesnt exsists",
+  },
+  date: {
+    type: Date,
+    default: Date.now(),
+    required: true,
+  },
+  tags: {
+    type: Array,
+    required: true,
+  },
+  views: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
   en: {
     title: {
       type: String,
@@ -8,20 +27,6 @@ const articleSchema = mongoose.Schema({
     },
     description: {
       type: String,
-      required: true,
-    },
-    date: {
-      type: Date,
-      default: Date.now(),
-      required: true,
-    },
-    views: {
-      type: Number,
-      default: 0,
-      required: true,
-    },
-    tags: {
-      type: Array,
       required: true,
     },
     fields: {
@@ -36,20 +41,6 @@ const articleSchema = mongoose.Schema({
     },
     description: {
       type: String,
-      required: true,
-    },
-    date: {
-      type: Date,
-      default: Date.now(),
-      required: true,
-    },
-    views: {
-      type: Number,
-      default: 0,
-      required: true,
-    },
-    tags: {
-      type: Array,
       required: true,
     },
     fields: {

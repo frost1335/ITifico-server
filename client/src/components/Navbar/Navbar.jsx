@@ -7,15 +7,17 @@ import {
   Typography,
   Menu,
   Container,
-  Avatar,
   Button,
-  Tooltip,
   MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useActions } from "../../hooks/actions";
+import { useSelector } from "react-redux";
+
+import "./Navbar.scss";
 
 const pages = [
   {
@@ -29,9 +31,13 @@ const pages = [
 ];
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { changeLng } = useActions();
+  const { lng } = useSelector((state) => state.lngDetect);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { authForm } = useActions();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -45,8 +51,11 @@ const Navbar = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const logoutHandler = () => {
+    localStorage.removeItem("authorization");
     setAnchorEl(null);
+    authForm("");
+    navigate("/auth");
   };
 
   return (
@@ -128,37 +137,22 @@ const Navbar = () => {
               ))}
             </Box>
 
-            {auth && (
-              <div>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>Logout</MenuItem>
-                </Menu>
-              </div>
-            )}
+            <div className="detect__lng">
+              <button onClick={() => changeLng("en")} disabled={lng === "en"}>
+                Eng
+              </button>
+              <button onClick={() => changeLng("uk")} disabled={lng === "uk"}>
+                Ukr
+              </button>
+            </div>
+
+            <Button
+              variant="contained"
+              style={{ background: "#8758ff" }}
+              onClick={logoutHandler}
+            >
+              Logout
+            </Button>
           </Toolbar>
         </Container>
       </AppBar>
