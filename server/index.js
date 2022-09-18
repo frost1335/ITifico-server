@@ -1,6 +1,7 @@
 require("dotenv").config({ path: "./config.env" });
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const errorHandler = require("./middlewares/error");
 const mongoDB = require("./config/db");
@@ -22,8 +23,10 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 mongoDB(process.env.MONGOURI);
 

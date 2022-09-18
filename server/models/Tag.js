@@ -3,11 +3,9 @@ const mongoose = require("mongoose");
 const tagSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   background: {
     type: String,
-    required: true,
   },
 });
 

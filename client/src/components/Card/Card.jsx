@@ -17,16 +17,21 @@ const Card = ({ article, onEditHandler, deleteHandler }) => {
     <div className="article__card">
       <div className="card__box">
         <div className="article__buttons">
-          <Button onClick={() => onEditHandler(article._id)}>
+          <Button onClick={() => onEditHandler(article?._id)}>
             <RiEditLine />
           </Button>
-          <Button onClick={() => deleteHandler(article._id)}>
+          <Button onClick={() => deleteHandler(article?._id)}>
             <RiDeleteBinLine />
           </Button>
         </div>
         <div className="article__card" key={new Date() + article}>
           <div className="article__header">
-            <img src={article?.image} alt="article-img" />
+            <img
+              src={
+                process.env.REACT_APP_BASE_URL + `/Uploads/${article?.image}`
+              }
+              alt="article-img"
+            />
           </div>
           <div className="article__body">
             <div className="body__tags">
@@ -35,14 +40,14 @@ const Card = ({ article, onEditHandler, deleteHandler }) => {
               ))}
             </div>
             <h4 className="article__title">
-              <Link to={`/articles/view/${article._id}`}>
-                {article?.[lng].title}
+              <Link to={`/articles/view/${article?._id}`}>
+                {article?.[lng]?.title}
               </Link>
             </h4>
             <p className="article__text">
-              {article?.[lng].description.length > 100
-                ? `${article?.[lng].description.substring(0, 100)}...`
-                : article?.[lng].description}
+              {article?.[lng]?.description?.length > 100
+                ? `${article?.[lng]?.description.substring(0, 100)}...`
+                : article?.[lng]?.description}
             </p>
           </div>
           <div className="article__footer">

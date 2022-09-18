@@ -79,7 +79,6 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     }
     if (arg.element === "images") {
       if (arg.content === "image") {
-        console.log(arg);
         articleClone["en"].fields[arg.index].content[eval(arg.idx)].img =
           arg.event.target.files[0];
         articleClone["uk"].fields[arg.index].content[eval(arg.idx)].img =
@@ -468,12 +467,10 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
       field === "text"
     ) {
       filteredEnFields = enFields.filter((f, index) => {
-        console.log(index, idx, f);
         return index !== idx;
       });
 
       filteredUkFields = ukFields.filter((f, index) => {
-        console.log(index, idx, f);
         return index !== idx;
       });
     } else if (field === "menu-item") {
@@ -528,8 +525,6 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
         }
       });
     }
-    console.log(enFields);
-    console.log(ukFields);
 
     articleClone.en.fields = [...filteredEnFields];
     articleClone.uk.fields = [...filteredUkFields];
@@ -538,10 +533,23 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
   };
 
   const onSubmitHandler = () => {
+    const formData = new FormData();
+
+    if (article.date) {
+      formData.append("date", article.date);
+    }
+    if (article.image) {
+      formData.append("image", article.image);
+    }
+
+    formData.append("tags", JSON.stringify(article.tags));
+    formData.append("en", JSON.stringify(article.en));
+    formData.append("uk", JSON.stringify(article.uk));
     if (articleId) {
-      editArticle({ ...article, _id: articleId });
+      formData.append("_id", articleId);
+      editArticle(formData);
     } else {
-      createArticle(article);
+      createArticle(formData);
     }
 
     clean();

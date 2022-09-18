@@ -6,9 +6,15 @@ const {
   deleteOne,
   getOne,
 } = require("../controllers/article");
+const ImageUpload = require("../utils/upload");
+
 const router = Router();
 
-router.route("/").get(getAll).post(create);
-router.route("/:id").get(getOne).put(edit).delete(deleteOne);
+router.route("/").get(getAll).post(ImageUpload.single("image"), create);
+router
+  .route("/:id")
+  .get(getOne)
+  .put(ImageUpload.single("image"), edit)
+  .delete(deleteOne);
 
 module.exports = router;
