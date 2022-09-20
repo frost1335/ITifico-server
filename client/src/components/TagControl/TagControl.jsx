@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  Modal,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
@@ -25,7 +18,7 @@ const TagControl = () => {
   const [name, setName] = useState("");
   const [background, setBackground] = useState("");
   const [currentId, setCurrentId] = useState("");
-  const { data: tagList, isLoading,  } = useGetTagsQuery();
+  const { data: tagList, isLoading } = useGetTagsQuery();
 
   useEffect(() => {
     if (currentId && !isLoading) {
@@ -68,7 +61,8 @@ const TagControl = () => {
 
   return (
     <div className="tag__control">
-      <Container>
+      <Container maxWidth={"xl"}>
+        <h3>Tag Control</h3>
         <Box sx={{ width: "100%" }} paddingTop={4}>
           <div className="tag__content">
             <form className="tag__form" onSubmit={onSubmitHandler}>

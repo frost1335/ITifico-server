@@ -2,59 +2,59 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL + "/api";
 
-export const articleApi = createApi({
-  reducerPath: "articleApi",
+export const imagesApi = createApi({
+  reducerPath: "imageApi",
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     headers: {
       "Content-Type": "application/json; charset=utf-8; charset=utf-8",
     },
   }),
-  tagTypes: ["Article"],
+  tagTypes: ["Images"],
   endpoints: (builder) => ({
     getImages: builder.query({
       query: () => ({
-        url: "/article",
+        url: "/images",
       }),
-      providesTags: ["Article"],
+      providesTags: ["Images"],
     }),
-    getArticle: builder.query({
+    getImage: builder.query({
       query: (id) => ({
-        url: `/article/${id}`,
+        url: `/images/${id}`,
       }),
-      providesTags: ["Article"],
+      providesTags: ["Images"],
     }),
     createImage: builder.mutation({
-      query: (article) => ({
-        url: `/article`,
+      query: (image) => ({
+        url: `/images`,
         method: "POST",
-        body: article,
+        body: image,
         header: {},
       }),
-      invalidatesTags: ["Article"],
+      invalidatesTags: ["Images"],
     }),
     editImage: builder.mutation({
-      query: (article) => ({
-        url: `/article/${article.get("_id")}`,
+      query: (image) => ({
+        url: `/images/${image._id}`,
         method: "PUT",
-        body: article,
+        body: image,
       }),
-      invalidatesTags: ["Article"],
+      invalidatesTags: ["Images"],
     }),
     deleteImage: builder.mutation({
       query: (id) => ({
-        url: `/article/${id}`,
+        url: `/images/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Article"],
+      invalidatesTags: ["Images"],
     }),
   }),
 });
 
 export const {
-  useCreateArticleMutation,
-  useDeleteArticleMutation,
-  useEditArticleMutation,
-  useGetArticleQuery,
-  useGetArticlesQuery,
-} = articleApi;
+  useCreateImageMutation,
+  useDeleteImageMutation,
+  useEditImageMutation,
+  useGetImageQuery,
+  useGetImagesQuery,
+} = imagesApi;

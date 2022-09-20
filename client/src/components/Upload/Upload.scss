@@ -1,0 +1,48 @@
+.upload__box {
+  display: flex;
+  border: 1px solid #b7c4cf;
+  border-radius: 4px;
+  overflow: hidden;
+  font-size: 16px;
+  margin-bottom: 20px;
+
+  .upload__input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 8px 10px;
+    font-size: 16px;
+  }
+
+  .form__upload {
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  .form__upload::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .form__upload::before {
+    width: 100%;
+    box-sizing: border-box;
+    content: "Select file";
+    display: inline-block;
+    background: linear-gradient(top, #f9f9f9, #e3e3e3);
+    outline: none;
+    padding: 10px;
+    border-right: 1px solid #b7c4cf;
+    align-self: center;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+
+    &:before,
+    &:after {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+  }
+}

@@ -1,30 +1,12 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
-import {
-  useDeleteArticleMutation,
-  useGetArticlesQuery,
-} from "../../../../services/articleApi";
-
-import { RiEditLine, RiDeleteBinLine } from "react-icons/ri";
+import { useGetArticlesQuery } from "../../../../services/articleApi";
 
 import "./ArticleList.scss";
-import moment from "moment";
-import Tag from "../../../../components/Tag/Tag";
 import { ArticleCard } from "../../../../components";
 
 const ArticleList = ({ setCurrentId }) => {
-  const [deleteArticle] = useDeleteArticleMutation();
-
   const { data: articlesList, isLoading } = useGetArticlesQuery();
-
-  const deleteHandler = (id) => {
-    deleteArticle(id);
-  };
-
-  const onEditHandler = (id) => {
-    setCurrentId(id);
-  };
 
   return (
     <div className="article__list">
@@ -40,12 +22,7 @@ const ArticleList = ({ setCurrentId }) => {
         {isLoading
           ? "Loading..."
           : articlesList?.data?.map((article, index) => (
-              <ArticleCard
-                deleteHandler={deleteHandler}
-                onEditHandler={onEditHandler}
-                article={article}
-                key={index + "article"}
-              />
+              <ArticleCard article={article} key={index + "article"} />
             ))}
       </div>
     </div>

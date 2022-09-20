@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Link, useNavigate } from "react-router-dom";
 import { useActions } from "../../hooks/actions";
 import { useSelector } from "react-redux";
@@ -28,6 +27,10 @@ const pages = [
     link: "/courses",
     name: "Courses",
   },
+  {
+    link: "/tags",
+    name: "Tags",
+  },
 ];
 
 const Navbar = () => {
@@ -35,8 +38,6 @@ const Navbar = () => {
   const { changeLng } = useActions();
   const { lng } = useSelector((state) => state.lngDetect);
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const { authForm } = useActions();
 
   const handleOpenNavMenu = (event) => {
@@ -47,13 +48,8 @@ const Navbar = () => {
     setAnchorElNav(null);
   };
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const logoutHandler = () => {
     localStorage.removeItem("authorization");
-    setAnchorEl(null);
     authForm("");
     navigate("/auth");
   };

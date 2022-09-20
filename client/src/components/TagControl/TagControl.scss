@@ -1,4 +1,14 @@
 .tag__control {
+  h3 {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 1.167;
+    letter-spacing: 0em;
+    margin-top: 50px;
+    margin-left: 15px;
+  }
+
   .tag__content {
     display: grid;
     grid-template-columns: 1fr 1fr;

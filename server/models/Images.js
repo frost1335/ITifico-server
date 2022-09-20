@@ -1,14 +1,25 @@
 const mongoose = require("mongoose");
 
 const imagesSchema = mongoose.Schema({
+  index: {
+    type: Number,
+    required: true,
+  },
+  idx: {
+    type: Number,
+    required: true,
+  },
+  file: {
+    type: String,
+    required: true,
+  },
   component: {
     type: String,
-    required: true
+    required: true,
   },
-  fields: {
-    type: Array,
-    requried: true
-  }
+  parentId: {
+    type: String,
+  },
 });
 
 const Images = mongoose.model("Image", imagesSchema);

@@ -22,7 +22,6 @@ exports.getOne = async (req, res, next) => {
     }
 
     const article = await Article.findById(id);
-    console.log(article);
 
     res.status(200).json({ success: true, data: article });
   } catch (err) {
@@ -31,7 +30,6 @@ exports.getOne = async (req, res, next) => {
 };
 
 exports.create = (req, res, next) => {
-  console.log(req.file);
   const article = {
     image: req.file.filename,
     ...req.body,
@@ -39,8 +37,11 @@ exports.create = (req, res, next) => {
     en: JSON.parse(req.body.en),
     uk: JSON.parse(req.body.uk),
   };
-  console.log(article);
+
+  console.log(req.file.filename);
+
   const newArticle = new Article({ ...article });
+
   try {
     newArticle.save();
 
@@ -52,7 +53,6 @@ exports.create = (req, res, next) => {
 
 exports.edit = async (req, res, next) => {
   const { id } = req.params;
-  console.log();
   const article = {
     image: req?.file?.filename,
     ...req.body,
@@ -60,6 +60,7 @@ exports.edit = async (req, res, next) => {
     en: JSON.parse(req.body.en),
     uk: JSON.parse(req.body.uk),
   };
+
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return next(new ErrorResponse("This Article is not exsist"));

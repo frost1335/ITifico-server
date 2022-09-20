@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import {
-  TextField,
-  Autocomplete,
-  Typography,
-  Box,
-  Button,
-  Input,
-} from "@mui/material";
-
-import "./CreateArticle.scss";
 import moment from "moment";
+
 import {
   useCreateArticleMutation,
   useEditArticleMutation,
   useGetArticlesQuery,
 } from "../../../../services/articleApi";
-import { useGetTagsQuery } from "../../../../services/tagApi";
+import { Button, Input, Select, Upload } from "../../../../components";
+import {
+  useCreateImageMutation,
+  useEditImageMutation,
+  useGetImagesQuery,
+} from "../../../../services/imagesApi";
+
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const style = {
-  width: "100%",
-  bgcolor: "background.paper",
-  p: 4,
-};
+import "./CreateArticle.scss";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
-  const { data: tagList } = useGetTagsQuery();
+const CreateArticle = () => {
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const articleId = search.replace("?articleId=", "");
   const { data: articleList, isLoading } = useGetArticlesQuery();
+  const { data: imageList, isLoading: imgLoading } = useGetImagesQuery();
 
-  const [createArticle, { data, isSuccess: createSuccess }] =
+  const [createImage] = useCreateImageMutation();
+  const [editImage] = useEditImageMutation();
+  const [createArticle, { data, isSuccess: createSuccess, reset }] =
     useCreateArticleMutation();
-  const [editArticle] = useEditArticleMutation();
-
-  console.log(data);
+  const [
+    editArticle,
+    { data: editImgData, isSuccess: editSuccess, reset: editReset },
+  ] = useEditArticleMutation();
 
   const [article, setArticle] = useState(() => ({
     image: "",
@@ -50,6 +50,83 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
       fields: [],
     },
   }));
+  const [articleImg, setArticleImg] = useState(() => ({
+    component: "article",
+    fields: [],
+  }));
+
+  useEffect(() => {
+    if (articleId && !imgLoading) {
+      let imgFieldsClone = imageList.data.filter(
+        (field) => field.parentId === articleId
+      );
+
+      imgFieldsClone = imgFieldsClone.map((field) => ({
+        ...field,
+        editable: true,
+      }));
+
+      setArticleImg({ ...articleImg, fields: [...imgFieldsClone] });
+    }
+  }, [articleId, imgLoading, imageList]);
+
+  console.log(articleImg);
+
+  useEffect(() => {
+    if (createSuccess) {
+      console.log(articleId, data);
+      Promise.all(
+        articleImg.fields.map(async (field, index) => {
+          const formData = new FormData();
+
+          formData.append("index", field.index);
+          formData.append("idx", field.idx);
+          formData.append("file", field.file);
+          formData.append("component", articleImg.component);
+          formData.append("parentId", data.data._id);
+
+          createImage(formData);
+        })
+      );
+
+      reset();
+    }
+    if (editSuccess) {
+      console.log(articleId);
+      Promise.all(
+        articleImg.fields.map(async (field, index) => {
+          const formData = new FormData();
+
+          formData.append("index", field.index);
+          formData.append("idx", field.idx);
+          formData.append("file", field.file);
+          formData.append("component", articleImg.component);
+
+          if (field.editable) {
+            formData.append("parentId", articleId);
+            formData.append("_id", editImgData?.data?._id);
+            await editImage(formData);
+          } else {
+            formData.append("parentId", data?.data._id);
+            await createImage(formData);
+          }
+        })
+      );
+
+      reset();
+    }
+  }, [
+    createSuccess,
+    editImgData,
+    articleImg,
+    createImage,
+    editImage,
+    articleId,
+    data,
+    reset,
+    editSuccess,
+    editReset,
+  ]);
 
   useEffect(() => {
     if (articleId && !isLoading) {
@@ -59,14 +136,31 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
 
       setArticle({ ...currentArticle });
     }
-    if (createSuccess) {
-    }
-  }, [articleId, isLoading, articleList, createSuccess]);
+
+    return () => {
+      setArticle({
+        image: "",
+        date: "",
+        tags: [],
+        en: {
+          title: "",
+          description: "",
+          fields: [],
+        },
+        uk: {
+          title: "",
+          description: "",
+          fields: [],
+        },
+      });
+    };
+  }, [articleId, isLoading, articleList]);
 
   const onChangeInput = (...argument) => {
     const arg = argument[0];
     const articleClone = { ...article };
-    const value = arg.event.target?.value;
+    const articleImgClone = { ...articleImg };
+    const value = arg?.event?.target?.value;
 
     if (arg.element === "card-image") {
       articleClone.image = arg.event.target.files[0];
@@ -84,10 +178,33 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     }
     if (arg.element === "images") {
       if (arg.content === "image") {
-        articleClone["en"].fields[arg.index].content[eval(arg.idx)].img =
-          arg.event.target.files[0];
-        articleClone["uk"].fields[arg.index].content[eval(arg.idx)].img =
-          arg.event.target.files[0];
+        articleClone["en"].fields[arg.index].content[arg.idx].img =
+          arg.event.target?.files[0]?.name;
+        articleClone["uk"].fields[arg.index].content[arg.idx].img =
+          arg.event.target?.files[0]?.name;
+
+        if (
+          articleImgClone.fields.find(
+            (i) => i.idx === arg.idx && i.index === arg.index
+          )
+        ) {
+          articleImgClone.fields.map((i) => {
+            if (i.idx === arg.idx && i.index === arg.index) {
+              return {
+                file: arg.event.target?.files[0],
+                index: arg.index,
+                idx: arg.idx,
+              };
+            }
+            return i;
+          });
+        } else {
+          articleImgClone.fields.push({
+            file: arg.event.target?.files[0],
+            index: arg.index,
+            idx: arg.idx,
+          });
+        }
       }
       if (arg.content === "description") {
         articleClone[arg.lng].fields[arg.index].content[arg.idx].description =
@@ -116,6 +233,7 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     }
 
     setArticle({ ...articleClone });
+    setArticleImg({ ...articleImgClone });
   };
 
   const renderFields = (lng) => {
@@ -128,18 +246,13 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
               <Button onClick={() => removeField("menu", index)}>
                 Delete field
               </Button>
-              <Button
-                variant="contained"
-                onClick={() => addField("menu-item", index)}
-              >
+              <Button onClick={() => addField("menu-item", index)}>
                 Add item
               </Button>
             </div>
-            <TextField
-              label={`Field menu `}
-              variant="outlined"
+            <Input
+              placeholder="Menu title"
               value={item.content.title}
-              name="menu-list"
               onChange={(event) =>
                 onChangeInput({
                   event,
@@ -153,11 +266,9 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
             <ol className="menu__list">
               {item.content.menu.map((elem, idx) => (
                 <li key={idx}>
-                  <TextField
-                    label={`Menu item ${idx + 1}`}
-                    variant="outlined"
+                  <Input
+                    placeholder={`Menu item ${idx + 1}`}
                     value={elem}
-                    name="menu-text"
                     onChange={(event) =>
                       onChangeInput({
                         event,
@@ -187,11 +298,9 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                 Delete field
               </Button>
             </div>
-            <TextField
-              label={`Field text`}
+            <Input
+              placeholder="Field text"
               value={item.content}
-              variant="outlined"
-              name="field-text"
               onChange={(event) =>
                 onChangeInput({
                   event,
@@ -212,64 +321,35 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
               <Button onClick={() => removeField("images", index)}>
                 Delete field
               </Button>
-              <Button
-                variant="contained"
-                onClick={() => addField("image", index)}
-              >
+              <Button onClick={() => addField("image", index)}>
                 Add image
               </Button>
             </div>
             {item.content.map((elem, idx) => (
               <div key={idx}>
                 <div className="box_header">
-                  <Typography variant="h6">Image {idx + 1}</Typography>
+                  <h5>Image {idx + 1}</h5>
                   <Button onClick={() => removeField("image", index, idx)}>
                     <RiDeleteBinLine />
                   </Button>
                 </div>
                 <div className="group__box">
-                  <label
-                    htmlFor={`contained-button-file${idx}-${index}`}
-                    className="form-input"
-                    style={{
-                      display: "flex",
-                      flexDirection: "row-reverse",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <Input
-                      accept="image/*"
-                      className={idx}
-                      id={`contained-button-file${idx}-${index}`}
-                      name="img"
-                      type="file"
-                      style={{ opacity: 0 }}
-                      onChange={(event) =>
-                        onChangeInput({
-                          index,
-                          event,
-                          element: "images",
-                          content: "image",
-                          lng,
-                          idx,
-                        })
-                      }
-                    />
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      type="button"
-                      size="large"
-                    >
-                      Image upload
-                    </Button>
-                  </label>
-                  <TextField value={elem.img?.name} variant="outlined" />
-                  <TextField
-                    label={`Image description ${index + 1}`}
+                  <Upload
+                    value={elem.img?.name || elem.img}
+                    onChange={(event) =>
+                      onChangeInput({
+                        index,
+                        event,
+                        element: "images",
+                        content: "image",
+                        lng,
+                        idx,
+                      })
+                    }
+                  />
+                  <Input
+                    placeholder={`Image description ${index + 1}`}
                     value={elem.description}
-                    variant="outlined"
-                    name="image-description"
                     onChange={(event) =>
                       onChangeInput({
                         event,
@@ -296,11 +376,9 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                 Delete field
               </Button>
             </div>
-            <TextField
-              label={`Quote title`}
+            <Input
+              placeholder={`Quote title`}
               value={item.content.title}
-              variant="outlined"
-              name="quote-title"
               onChange={(event) =>
                 onChangeInput({
                   event,
@@ -311,11 +389,9 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                 })
               }
             />
-            <TextField
-              label={`Quote description`}
+            <Input
+              placeholder={`Quote description`}
               value={item.content.description}
-              variant="outlined"
-              name="quote-description"
               onChange={(event) =>
                 onChangeInput({
                   event,
@@ -462,8 +538,12 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     let articleClone = { ...article };
     let enFields = [...articleClone.en.fields];
     let ukFields = [...articleClone.uk.fields];
+
+    let articleImgFieldsClone = [...articleImg.fields];
+
     let filteredEnFields = [];
     let filteredUkFields = [];
+    let filteredImgFields = [];
 
     if (
       field === "menu" ||
@@ -477,6 +557,10 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
 
       filteredUkFields = ukFields.filter((f, index) => {
         return index !== idx;
+      });
+
+      filteredImgFields = articleImgFieldsClone.filter((f, index) => {
+        return f.index !== idx;
       });
     } else if (field === "menu-item") {
       filteredEnFields = enFields.map((f, index) => {
@@ -529,21 +613,22 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
           return f;
         }
       });
+
+      filteredImgFields = filteredImgFields.filter((f) => f.idx !== i);
     }
 
     articleClone.en.fields = [...filteredEnFields];
     articleClone.uk.fields = [...filteredUkFields];
+    articleImgFieldsClone = [...filteredImgFields];
 
     setArticle({ ...articleClone });
+    setArticleImg({ ...articleImg, fields: [...articleImgFieldsClone] });
   };
+
+  console.log(article);
 
   const onSubmitHandler = async () => {
     const formData = new FormData();
-
-    const articleImage = {
-      component: "article",
-      fields: article.en.fields.filter((elem) => elem.element === "images"),
-    };
 
     if (article.date) {
       formData.append("date", article.date);
@@ -557,13 +642,10 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     formData.append("uk", JSON.stringify(article.uk));
     if (articleId) {
       formData.append("_id", articleId);
-      await editArticle(formData);
+      editArticle(formData);
     } else {
-      await createArticle(formData);
-      console.log(createSuccess);
+      createArticle(formData);
     }
-
-    clean();
   };
 
   const clean = () => {
@@ -582,24 +664,21 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
         fields: [],
       },
     });
-    setCurrentId("");
+    navigate("/articles/form");
   };
 
   return (
     <div className="articles__modal">
-      <Box sx={style}>
+      <div className="course__box">
         <div className="modal__content">
-          <Typography id="modal-modal-title" variant="h3" component="h2">
-            Course form
-          </Typography>
+          <h2>Course Form</h2>
           <div className="modal__main">
             <div className="main__box">
               <h3>EN - forms</h3>
-              <div className="input__group" key={"1"}>
-                <TextField
-                  label="Title"
-                  variant="outlined"
+              <div className="input__group">
+                <Input
                   value={article.en.title}
+                  placeholder="Title"
                   onChange={(event) =>
                     onChangeInput({
                       element: "title",
@@ -609,11 +688,10 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                   }
                 />
               </div>
-              <div className="input__group" key={"2"}>
-                <TextField
-                  label="Card description"
+              <div className="input__group">
+                <Input
+                  placeholder="Card description"
                   value={article.en.description}
-                  variant="outlined"
                   onChange={(event) =>
                     onChangeInput({
                       element: "description",
@@ -623,51 +701,23 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                   }
                 />
               </div>
-              <div className="input__group" key={"234"}>
+              <div className="input__group">
                 <div className="group__box">
-                  <label
-                    htmlFor={`contained-button-file-card`}
-                    className="form-input"
-                    style={{
-                      display: "flex",
-                      flexDirection: "row-reverse",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <Input
-                      accept="image/*"
-                      id={`contained-button-file-card`}
-                      name="img"
-                      type="file"
-                      style={{ opacity: 0 }}
-                      onChange={(event) =>
-                        onChangeInput({
-                          event,
-                          element: "card-image",
-                        })
-                      }
-                    />
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      type="button"
-                      size="large"
-                    >
-                      Image upload
-                    </Button>
-                  </label>
-                  <TextField value={article.image?.name} variant="outlined" />
+                  <Upload
+                    value={article.image?.name || article.image}
+                    onChange={(event) =>
+                      onChangeInput({
+                        event,
+                        element: "card-image",
+                      })
+                    }
+                  />
                 </div>
               </div>
-              <div className="input__group" key={"3"}>
-                <TextField
-                  label="Date"
+              <div className="input__group">
+                <Input
                   type="date"
-                  variant="outlined"
                   value={moment(new Date(article.date)).format("yyyy-MM-DD")}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                   onChange={(event) =>
                     onChangeInput({
                       element: "date",
@@ -676,13 +726,9 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                   }
                 />
               </div>
-              <div className="input__group" key={"4"}>
-                <Autocomplete
-                  multiple
-                  limitTags={2}
-                  value={article.tags}
-                  options={tagList?.data || []}
-                  getOptionLabel={(option) => option.name}
+              <div className="input__group">
+                <Select
+                  value={article?.tags}
                   onChange={(event, value) =>
                     onChangeInput({
                       element: "tags",
@@ -690,41 +736,25 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                       value,
                     })
                   }
-                  renderInput={(params) => (
-                    <TextField {...params} label="Tags" variant="outlined" />
-                  )}
-                  sx={{ width: "500px" }}
                 />
               </div>
               <div className="input__list">
                 <h3>Article fields</h3>
                 <div className="article__buttons">
-                  <Button variant="contained" onClick={() => addField("text")}>
-                    Add text
-                  </Button>
-                  <Button variant="contained" onClick={() => addField("menu")}>
-                    Add menu
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => addField("images")}
-                  >
-                    Add images
-                  </Button>
-                  <Button variant="contained" onClick={() => addField("quote")}>
-                    Add quote
-                  </Button>
+                  <Button onClick={() => addField("text")}>Add text</Button>
+                  <Button onClick={() => addField("menu")}>Add menu</Button>
+                  <Button onClick={() => addField("images")}>Add images</Button>
+                  <Button onClick={() => addField("quote")}>Add quote</Button>
                 </div>
                 {renderFields("en")}
               </div>
             </div>
             <div className="main__box">
               <h3>UK - forms</h3>
-              <div className="input__group" key={"1"}>
-                <TextField
-                  label="Title"
-                  variant="outlined"
+              <div className="input__group">
+                <Input
                   value={article.uk.title}
+                  placeholder="Title"
                   onChange={(event) =>
                     onChangeInput({
                       element: "title",
@@ -734,10 +764,10 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                   }
                 />
               </div>
-              <div className="input__group" key={"2"}>
-                <TextField
-                  label="Card description"
-                  variant="outlined"
+              <div className="input__group">
+                <Input
+                  placeholder="Card description"
+                  value={article.uk.description}
                   onChange={(event) =>
                     onChangeInput({
                       element: "description",
@@ -745,54 +775,25 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                       lng: "uk",
                     })
                   }
-                  value={article.uk.description}
                 />
               </div>
-              <div className="input__group" key={"234"}>
+              <div className="input__group">
                 <div className="group__box">
-                  <label
-                    htmlFor={`contained-button-file-card`}
-                    className="form-input"
-                    style={{
-                      display: "flex",
-                      flexDirection: "row-reverse",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <Input
-                      accept="image/*"
-                      id={`contained-button-file-card`}
-                      name="img"
-                      type="file"
-                      style={{ opacity: 0 }}
-                      onChange={(event) =>
-                        onChangeInput({
-                          event,
-                          element: "card-image",
-                        })
-                      }
-                    />
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      type="button"
-                      size="large"
-                    >
-                      Image upload
-                    </Button>
-                  </label>
-                  <TextField value={article.image?.name} variant="outlined" />
+                  <Upload
+                    value={article.image?.name || article.image}
+                    onChange={(event) =>
+                      onChangeInput({
+                        event,
+                        element: "card-image",
+                      })
+                    }
+                  />
                 </div>
               </div>
-              <div className="input__group" key={"3"}>
-                <TextField
-                  label="Date"
+              <div className="input__group">
+                <Input
                   type="date"
                   value={moment(new Date(article.date)).format("yyyy-MM-DD")}
-                  variant="outlined"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                   onChange={(event) =>
                     onChangeInput({
                       element: "date",
@@ -801,13 +802,9 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                   }
                 />
               </div>
-              <div className="input__group" key={"4"}>
-                <Autocomplete
-                  multiple
-                  limitTags={2}
-                  value={article.tags}
-                  options={tagList?.data || []}
-                  getOptionLabel={(option) => option.name}
+              <div className="input__group">
+                <Select
+                  value={article?.tags}
                   onChange={(event, value) =>
                     onChangeInput({
                       element: "tags",
@@ -815,16 +812,12 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
                       value,
                     })
                   }
-                  renderInput={(params) => (
-                    <TextField {...params} label="Tags" variant="outlined" />
-                  )}
-                  sx={{ width: "500px" }}
                 />
               </div>
               <div className="input__list">
                 <h3>Article fields</h3>
                 <div className="article__buttons">
-                  <Typography variant="h6">Add dynamic input forms</Typography>{" "}
+                  <h4> </h4>
                 </div>
                 {renderFields("uk")}
               </div>
@@ -833,14 +826,13 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
               <Button
                 onClick={onSubmitHandler}
                 style={{ padding: "15px 45px" }}
-                variant="contained"
               >
                 {!articleId ? "Create article" : "Edit article"}
               </Button>
             </div>
           </div>
         </div>
-      </Box>
+      </div>
     </div>
   );
 };

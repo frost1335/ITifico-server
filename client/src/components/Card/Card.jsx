@@ -1,7 +1,7 @@
 import React from "react";
 import { IoMdEye } from "react-icons/io";
 import { MdOutlineDateRange } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Tag from "../Tag/Tag";
 
 import "./Card.scss";
@@ -9,18 +9,23 @@ import { formatter } from "../../utils";
 import { Button } from "@mui/material";
 import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
+import { useDeleteArticleMutation } from "../../services/articleApi";
 
-const Card = ({ article, onEditHandler, deleteHandler }) => {
+const Card = ({ article }) => {
+  const [deleteArticle] = useDeleteArticleMutation();
+  const navigate = useNavigate();
   const { lng } = useSelector((state) => state.lngDetect);
 
   return (
     <div className="article__card">
       <div className="card__box">
         <div className="article__buttons">
-          <Button onClick={() => onEditHandler(article?._id)}>
+          <Button
+            onClick={() => navigate(`/articles/form?articleId=${article?._id}`)}
+          >
             <RiEditLine />
           </Button>
-          <Button onClick={() => deleteHandler(article?._id)}>
+          <Button onClick={() => deleteArticle(article?._id)}>
             <RiDeleteBinLine />
           </Button>
         </div>

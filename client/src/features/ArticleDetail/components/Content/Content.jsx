@@ -63,7 +63,13 @@ const Content = () => {
               } else if (field.element === "menu") {
                 return <MenuBlock data={field} key={index + "field"} />;
               } else if (field.element === "images") {
-                return <ImageBlock data={field} key={index + "field"} />;
+                return (
+                  <ImageBlock
+                    data={field}
+                    index={index}
+                    key={index + "field"}
+                  />
+                );
               } else if (field.element === "quote") {
                 return <QuoteBlock data={field} key={index + "field"} />;
               } else {

@@ -1,0 +1,20 @@
+.form__select {
+  margin-bottom: 20px;
+
+  .MuiAutocomplete-input {
+    padding: 5px 4px 5px 6px !important;
+  }
+
+  .MuiInputBase-root {
+    padding: 4px 5px !important;
+  }
+
+  label {
+    font-size: 14px;
+    top: -5px;
+  }
+
+  .MuiChip-root {
+    height: 25px;
+  }
+}

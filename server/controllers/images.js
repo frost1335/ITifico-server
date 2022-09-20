@@ -14,7 +14,8 @@ exports.getAll = async (req, res, next) => {
 
 exports.create = (req, res, next) => {
   const image = req.body;
-  const newImage = new Images({ ...image });
+  const newImage = new Images({ ...image, file: req.file.filename });
+
   try {
     newImage.save();
 
@@ -31,6 +32,8 @@ exports.edit = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return next(new ErrorResponse("This Images is not exsist"));
     }
+
+    await Images.deleteMany({ parentId: image.parentId });
 
     const updatedImages = await Images.findByIdAndUpdate(
       id,
@@ -51,11 +54,11 @@ exports.deleteOne = async (req, res, next) => {
       return next(new ErrorResponse("This Images is not exsist"));
     }
 
-    await Images.findByIdAndRemove(id);
+    await Images.deleteMany();
 
     res
       .status(200)
-      .json({ success: true, message: "Images deleted successfully" });
+      .json({ success: true, message: "Image deleted successfully" });
   } catch (err) {
     next(err);
   }
