@@ -3,7 +3,7 @@ const deleteFile = require("../utils/deleteFile");
 const Article = require("../models/Article");
 const ErrorResponse = require("../utils/errorResponse");
 
-exports.getAll = async (re1, res, next) => {
+exports.getAll = async (req, res, next) => {
   try {
     const articles = await Article.find();
 

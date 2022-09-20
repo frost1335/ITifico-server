@@ -8,7 +8,7 @@ const mongoDB = require("./config/db");
 const ErrorResponse = require("./utils/errorResponse");
 const app = express();
 
-var whitelist = [process.env.CLIENT_URL, process.env.ADMIN_URL];
+const whitelist = [process.env.CLIENT_URL, process.env.ADMIN_URL];
 
 app.use(
   cors({
@@ -33,6 +33,7 @@ mongoDB(process.env.MONGOURI);
 app.use("/api/article", require("./routes/article.routes"));
 app.use("/api/course", require("./routes/course.routes"));
 app.use("/api/tag", require("./routes/tag.routes"));
+app.use("/api/images", require("./routes/images.routes"));
 
 app.use(errorHandler);
 

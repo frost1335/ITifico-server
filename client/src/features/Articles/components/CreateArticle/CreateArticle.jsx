@@ -29,8 +29,11 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
   const { data: tagList } = useGetTagsQuery();
   const { data: articleList, isLoading } = useGetArticlesQuery();
 
-  const [createArticle] = useCreateArticleMutation();
+  const [createArticle, { data, isSuccess: createSuccess }] =
+    useCreateArticleMutation();
   const [editArticle] = useEditArticleMutation();
+
+  console.log(data);
 
   const [article, setArticle] = useState(() => ({
     image: "",
@@ -56,7 +59,9 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
 
       setArticle({ ...currentArticle });
     }
-  }, [articleId, isLoading, articleList]);
+    if (createSuccess) {
+    }
+  }, [articleId, isLoading, articleList, createSuccess]);
 
   const onChangeInput = (...argument) => {
     const arg = argument[0];
@@ -532,8 +537,13 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     setArticle({ ...articleClone });
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     const formData = new FormData();
+
+    const articleImage = {
+      component: "article",
+      fields: article.en.fields.filter((elem) => elem.element === "images"),
+    };
 
     if (article.date) {
       formData.append("date", article.date);
@@ -547,9 +557,10 @@ const CreateArticle = ({ currentId: articleId, setCurrentId }) => {
     formData.append("uk", JSON.stringify(article.uk));
     if (articleId) {
       formData.append("_id", articleId);
-      editArticle(formData);
+      await editArticle(formData);
     } else {
-      createArticle(formData);
+      await createArticle(formData);
+      console.log(createSuccess);
     }
 
     clean();
