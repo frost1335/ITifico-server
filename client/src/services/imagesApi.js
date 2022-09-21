@@ -35,9 +35,10 @@ export const imagesApi = createApi({
     }),
     editImage: builder.mutation({
       query: (image) => ({
-        url: `/images/${image._id}`,
+        url: `/images/${image.get("_id")}`,
         method: "PUT",
         body: image,
+        header: {},
       }),
       invalidatesTags: ["Images"],
     }),

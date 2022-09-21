@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Images = require("../models/Images");
+const deleteFile = require("../utils/deleteFile");
 const ErrorResponse = require("../utils/errorResponse");
 
 exports.getAll = async (req, res, next) => {
@@ -14,7 +15,7 @@ exports.getAll = async (req, res, next) => {
 
 exports.create = (req, res, next) => {
   const image = req.body;
-  const newImage = new Images({ ...image, file: req.file.filename });
+  const newImage = new Images({ ...image, file: req.file?.filename });
 
   try {
     newImage.save();
@@ -27,13 +28,20 @@ exports.create = (req, res, next) => {
 
 exports.edit = async (req, res, next) => {
   const { id } = req.params;
-  const image = req.body;
+  const image = {
+    ...req.body,
+    file: req.file ? req.file?.filename : req.body.file,
+  };
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return next(new ErrorResponse("This Images is not exsist"));
     }
 
-    await Images.deleteMany({ parentId: image.parentId });
+    const oldImage = await Images.findById(id).select("file");
+
+    if (oldImage.file && req.file) {
+      deleteFile(oldImage.file);
+    }
 
     const updatedImages = await Images.findByIdAndUpdate(
       id,

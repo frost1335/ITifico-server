@@ -10,7 +10,7 @@ const imagesSchema = mongoose.Schema({
     required: true,
   },
   file: {
-    type: String,
+    type: Object,
     required: true,
   },
   component: {

@@ -70,11 +70,8 @@ const CreateArticle = () => {
     }
   }, [articleId, imgLoading, imageList]);
 
-  console.log(articleImg);
-
   useEffect(() => {
     if (createSuccess) {
-      console.log(articleId, data);
       Promise.all(
         articleImg.fields.map(async (field, index) => {
           const formData = new FormData();
@@ -85,14 +82,14 @@ const CreateArticle = () => {
           formData.append("component", articleImg.component);
           formData.append("parentId", data.data._id);
 
-          createImage(formData);
+          await createImage(formData);
         })
       );
 
+      clean();
       reset();
     }
     if (editSuccess) {
-      console.log(articleId);
       Promise.all(
         articleImg.fields.map(async (field, index) => {
           const formData = new FormData();
@@ -104,16 +101,17 @@ const CreateArticle = () => {
 
           if (field.editable) {
             formData.append("parentId", articleId);
-            formData.append("_id", editImgData?.data?._id);
+            formData.append("_id", field._id);
             await editImage(formData);
           } else {
-            formData.append("parentId", data?.data._id);
+            formData.append("parentId", articleId);
             await createImage(formData);
           }
         })
       );
 
-      reset();
+      clean();
+      editReset();
     }
   }, [
     createSuccess,
@@ -160,6 +158,8 @@ const CreateArticle = () => {
     const arg = argument[0];
     const articleClone = { ...article };
     const articleImgClone = { ...articleImg };
+    let articleImgFields;
+
     const value = arg?.event?.target?.value;
 
     if (arg.element === "card-image") {
@@ -188,12 +188,11 @@ const CreateArticle = () => {
             (i) => i.idx === arg.idx && i.index === arg.index
           )
         ) {
-          articleImgClone.fields.map((i) => {
+          articleImgFields = articleImgClone.fields.map((i) => {
             if (i.idx === arg.idx && i.index === arg.index) {
               return {
+                ...i,
                 file: arg.event.target?.files[0],
-                index: arg.index,
-                idx: arg.idx,
               };
             }
             return i;
@@ -233,7 +232,7 @@ const CreateArticle = () => {
     }
 
     setArticle({ ...articleClone });
-    setArticleImg({ ...articleImgClone });
+    setArticleImg({ ...articleImg, fields: [...articleImgFields] });
   };
 
   const renderFields = (lng) => {
@@ -335,7 +334,7 @@ const CreateArticle = () => {
                 </div>
                 <div className="group__box">
                   <Upload
-                    value={elem.img?.name || elem.img}
+                    value={elem.img}
                     onChange={(event) =>
                       onChangeInput({
                         index,
@@ -624,8 +623,6 @@ const CreateArticle = () => {
     setArticle({ ...articleClone });
     setArticleImg({ ...articleImg, fields: [...articleImgFieldsClone] });
   };
-
-  console.log(article);
 
   const onSubmitHandler = async () => {
     const formData = new FormData();

@@ -11,11 +11,11 @@ const ImageBlock = ({ data, index }) => {
 
   useEffect(() => {
     if (!isLoading) {
-      let imageClone = imageList?.data.filter((img, index) => {
-        return img.index === index && img.parentId === articleId;
+      let imageClone = imageList?.data.filter((img) => {
+        return img.parentId === articleId;
       });
 
-      console.log(imageList);
+      imageClone = imageClone.filter((img) => img.index === index);
 
       setImage([...imageClone]);
     }
@@ -28,7 +28,9 @@ const ImageBlock = ({ data, index }) => {
           <div className="block__picture" key={idx + "img"}>
             <img
               src={
-                image?.find((img) => img.idx === idx)?.file ||
+                process.env.REACT_APP_BASE_URL +
+                  "/Uploads/" +
+                  image?.find((img) => img.idx === idx)?.file ||
                 "not yet uploaded"
               }
               alt="img-block"

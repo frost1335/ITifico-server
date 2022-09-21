@@ -46,7 +46,6 @@ export const articleForm = createSlice({
       }
       if (arg.element === "images") {
         if (arg.content === "image") {
-          console.log(arg);
           articleClone["en"].fields[arg.index].content[eval(arg.idx)].img =
             arg.event.target.files[0];
           articleClone["uk"].fields[arg.index].content[eval(arg.idx)].img =

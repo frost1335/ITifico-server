@@ -4,7 +4,6 @@ import QuoteIcon from "../QuoteIcon/QuoteIcon";
 import "./QuoteBlock.scss";
 
 const QuoteBlock = ({ data }) => {
-  console.log(data);
 
   return (
     <div className="quote__block">

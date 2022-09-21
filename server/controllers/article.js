@@ -2,6 +2,7 @@ const { default: mongoose } = require("mongoose");
 const deleteFile = require("../utils/deleteFile");
 const Article = require("../models/Article");
 const ErrorResponse = require("../utils/errorResponse");
+const Images = require("../models/Images");
 
 exports.getAll = async (req, res, next) => {
   try {
@@ -31,14 +32,12 @@ exports.getOne = async (req, res, next) => {
 
 exports.create = (req, res, next) => {
   const article = {
-    image: req.file.filename,
+    image: req.file?.filename,
     ...req.body,
     tags: JSON.parse(req.body.tags),
     en: JSON.parse(req.body.en),
     uk: JSON.parse(req.body.uk),
   };
-
-  console.log(req.file.filename);
 
   const newArticle = new Article({ ...article });
 
@@ -54,7 +53,7 @@ exports.create = (req, res, next) => {
 exports.edit = async (req, res, next) => {
   const { id } = req.params;
   const article = {
-    image: req?.file?.filename,
+    image: req.file ? req.file?.filename : req.body.file,
     ...req.body,
     tags: JSON.parse(req.body.tags),
     en: JSON.parse(req.body.en),
@@ -68,7 +67,7 @@ exports.edit = async (req, res, next) => {
 
     const oldArticle = await Article.findById(id).select("image");
 
-    if (oldArticle.image) {
+    if (oldArticle.image && req.file) {
       deleteFile(oldArticle.image);
     }
 
@@ -95,6 +94,10 @@ exports.deleteOne = async (req, res, next) => {
     if (article.image) {
       deleteFile(article.image);
     }
+
+    const images = await Images.find({ parentId: id }).select("file");
+    images.forEach((elem) => deleteFile(elem.file));
+    await Images.deleteMany({ parentId: id });
 
     await Article.findByIdAndRemove(id);
 

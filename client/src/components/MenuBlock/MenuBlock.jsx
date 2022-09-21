@@ -3,7 +3,6 @@ import React from "react";
 import "./MenuBlock.scss";
 
 const MenuBlock = ({ data }) => {
-  console.log(data);
 
   return (
     <div className="menu__block">

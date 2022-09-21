@@ -20,8 +20,6 @@ const Content = () => {
   const { data: article, isLoading } = useGetArticleQuery(articleId);
   const { lng } = useSelector((state) => state.lngDetect);
 
-  console.log(article);
-
   const images1 = [{ img: "imageBlockHead" }];
   const images2 = [
     { img: "imageBlockImg", text: "1/25 Коментар до зображення" },

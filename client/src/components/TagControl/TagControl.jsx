@@ -48,7 +48,6 @@ const TagControl = () => {
   };
 
   const onDeleteHandler = (id) => {
-    console.log(id);
     deleteTag({ id });
     clean();
   };
