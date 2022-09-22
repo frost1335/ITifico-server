@@ -18,14 +18,6 @@ const fileFilter = (req, file, cb) => {
     "image/jpeg",
     "image/jpg",
     "image/webp",
-    "image/jfif",
-    "image/ai",
-    "image/eps",
-    "image/gif",
-    "image/psd",
-    "image/tiff",
-    "image/bmp",
-    "image/pdf",
   ];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);

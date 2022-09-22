@@ -2,6 +2,7 @@ require("dotenv").config({ path: "./config.env" });
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const bodyParser = require('body-parser')
 
 const errorHandler = require("./middlewares/error");
 const mongoDB = require("./config/db");
@@ -24,6 +25,8 @@ app.use(
   })
 );
 
+app.use(bodyParser.json({ limit: "1mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "1mb", extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
