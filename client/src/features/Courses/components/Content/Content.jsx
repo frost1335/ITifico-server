@@ -7,18 +7,18 @@ import { Button } from "../../../../components";
 
 const Content = () => {
   return (
-    <div className="articles__list">
+    <div className="courses__list">
       <Container maxWidth={"xl"}>
         <div className="header__navigation">
           <ul className="navigation__menu">
             <li className="menu__item">
               <Button>
-                <NavLink to="/articles">Articles List</NavLink>
+                <NavLink to="/courses">Courses List</NavLink>
               </Button>
             </li>
             <li className="menu__item">
               <Button>
-                <NavLink to="/articles/form">Article Form</NavLink>
+                <NavLink to="/courses/form">Course Form</NavLink>
               </Button>
             </li>
           </ul>

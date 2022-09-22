@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL+ '/api'
+const BASE_URL = process.env.REACT_APP_BASE_URL + "/api";
 
 export const courseApi = createApi({
   reducerPath: "courseApi",
@@ -29,14 +29,16 @@ export const courseApi = createApi({
         url: `/course`,
         method: "POST",
         body: course,
+        headers: {},
       }),
       invalidatesTags: ["Course"],
     }),
     editCourse: builder.mutation({
       query: (course) => ({
-        url: `/course/${course._id}`,
+        url: `/course/${course.get("_id")}`,
         method: "PUT",
         body: course,
+        headers: {},
       }),
       invalidatesTags: ["Course"],
     }),

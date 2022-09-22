@@ -1,0 +1,32 @@
+.course__form {
+  .form__content {
+    h2 {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 30px;
+      line-height: 38px;
+      color: #23262d;
+      margin-bottom: 25px;
+    }
+
+    .content__main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .main__box {
+      display: flex;
+      flex-direction: column;
+
+      h3 {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 25px;
+        line-height: 32px;
+        color: #23262d;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

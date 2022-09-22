@@ -668,7 +668,7 @@ const CreateArticle = () => {
     <div className="articles__modal">
       <div className="course__box">
         <div className="modal__content">
-          <h2>Course Form</h2>
+          <h2>Article Form</h2>
           <div className="modal__main">
             <div className="main__box">
               <h3>EN - forms</h3>

@@ -1,8 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { TagControl } from "./components";
 import { ArticleList, CreateArticle } from "./features/Articles";
+import { CourseForm, CoursesList } from "./features/Courses";
 import Layout from "./layout/Layout";
 import { ArticleDetail, Articles, Auth, Courses } from "./pages";
+import CourseDetail from "./pages/CourseDetail";
 
 const App = () => {
   return (
@@ -16,7 +18,11 @@ const App = () => {
           <Route path="view/:articleId" element={<ArticleDetail />} />
         </Route>
         <Route path="tags" element={<TagControl />} />
-        <Route path="courses" element={<Courses />} />
+        <Route path="/courses" element={<Courses />}>
+          <Route index element={<CoursesList />} />
+          <Route path="form" element={<CourseForm />} />
+          <Route path="view/:articleId" element={<CourseDetail />} />
+        </Route>
       </Route>
     </Routes>
   );

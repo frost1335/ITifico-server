@@ -1,0 +1,25 @@
+.header__navigation {
+  margin-top: 30px;
+  margin-bottom: 15px;
+
+  .navigation__menu {
+    display: flex;
+    align-items: flex-start;
+
+    .menu__item {
+      margin-right: 20px;
+      list-style: none;
+
+      button {
+        padding: 10px 0;
+      }
+
+      a {
+        text-decoration: none;
+        font-size: 18px;
+        color: #0096ff;
+        padding: 10px 15px;
+      }
+    }
+  }
+}

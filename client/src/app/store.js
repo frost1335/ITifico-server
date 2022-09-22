@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { articleApi } from "../services/articleApi";
-import { articleReducer } from "../services/articleForm";
 import { authReducer } from "../services/auth";
+import { courseApi } from "../services/courseApi";
 import { imagesApi } from "../services/imagesApi";
 import { lngDetectReducer } from "../services/lngDetector";
 import { tagApi } from "../services/tagApi";
@@ -9,9 +9,9 @@ import { tagApi } from "../services/tagApi";
 export default configureStore({
   reducer: {
     [articleApi.reducerPath]: articleApi.reducer,
+    [courseApi.reducerPath]: courseApi.reducer,
     [tagApi.reducerPath]: tagApi.reducer,
     [imagesApi.reducerPath]: imagesApi.reducer,
-    article: articleReducer,
     lngDetect: lngDetectReducer,
     auth: authReducer,
   },
@@ -19,6 +19,7 @@ export default configureStore({
     getDefaultMiddleware().concat(
       articleApi.middleware,
       tagApi.middleware,
-      imagesApi.middleware
+      imagesApi.middleware,
+      courseApi.middleware
     ),
 });
