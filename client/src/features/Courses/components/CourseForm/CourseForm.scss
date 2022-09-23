@@ -27,6 +27,42 @@
         color: #23262d;
         margin-bottom: 15px;
       }
+
+      .input__list {
+        .list__header {
+          .add_input {
+            display: flex;
+            align-items: center;
+
+            input {
+              margin-bottom: 0;
+            }
+          }
+        }
+
+        .list__menu {
+          display: flex;
+          flex-direction: column;
+          list-style: none;
+          gap: 15px;
+
+          .menu__item {
+            width: auto;
+            border: 1px solid #b7c4cf;
+            border-radius: 4px;
+            margin-left: 15px;
+            padding: 10px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+
+            button {
+              padding: 5px 10px;
+            }
+          }
+        }
+      }
     }
   }
 }

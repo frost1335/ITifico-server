@@ -1,7 +1,12 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { TagControl } from "./components";
 import { ArticleList, CreateArticle } from "./features/Articles";
-import { CourseForm, CoursesList } from "./features/Courses";
+import {
+  CourseForm,
+  CoursesList,
+  LessonForm,
+  LessonList,
+} from "./features/Courses";
 import Layout from "./layout/Layout";
 import { ArticleDetail, Articles, Auth, Courses } from "./pages";
 import CourseDetail from "./pages/CourseDetail";
@@ -22,6 +27,8 @@ const App = () => {
           <Route index element={<CoursesList />} />
           <Route path="form" element={<CourseForm />} />
           <Route path="view/:articleId" element={<CourseDetail />} />
+          <Route path="lessons" element={<LessonList />} />
+          <Route path="lessons/form" element={<LessonForm />} />
         </Route>
       </Route>
     </Routes>

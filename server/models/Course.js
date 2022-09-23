@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const courseSchema = mongoose.Schema({
   background: String,
+  themes: Array,
   icon: {
     type: String,
     default: "Icon does not exsists",

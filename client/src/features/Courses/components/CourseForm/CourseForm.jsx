@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { RiDeleteBinLine } from "react-icons/ri";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button, Input, Upload } from "../../../../components";
 import {
@@ -21,6 +22,8 @@ const CourseForm = () => {
   const [description, setDescription] = useState({ en: "", uk: "" });
   const [background, setBackground] = useState("");
   const [icon, setIcon] = useState("");
+  const [themes, setThemes] = useState([]);
+  const [themeInput, setThemeInput] = useState("");
 
   useEffect(() => {
     if (!isLoading && courseId) {
@@ -55,6 +58,7 @@ const CourseForm = () => {
 
     formData.append("icon", icon);
     formData.append("background", background);
+    formData.append("themes", JSON.stringify(themes));
     formData.append("en", JSON.stringify(enData));
     formData.append("uk", JSON.stringify(ukData));
 
@@ -68,11 +72,31 @@ const CourseForm = () => {
     clean();
   };
 
+  const addTheme = () => {
+    let themesClone = [...themes];
+
+    let exsist = themesClone.find((th) => th.trim() === themeInput.trim());
+    if (themeInput && !exsist) {
+      themesClone.push(themeInput);
+    }
+
+    setThemeInput("");
+    setThemes([...themesClone]);
+  };
+
+  const removeTheme = (idx) => {
+    let themesClone = [...themes];
+
+    themesClone = themesClone.filter((th, index) => index !== idx);
+
+    setThemes([...themesClone]);
+  };
+
   const clean = () => {
     setTitle({ en: "", uk: "" });
     setDescription({ en: "", uk: "" });
-    setBackground('');
-    setIcon('');
+    setBackground("");
+    setIcon("");
     navigate("/courses/form");
   };
 
@@ -116,6 +140,31 @@ const CourseForm = () => {
                   setBackground((prev) => event.target.value)
                 }
               />
+            </div>
+            <div className="input__list">
+              <div className="list__header">
+                <h4>Add themes</h4>
+                <div className="add_input">
+                  <Input
+                    value={themeInput}
+                    placeholder={"Add theme"}
+                    onChange={(event) =>
+                      setThemeInput((prev) => event.target.value)
+                    }
+                  />
+                  <Button onClick={addTheme}>add</Button>
+                </div>
+              </div>
+              <ul className="list__menu">
+                {themes.map((th, idx) => (
+                  <li className="menu__item" key={idx}>
+                    <p>{th}</p>
+                    <Button onClick={() => removeTheme(idx)}>
+                      <RiDeleteBinLine />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
           <div className="main__box">

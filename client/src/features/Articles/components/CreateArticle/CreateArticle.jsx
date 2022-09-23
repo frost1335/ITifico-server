@@ -158,7 +158,7 @@ const CreateArticle = () => {
     const arg = argument[0];
     const articleClone = { ...article };
     const articleImgClone = { ...articleImg };
-    let articleImgFields;
+    let articleImgFields = [];
 
     const value = arg?.event?.target?.value;
 
@@ -198,7 +198,7 @@ const CreateArticle = () => {
             return i;
           });
         } else {
-          articleImgClone.fields.push({
+          articleImgFields = articleImgClone.fields.push({
             file: arg.event.target?.files[0],
             index: arg.index,
             idx: arg.idx,
@@ -232,7 +232,10 @@ const CreateArticle = () => {
     }
 
     setArticle({ ...articleClone });
-    setArticleImg({ ...articleImg, fields: [...articleImgFields] });
+    setArticleImg({
+      ...articleImg,
+      fields: [...(articleImgFields === undefined ? [] : articleImgFields)],
+    });
   };
 
   const renderFields = (lng) => {
