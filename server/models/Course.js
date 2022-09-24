@@ -6,7 +6,6 @@ const courseSchema = mongoose.Schema({
   icon: {
     type: String,
     default: "Icon does not exsists",
-    required: true,
   },
   en: {
     title: String,

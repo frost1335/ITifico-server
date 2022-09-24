@@ -9,4 +9,10 @@
   border: #0096ff 1px solid;
   cursor: pointer;
   margin: 5px;
+
+  &:disabled {
+    color: #aebdca;
+    border-color: #aebdca;
+    cursor: not-allowed;
+  }
 }

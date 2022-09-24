@@ -11,11 +11,10 @@ const LessonForm = () => {
   const lessonId = search.replace("?lessonId=", "");
 
   const [theme, setTheme] = useState("");
+  const [courseId, setCourseId] = useState("");
   const [themes, setThemes] = useState([]);
   const { data: coursesList, isLoading: courseLoading } = useGetCoursesQuery();
   const [lesson, setLesson] = useState(() => ({
-    courseId: "",
-    theme: "",
     en: {
       title: "",
       fields: [],
@@ -90,15 +89,16 @@ const LessonForm = () => {
       lessonClone[arg.lng].title = value;
     }
     if (arg.element === "select") {
-      lessonClone.courseId = value;
+      setCourseId(value);
 
-      console.log(value);
       if (value) {
         let courseThemes = coursesList?.data?.find(
           (c) => c._id === value
         ).themes;
-        console.log(courseThemes);
+        setTheme("");
         setThemes([...courseThemes]);
+      } else {
+        setThemes([]);
       }
     }
 
@@ -517,7 +517,7 @@ const LessonForm = () => {
             </div>
             <div className="input__group">
               <SelectOption
-                value={lesson.courseId}
+                value={courseId}
                 arr={coursesList?.data}
                 disabled={courseLoading}
                 isLoading={courseLoading}
@@ -528,11 +528,10 @@ const LessonForm = () => {
             </div>
             <div className="input__group">
               <SelectOption
-                value={lesson.theme}
+                value={theme}
                 arr={themes}
-                disabled={false}
-                isLoading={false}
-                onChange={(event) => onChangeInput({ event, element: "theme" })}
+                disabled={!themes.length}
+                onChange={(event) => setTheme(event.target.value)}
               />
             </div>
             <div className="input__list">
@@ -563,13 +562,21 @@ const LessonForm = () => {
             </div>
             <div className="input__group">
               <SelectOption
-                value={lesson.courseId}
+                value={courseId}
                 arr={coursesList?.data}
                 disabled={courseLoading}
                 isLoading={courseLoading}
                 onChange={(event) =>
                   onChangeInput({ event, element: "select" })
                 }
+              />
+            </div>
+            <div className="input__group">
+              <SelectOption
+                value={theme}
+                arr={themes}
+                disabled={!themes.length}
+                onChange={(event) => setTheme(event.target.value)}
               />
             </div>
             <div className="input__list">

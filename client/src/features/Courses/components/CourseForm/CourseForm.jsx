@@ -18,6 +18,7 @@ const CourseForm = () => {
   const [createCourse] = useCreateCourseMutation();
   const [editCourse] = useEditCourseMutation();
 
+  const [validationError, setValidationError] = useState(false);
   const [title, setTitle] = useState({ en: "", uk: "" });
   const [description, setDescription] = useState({ en: "", uk: "" });
   const [background, setBackground] = useState("");
@@ -38,11 +39,16 @@ const CourseForm = () => {
         uk: currentCourse.uk?.title,
       }));
       setIcon(currentCourse?.icon);
+      setThemes(currentCourse?.themes);
     }
   }, [isLoading, courseList, courseId]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+
+    let duplErr = themes.filter((th, idx) => themes.indexOf(th) !== idx);
+
+    console.log(themes.includes(""));
 
     const formData = new FormData();
 
@@ -62,11 +68,15 @@ const CourseForm = () => {
     formData.append("en", JSON.stringify(enData));
     formData.append("uk", JSON.stringify(ukData));
 
-    if (courseId) {
-      formData.append("_id", courseId);
-      editCourse(formData);
+    if (!duplErr.length && !themes.includes("")) {
+      if (courseId) {
+        formData.append("_id", courseId);
+        editCourse(formData);
+      } else {
+        createCourse(formData);
+      }
     } else {
-      createCourse(formData);
+      setValidationError(true);
     }
 
     clean();
@@ -95,6 +105,8 @@ const CourseForm = () => {
   const clean = () => {
     setTitle({ en: "", uk: "" });
     setDescription({ en: "", uk: "" });
+    setThemes([]);
+    setThemeInput("");
     setBackground("");
     setIcon("");
     navigate("/courses/form");
@@ -158,7 +170,24 @@ const CourseForm = () => {
               <ul className="list__menu">
                 {themes.map((th, idx) => (
                   <li className="menu__item" key={idx}>
-                    <p>{th}</p>
+                    <Input
+                      errorExs="test"
+                      error={
+                        themes?.filter?.((t) => th.trim() === t.trim())
+                          ?.length > 1
+                      }
+                      value={th}
+                      onChange={(event) => {
+                        let arr = themes.map((t, i) =>
+                          i === idx ? event.target.value : t
+                        );
+                        let duplErr = arr.filter(
+                          (th, idx) => arr.indexOf(th.trim()) !== idx
+                        );
+                        setValidationError(arr.includes("") || duplErr.length);
+                        setThemes([...arr]);
+                      }}
+                    />
                     <Button onClick={() => removeTheme(idx)}>
                       <RiDeleteBinLine />
                     </Button>
@@ -205,7 +234,11 @@ const CourseForm = () => {
             </div>
           </div>
           <div className="box__submit">
-            <Button onClick={onSubmitHandler} style={{ padding: "15px 45px" }}>
+            <Button
+              onClick={onSubmitHandler}
+              disabled={validationError}
+              style={{ padding: "15px 45px" }}
+            >
               {!courseId ? "Create course" : "Edit course"}
             </Button>
           </div>

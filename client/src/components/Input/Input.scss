@@ -6,4 +6,16 @@
   border: 1px solid #b7c4cf;
   border-radius: 4px;
   margin-bottom: 20px;
+
+  &.error {
+    color: #ff1e1e;
+  }
+}
+
+span.error__text {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  color: #ff1e1e;
+  font-size: 13px;
 }
