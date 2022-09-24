@@ -4,9 +4,9 @@ import { useGetImagesQuery } from "../../services/imagesApi";
 
 import "./ImageBlock.scss";
 
-const ImageBlock = ({ data, index }) => {
+const ImageBlock = ({ data, index, component }) => {
   const { articleId } = useParams();
-  const { data: imageList, isLoading } = useGetImagesQuery();
+  const { data: imageList, isLoading } = useGetImagesQuery(component);
   const [image, setImage] = useState([]);
 
   useEffect(() => {

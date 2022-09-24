@@ -1,19 +1,43 @@
-import React, { useState } from "react";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Input, SelectOption, Upload } from "../../../../components";
 import { useGetCoursesQuery } from "../../../../services/courseApi";
+import {
+  useCreateImageMutation,
+  useEditImageMutation,
+  useGetImagesQuery,
+} from "../../../../services/imagesApi";
+import {
+  useCreateLessonMutation,
+  useEditLessonMutation,
+  useGetLessonsQuery,
+} from "../../../../services/lessonApi";
 
 import "./LessonForm.scss";
 
 const LessonForm = () => {
   const { search } = useLocation();
   const lessonId = search.replace("?lessonId=", "");
+  const navigate = useNavigate();
+
+  const [createImage] = useCreateImageMutation();
+  const [editImage] = useEditImageMutation();
+  const [createLesson, { data, isSuccess: createSuccess, reset }] =
+    useCreateLessonMutation();
+  const [
+    editLesson,
+    { data: editImgData, isSuccess: editSuccess, reset: editReset },
+  ] = useEditLessonMutation();
+  const { data: coursesList, isLoading: courseLoading } = useGetCoursesQuery();
+  const { data: lessonsList, isLoading: lessonLoading } = useGetLessonsQuery();
+  const { data: imageList, isLoading: imgLoading } =
+    useGetImagesQuery("lesson");
 
   const [theme, setTheme] = useState("");
   const [courseId, setCourseId] = useState("");
   const [themes, setThemes] = useState([]);
-  const { data: coursesList, isLoading: courseLoading } = useGetCoursesQuery();
   const [lesson, setLesson] = useState(() => ({
     en: {
       title: "",
@@ -26,6 +50,116 @@ const LessonForm = () => {
   }));
 
   const [lessonImg, setLessonImg] = useState([]);
+
+  useEffect(() => {
+    if (lessonId && !imgLoading) {
+      let imgFieldsClone = imageList.data.filter(
+        (field) => field.parentId === lessonId
+      );
+
+      imgFieldsClone = imgFieldsClone.map((field) => ({
+        ...field,
+        editable: true,
+      }));
+
+      setLessonImg([...imgFieldsClone]);
+    }
+  }, [lessonId, imgLoading, imageList]);
+
+  useEffect(() => {
+    if (createSuccess) {
+      Promise.all(
+        lessonImg.map(async (field, index) => {
+          const formData = new FormData();
+
+          formData.append("index", field.index);
+          formData.append("idx", field.idx);
+          formData.append("file", field.file);
+          formData.append("component", "lesson");
+          formData.append("parentId", data.data._id);
+
+          await createImage(formData);
+        })
+      );
+
+      clean();
+      reset();
+    }
+    if (editSuccess) {
+      Promise.all(
+        lessonImg.map(async (field, index) => {
+          const formData = new FormData();
+
+          formData.append("index", field.index);
+          formData.append("idx", field.idx);
+          formData.append("file", field.file);
+          formData.append("component", "lesson");
+          formData.append("parentId", lessonId);
+
+          if (field.editable) {
+            formData.append("_id", field._id);
+            await editImage(formData);
+          } else {
+            await createImage(formData);
+          }
+        })
+      );
+
+      clean();
+      editReset();
+    }
+  }, [
+    createSuccess,
+    editImgData,
+    createImage,
+    editImage,
+    lessonImg,
+    lessonId,
+    data,
+    reset,
+    editSuccess,
+    editReset,
+  ]);
+
+  useEffect(() => {
+    if (lessonId && !lessonLoading) {
+      const obj = lessonsList?.data.find((a) => a._id === lessonId);
+
+      const currentLesson = _.cloneDeep(obj);
+
+      if (currentLesson.courseId) {
+        setCourseId(currentLesson.courseId);
+        let courseThemes = coursesList?.data?.find(
+          (c) => c._id === currentLesson.courseId
+        ).themes;
+        setThemes([...courseThemes]);
+      }
+
+      if (currentLesson.courseId && currentLesson.theme) {
+        setTheme(currentLesson.theme);
+      }
+
+      setLesson({ ...currentLesson });
+    }
+
+    return () => {
+      setLesson({
+        image: "",
+        date: "",
+        tags: [],
+        en: {
+          title: "",
+          description: "",
+          fields: [],
+        },
+        uk: {
+          title: "",
+          description: "",
+          fields: [],
+        },
+      });
+    };
+  }, [lessonId, lessonLoading, lessonsList]);
 
   const onChangeInput = (...argument) => {
     const arg = argument[0];
@@ -495,6 +629,42 @@ const LessonForm = () => {
     setLessonImg([...articleImgFieldsClone]);
   };
 
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+
+    const lessonData = {
+      ...lesson,
+      theme,
+      courseId,
+    };
+
+    console.log(lessonData);
+
+    if (lessonId) {
+      editLesson(lessonData);
+    } else {
+      createLesson(lessonData);
+    }
+  };
+
+  const clean = () => {
+    setLesson({
+      en: {
+        title: "",
+        fields: [],
+      },
+      uk: {
+        title: "",
+        fields: [],
+      },
+    });
+    setTheme("");
+    setCourseId("");
+    setThemes([]);
+    setLessonImg([]);
+    navigate("/courses/lessons/form");
+  };
+
   return (
     <div className="lesson__form">
       <h2>Lesson Form</h2>
@@ -589,6 +759,11 @@ const LessonForm = () => {
               </div>
               {renderFields("uk")}
             </div>
+          </div>
+          <div className="box__submit">
+            <Button onClick={onSubmitHandler} style={{ padding: "15px 45px" }}>
+              {!lessonId ? "Create article" : "Edit article"}
+            </Button>
           </div>
         </div>
       </div>

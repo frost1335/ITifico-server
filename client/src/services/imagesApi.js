@@ -13,8 +13,11 @@ export const imagesApi = createApi({
   tagTypes: ["Images"],
   endpoints: (builder) => ({
     getImages: builder.query({
-      query: () => ({
+      query: (component) => ({
         url: "/images",
+        params: {
+          component,
+        },
       }),
       providesTags: ["Images"],
     }),

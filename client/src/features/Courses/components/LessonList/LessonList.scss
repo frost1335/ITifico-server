@@ -1,0 +1,21 @@
+.lesson__list {
+  .table__menu {
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 30px;
+
+    tr {
+      margin-bottom: 10px;
+
+      th {
+        text-align: left;
+        padding: 10px 0;
+      }
+
+      td {
+        font-weight: 400;
+        font-size: 17px;
+      }
+    }
+  }
+}

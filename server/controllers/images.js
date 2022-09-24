@@ -5,7 +5,9 @@ const ErrorResponse = require("../utils/errorResponse");
 
 exports.getAll = async (req, res, next) => {
   try {
-    const images = await Images.find();
+    const { component } = req.query;
+
+    const images = await Images.find({ component });
 
     res.status(200).json({ success: true, data: images });
   } catch (err) {

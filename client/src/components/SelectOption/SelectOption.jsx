@@ -3,7 +3,7 @@ import React from "react";
 import "./SelectOption.scss";
 
 const SelectOption = ({ arr, isLoading, value, onChange, disabled }) => {
-    console.log(arr);
+  console.log(arr);
   return (
     <div className="select__option">
       <select
@@ -20,7 +20,7 @@ const SelectOption = ({ arr, isLoading, value, onChange, disabled }) => {
           <option>Loading...</option>
         ) : arr?.length ? (
           arr?.map((c, i) => (
-            <option value={c._id} key={i + "course"}>
+            <option value={c?._id || c} key={i + "course"}>
               {c?.en?.title || c}
             </option>
           ))

@@ -8,8 +8,14 @@ import {
   LessonList,
 } from "./features/Courses";
 import Layout from "./layout/Layout";
-import { ArticleDetail, Articles, Auth, Courses } from "./pages";
-import CourseDetail from "./pages/CourseDetail";
+import {
+  ArticleDetail,
+  Articles,
+  Auth,
+  CourseDetail,
+  Courses,
+  LessonDetail,
+} from "./pages";
 
 const App = () => {
   return (
@@ -26,9 +32,10 @@ const App = () => {
         <Route path="/courses" element={<Courses />}>
           <Route index element={<CoursesList />} />
           <Route path="form" element={<CourseForm />} />
-          <Route path="view/:articleId" element={<CourseDetail />} />
+          <Route path="view/:courseId" element={<CourseDetail />} />
           <Route path="lessons" element={<LessonList />} />
           <Route path="lessons/form" element={<LessonForm />} />
+          <Route path="lessons/view/:lessonId" element={<LessonDetail />} />
         </Route>
       </Route>
     </Routes>

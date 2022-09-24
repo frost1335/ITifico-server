@@ -24,7 +24,8 @@ const CreateArticle = () => {
   const { search } = useLocation();
   const articleId = search.replace("?articleId=", "");
   const { data: articleList, isLoading } = useGetArticlesQuery();
-  const { data: imageList, isLoading: imgLoading } = useGetImagesQuery();
+  const { data: imageList, isLoading: imgLoading } =
+    useGetImagesQuery("article");
 
   const [createImage] = useCreateImageMutation();
   const [editImage] = useEditImageMutation();
@@ -663,6 +664,10 @@ const CreateArticle = () => {
         description: "",
         fields: [],
       },
+    });
+    setArticleImg({
+      component: "article",
+      fields: [],
     });
     navigate("/articles/form");
   };

@@ -65,6 +65,7 @@ const Content = () => {
                   <ImageBlock
                     data={field}
                     index={index}
+                    component="article"
                     key={index + "field"}
                   />
                 );

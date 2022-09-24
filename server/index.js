@@ -2,7 +2,7 @@ require("dotenv").config({ path: "./config.env" });
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 
 const errorHandler = require("./middlewares/error");
 const mongoDB = require("./config/db");
@@ -37,6 +37,7 @@ app.use("/api/article", require("./routes/article.routes"));
 app.use("/api/course", require("./routes/course.routes"));
 app.use("/api/tag", require("./routes/tag.routes"));
 app.use("/api/images", require("./routes/images.routes"));
+app.use("/api/lesson", require("./routes/lesson.routes"));
 
 app.use(errorHandler);
 
