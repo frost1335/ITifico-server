@@ -12,8 +12,6 @@ const CourseCard = ({ course }) => {
   const navigate = useNavigate();
   const { lng } = useSelector((state) => state.lngDetect);
 
-  console.log(course);
-
   return (
     <div className="course__card">
       <div className="course__buttons">
@@ -44,10 +42,7 @@ const CourseCard = ({ course }) => {
           </span>
         </p>
         <div className="card__bottom">
-          <Link
-            to={`/courses/view/${course[lng]?.title}`}
-            className="course__detail"
-          >
+          <Link to={`/courses/view/${course._id}`} className="course__detail">
             Детальніше
           </Link>
         </div>

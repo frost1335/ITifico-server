@@ -19,14 +19,14 @@ const SelectOption = ({
         disabled={disabled}
         className="option__list"
       >
-        <option value={""} key={123}>
+        <option value={"null"} key={0 + "course"}>
           Select course
         </option>
         {isLoading ? (
           <option>Loading...</option>
         ) : arr?.length ? (
           arr?.map((c, i) => (
-            <option value={c?._id || c} key={i + "course"}>
+            <option value={c?._id || c} key={i + 1 + "course"}>
               {c?.[lng]?.title || c}
             </option>
           ))

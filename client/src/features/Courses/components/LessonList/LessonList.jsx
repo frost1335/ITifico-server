@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../../../../components";
+import { Button, SelectOption } from "../../../../components";
 import { useGetCoursesQuery } from "../../../../services/courseApi";
 import {
   useDeleteLessonMutation,
@@ -13,11 +13,15 @@ import "./LessonList.scss";
 
 const LessonList = () => {
   const navigate = useNavigate();
-  const { data: lessonsList, isLoading } = useGetLessonsQuery();
+  const { data: lessons, isLoading } = useGetLessonsQuery();
   const { data: courseList, isLoading: courseLoading } = useGetCoursesQuery();
   const { lng } = useSelector((state) => state.lngDetect);
   const [deleteLesson] = useDeleteLessonMutation();
 
+  const [lessonsList, setLessonsList] = useState({});
+  const [themesMenu, setThemesMenu] = useState([]);
+  const [course, setCourse] = useState("null");
+  const [theme, setTheme] = useState("null");
   const getCourse = (id) => {
     if (!courseLoading && courseList?.data?.length) {
       return courseList?.data?.find((c) => c._id === id)?.[lng]?.title;
@@ -25,9 +29,70 @@ const LessonList = () => {
     return "Not found";
   };
 
+  useEffect(() => {
+    if (!isLoading) {
+      setLessonsList({ ...lessons });
+    }
+  }, [isLoading, lessons]);
+
+  const onFilterChangeCourse = (event) => {
+    setCourse(event.target.value);
+    let filteresLessons;
+
+    let themes =
+      courseList?.data?.find((c) => c._id === event.target.value)?.en?.themes ||
+      [];
+
+    if (event.target.value !== "null") {
+      filteresLessons = lessons?.data.filter(
+        (lesson) => lesson.courseId === event.target.value
+      );
+    } else {
+      filteresLessons = lessons?.data;
+    }
+
+    setTheme("");
+    setLessonsList({ success: true, data: [...filteresLessons] });
+    setThemesMenu([...themes]);
+  };
+
+  const onFilterChangeTheme = (event) => {
+    let filteresLessons;
+    if (event.target.value !== "null") {
+      filteresLessons = lessons?.data.filter(
+        (lesson) =>
+          lesson.en.theme === event.target.value && lesson.courseId === course
+      );
+    } else {
+      filteresLessons = lessons?.data;
+    }
+    setTheme(event.target.value);
+    setLessonsList({ success: true, data: [...filteresLessons] });
+  };
+
   return (
     <div className="lesson__list">
       <h2>Lessons List</h2>
+      <div className="list__filter">
+        <div className="input__group">
+          <SelectOption
+            value={course}
+            arr={courseList?.data}
+            disabled={courseLoading}
+            isLoading={courseLoading}
+            onChange={(event) => onFilterChangeCourse(event)}
+          />
+        </div>
+        <div className="input__group">
+          <SelectOption
+            value={theme}
+            arr={themesMenu}
+            disabled={course === "null"}
+            isLoading={courseLoading}
+            onChange={(event) => onFilterChangeTheme(event)}
+          />
+        </div>
+      </div>
       <table className="table__menu">
         <thead>
           <tr>

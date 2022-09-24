@@ -2,12 +2,51 @@ const { default: mongoose } = require("mongoose");
 const deleteFile = require("../utils/deleteFile");
 const Course = require("../models/Course");
 const ErrorResponse = require("../utils/errorResponse");
+const Lesson = require("../models/Lesson");
 
 exports.getAll = async (req, res, next) => {
   try {
     const courses = await Course.find();
 
     res.status(200).json({ success: true, data: courses });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getList = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return next(new ErrorResponse("This Course is not exsist"));
+    }
+
+    const lessons = await Lesson.find({ courseId: id }).select({
+      en: { title: 1, theme: 1 },
+      uk: { title: 1, theme: 1 },
+    });
+    const course = await Course.findById(id).select({
+      en: { title: 1, themes: 1 },
+      uk: { title: 1, themes: 1 },
+    });
+
+    const units = course.en.themes.map((theme, index) => {
+      let themeLessons = lessons.filter((lesson) => lesson.en.theme === theme);
+      themeLessons = themeLessons.map((lesson) => ({
+        en: lesson.en.title,
+        uk: lesson.uk.title,
+        _id: lesson._id,
+      }));
+
+      return {
+        ["name-en"]: course.en.themes[index],
+        ["name-uk"]: course.uk.themes[index],
+        lessons: themeLessons,
+      };
+    });
+
+    res.status(200).json({ success: true, data: units });
   } catch (err) {
     next(err);
   }

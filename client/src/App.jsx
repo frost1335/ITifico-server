@@ -33,6 +33,10 @@ const App = () => {
           <Route index element={<CoursesList />} />
           <Route path="form" element={<CourseForm />} />
           <Route path="view/:courseId" element={<CourseDetail />} />
+          <Route
+            path="view/:courseId/:unitName/:lessonId"
+            element={<CourseDetail />}
+          />
           <Route path="lessons" element={<LessonList />} />
           <Route path="lessons/form" element={<LessonForm />} />
           <Route path="lessons/view/:lessonId" element={<LessonDetail />} />
