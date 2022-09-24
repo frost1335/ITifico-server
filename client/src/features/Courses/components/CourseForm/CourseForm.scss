@@ -69,5 +69,15 @@
         }
       }
     }
+
+    .box__submit {
+      display: flex;
+      align-items: center;
+
+      .error__inputs {
+        color: #ff1e1e;
+        font-size: 14px;
+      }
+    }
   }
 }

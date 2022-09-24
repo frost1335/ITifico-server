@@ -5,21 +5,23 @@ import { useGetImagesQuery } from "../../services/imagesApi";
 import "./ImageBlock.scss";
 
 const ImageBlock = ({ data, index, component }) => {
-  const { articleId } = useParams();
+  const { lessonId, articleId } = useParams();
   const { data: imageList, isLoading } = useGetImagesQuery(component);
   const [image, setImage] = useState([]);
 
   useEffect(() => {
     if (!isLoading) {
       let imageClone = imageList?.data.filter((img) => {
-        return img.parentId === articleId;
+        return img.parentId === lessonId || articleId;
       });
 
       imageClone = imageClone.filter((img) => img.index === index);
 
       setImage([...imageClone]);
     }
-  }, [isLoading, imageList, articleId]);
+  }, [isLoading, imageList, lessonId]);
+
+  console.log(imageList, index);
 
   return (
     <div className="image__block">

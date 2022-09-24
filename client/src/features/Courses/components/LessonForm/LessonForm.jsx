@@ -35,9 +35,9 @@ const LessonForm = () => {
   const { data: imageList, isLoading: imgLoading } =
     useGetImagesQuery("lesson");
 
-  const [theme, setTheme] = useState("");
+  const [theme, setTheme] = useState({ en: "", uk: "" });
   const [courseId, setCourseId] = useState("");
-  const [themes, setThemes] = useState([]);
+  const [themes, setThemes] = useState({ en: [], uk: [] });
   const [lesson, setLesson] = useState(() => ({
     en: {
       title: "",
@@ -122,22 +122,25 @@ const LessonForm = () => {
   ]);
 
   useEffect(() => {
-    if (lessonId && !lessonLoading) {
+    if (lessonId && !lessonLoading && !courseLoading) {
       const obj = lessonsList?.data.find((a) => a._id === lessonId);
 
       const currentLesson = _.cloneDeep(obj);
 
       if (currentLesson.courseId) {
         setCourseId(currentLesson.courseId);
-        let courseThemes = coursesList?.data?.find(
+        let course = coursesList?.data?.find(
           (c) => c._id === currentLesson.courseId
-        ).themes;
-        setThemes([...courseThemes]);
+        );
+        console.log(course);
+        setThemes({ en: [...course?.en.themes], uk: [...course?.uk.themes] });
       }
 
-      if (currentLesson.courseId && currentLesson.theme) {
-        setTheme(currentLesson.theme);
+      if (currentLesson.courseId) {
+        setTheme({ en: currentLesson.en?.theme, uk: currentLesson.uk?.theme });
       }
+
+      console.log(currentLesson);
 
       setLesson({ ...currentLesson });
     }
@@ -159,7 +162,7 @@ const LessonForm = () => {
         },
       });
     };
-  }, [lessonId, lessonLoading, lessonsList]);
+  }, [lessonId, lessonLoading, lessonsList, courseLoading]);
 
   const onChangeInput = (...argument) => {
     const arg = argument[0];
@@ -226,13 +229,11 @@ const LessonForm = () => {
       setCourseId(value);
 
       if (value) {
-        let courseThemes = coursesList?.data?.find(
-          (c) => c._id === value
-        ).themes;
+        let course = coursesList?.data?.find((c) => c._id === value);
         setTheme("");
-        setThemes([...courseThemes]);
+        setThemes({ en: [...course.en.themes], uk: [...course.uk.themes] });
       } else {
-        setThemes([]);
+        setThemes({ en: [], uk: [] });
       }
     }
 
@@ -632,15 +633,17 @@ const LessonForm = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
+    console.log(theme);
     const lessonData = {
-      ...lesson,
-      theme,
+      en: { ...lesson.en, theme: theme.en },
+      uk: { ...lesson.uk, theme: theme.uk },
       courseId,
     };
 
     console.log(lessonData);
 
     if (lessonId) {
+      lessonData._id = lessonId;
       editLesson(lessonData);
     } else {
       createLesson(lessonData);
@@ -658,11 +661,25 @@ const LessonForm = () => {
         fields: [],
       },
     });
-    setTheme("");
+    setTheme({ en: "", uk: "" });
     setCourseId("");
-    setThemes([]);
+    setThemes({ en: [], uk: [] });
     setLessonImg([]);
     navigate("/courses/lessons/form");
+  };
+
+  const onChangeTheme = (event, lng) => {
+    console.log(event.target.selectedIndex);
+
+    let enTheme =
+      event.target.selectedIndex === 0
+        ? ""
+        : themes.en[event.target.selectedIndex - 1];
+    let ukTheme =
+      event.target.selectedIndex === 0
+        ? ""
+        : themes.uk[event.target.selectedIndex - 1];
+    setTheme({ en: enTheme, uk: ukTheme });
   };
 
   return (
@@ -689,6 +706,7 @@ const LessonForm = () => {
               <SelectOption
                 value={courseId}
                 arr={coursesList?.data}
+                lng="en"
                 disabled={courseLoading}
                 isLoading={courseLoading}
                 onChange={(event) =>
@@ -698,10 +716,10 @@ const LessonForm = () => {
             </div>
             <div className="input__group">
               <SelectOption
-                value={theme}
-                arr={themes}
-                disabled={!themes.length}
-                onChange={(event) => setTheme(event.target.value)}
+                value={theme.en}
+                arr={themes.en}
+                disabled={!themes.en.length}
+                onChange={(event) => onChangeTheme(event, "en")}
               />
             </div>
             <div className="input__list">
@@ -732,8 +750,10 @@ const LessonForm = () => {
             </div>
             <div className="input__group">
               <SelectOption
+                selectedIndex={1}
                 value={courseId}
                 arr={coursesList?.data}
+                lng="uk"
                 disabled={courseLoading}
                 isLoading={courseLoading}
                 onChange={(event) =>
@@ -743,10 +763,10 @@ const LessonForm = () => {
             </div>
             <div className="input__group">
               <SelectOption
-                value={theme}
-                arr={themes}
-                disabled={!themes.length}
-                onChange={(event) => setTheme(event.target.value)}
+                value={theme.uk}
+                arr={themes.uk}
+                disabled={!themes.uk.length}
+                onChange={(event) => onChangeTheme(event, "uk")}
               />
             </div>
             <div className="input__list">

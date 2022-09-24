@@ -33,7 +33,6 @@ exports.create = (req, res, next) => {
   const course = {
     icon: req.file?.filename,
     ...req.body,
-    themes: JSON.parse(req.body.themes),
     en: JSON.parse(req.body.en),
     uk: JSON.parse(req.body.uk),
   };
@@ -54,7 +53,6 @@ exports.edit = async (req, res, next) => {
   const course = {
     icon: req.file ? req.file?.filename : req.body.file,
     ...req.body,
-    themes: JSON.parse(req.body.themes),
     en: JSON.parse(req.body.en),
     uk: JSON.parse(req.body.uk),
   };

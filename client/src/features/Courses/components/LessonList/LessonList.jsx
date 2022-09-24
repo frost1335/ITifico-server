@@ -57,7 +57,7 @@ const LessonList = () => {
                     {lesson[lng].title}
                   </Link>
                 </td>
-                <td>{lesson.theme}</td>
+                <td>{lesson[lng].theme}</td>
                 <td className="item__buttons">
                   <Button
                     onClick={() =>

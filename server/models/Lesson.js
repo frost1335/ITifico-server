@@ -15,6 +15,7 @@ const lessonSchema = mongoose.Schema({
     title: {
       type: String,
     },
+    theme: String,
     fields: {
       type: Array,
     },
@@ -23,6 +24,7 @@ const lessonSchema = mongoose.Schema({
     title: {
       type: String,
     },
+    theme: String,
     fields: {
       type: Array,
     },

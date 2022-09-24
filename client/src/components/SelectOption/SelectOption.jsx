@@ -2,8 +2,14 @@ import React from "react";
 
 import "./SelectOption.scss";
 
-const SelectOption = ({ arr, isLoading, value, onChange, disabled }) => {
-  console.log(arr);
+const SelectOption = ({
+  arr,
+  isLoading,
+  value,
+  onChange,
+  disabled,
+  lng = "en",
+}) => {
   return (
     <div className="select__option">
       <select
@@ -21,7 +27,7 @@ const SelectOption = ({ arr, isLoading, value, onChange, disabled }) => {
         ) : arr?.length ? (
           arr?.map((c, i) => (
             <option value={c?._id || c} key={i + "course"}>
-              {c?.en?.title || c}
+              {c?.[lng]?.title || c}
             </option>
           ))
         ) : (

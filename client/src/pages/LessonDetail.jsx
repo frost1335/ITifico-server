@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Content } from "../features/LessonDetail";
 
 const LessonDetail = () => {
   return (
-    <div>LessonDetail</div>
-  )
-}
+    <div>
+      <Content />
+    </div>
+  );
+};
 
-export default LessonDetail
+export default LessonDetail;

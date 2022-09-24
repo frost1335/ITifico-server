@@ -1,0 +1,213 @@
+@import "../../../assets/styles/global";
+
+.lesson__content {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+
+  .content__main {
+    .content__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 40px;
+
+      .header__title {
+        display: flex;
+        flex-direction: column;
+
+        .title--small {
+          font-family: "Segoe UI";
+          font-style: normal;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 20px;
+          color: $txt-color;
+          margin-bottom: 10px;
+        }
+
+        .title--main {
+          max-width: 735px;
+          font-family: "Bitter";
+          font-style: normal;
+          font-weight: 700;
+          font-size: 40px;
+          line-height: 50px;
+          letter-spacing: 0.01em;
+          color: $black-color;
+        }
+      }
+
+      .header__rating {
+        font-family: "Bitter";
+        font-style: normal;
+        font-weight: 900;
+        font-size: 80px;
+        line-height: 96px;
+        text-align: right;
+        color: $gray2-color;
+        position: relative;
+        z-index: 0;
+
+        &::before {
+          content: "";
+          display: block;
+          width: 110px;
+          height: 110px;
+          border-radius: 50%;
+          background: $gray-light-color;
+          position: absolute;
+          z-index: -1;
+          transform: translate(30px, -7px);
+        }
+      }
+    }
+
+    .slide__lesson {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 60px;
+
+      .slide__box {
+        display: flex;
+        align-items: center;
+
+        button.prev__button {
+          border: none;
+          background: transparent;
+          margin-left: -6px;
+        }
+
+        button.next__button {
+          border: none;
+          background: transparent;
+          margin-right: -6px;
+        }
+
+        p.box__text {
+          @include textH6;
+          line-height: 16px;
+
+          &:last-child {
+            margin-left: 20px;
+          }
+
+          &:first-child {
+            margin-right: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  .content__sidebar {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 30px;
+    z-index: 35;
+    bottom: 10px;
+    max-height: 100vh;
+
+    .sidebar__box {
+      overflow: auto;
+    }
+  }
+
+  @media (max-width: $maxWidthLaptop) {
+    .header__banner {
+      top: -65px;
+      left: auto;
+      transform: rotate(0);
+      right: -15px;
+      z-index: -1;
+    }
+  }
+
+  @media screen and (max-width: $maxWidthLaptop2) {
+    gap: 20px;
+    .header__banner {
+      display: none;
+    }
+  }
+
+  @media (max-width: $maxWidthTablet) {
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: unset;
+
+    .content__main {
+      width: 100%;
+    }
+
+    .header__banner {
+      display: none;
+    }
+
+    .content__sidebar {
+      max-width: unset;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: $maxWidthMobile) {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    gap: 28px;
+
+    .content__main {
+      width: 100%;
+
+      .content__header {
+        position: relative;
+        margin-bottom: 30px;
+
+        .header__title {
+          .title--small {
+            max-width: 200px;
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 7px;
+          }
+          .title--main {
+            max-width: unset;
+            width: 100%;
+            font-size: 24px;
+            line-height: 30px;
+          }
+        }
+
+        .header__rating {
+          top: 5px;
+          right: 0;
+          position: absolute;
+          font-size: 40px;
+          line-height: 40px;
+
+          &::before {
+            width: 60px;
+            height: 60px;
+            transform: translate(12px, -10px);
+          }
+        }
+      }
+
+      .slide__lesson {
+        margin-bottom: 50px;
+
+        .slide__box {
+          p.box__text {
+            &:last-child {
+              margin-left: 12px;
+              text-align: left;
+            }
+
+            &:first-child {
+              margin-right: 12px;
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+}

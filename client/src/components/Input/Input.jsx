@@ -18,7 +18,7 @@ const Input = ({
         value={value}
         onChange={onChange}
       />
-      {value.trim() === "" && errorExs ? (
+      {value?.trim() === "" && errorExs ? (
         <span className="error__text">Input is empty</span>
       ) : (
         error && <span className="error__text">Input duplicated</span>
