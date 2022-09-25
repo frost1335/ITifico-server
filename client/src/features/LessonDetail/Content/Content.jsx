@@ -18,8 +18,6 @@ const Content = () => {
 
   if (isLoading) return "Loading...";
 
-  console.log(lesson.data);
-
   return (
     <div className="container">
       <div className="lesson__content">

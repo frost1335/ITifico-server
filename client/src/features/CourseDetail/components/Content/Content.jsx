@@ -19,8 +19,6 @@ const Content = () => {
   const { lng } = useSelector((state) => state.lngDetect);
   const [number, setNumber] = useState({ index: 1, idx: 1 });
 
-  console.log(lesson);
-
   if (lessonLoading) return "Loading...";
 
   return (
@@ -44,7 +42,7 @@ const Content = () => {
             </div>
           </header>
           <div className="main__body">
-            {lesson?.data?.[lng].fields.map((field, index) => {
+            {lesson?.data?.[lng]?.fields.map((field, index) => {
               if (field.element === "text") {
                 return <TextBlock data={field} key={index + "field"} />;
               } else if (field.element === "menu") {

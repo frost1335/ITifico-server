@@ -21,8 +21,6 @@ const ImageBlock = ({ data, index, component }) => {
     }
   }, [isLoading, imageList, lessonId]);
 
-  console.log(imageList, index);
-
   return (
     <div className="image__block">
       {data.content.length ? (

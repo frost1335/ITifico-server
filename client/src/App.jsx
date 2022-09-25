@@ -7,6 +7,8 @@ import {
   LessonForm,
   LessonList,
 } from "./features/Courses";
+import { PractiseForm, PractiseList } from "./features/Practise";
+import PractiseDetail from "./features/PractiseDetail/PractiseDetail";
 import Layout from "./layout/Layout";
 import {
   ArticleDetail,
@@ -34,12 +36,18 @@ const App = () => {
           <Route path="form" element={<CourseForm />} />
           <Route path="view/:courseId" element={<CourseDetail />} />
           <Route
-            path="view/:courseId/:unitName/:lessonId"
+            path="view/:courseId/:lessonId/:unitName"
             element={<CourseDetail />}
           />
           <Route path="lessons" element={<LessonList />} />
           <Route path="lessons/form" element={<LessonForm />} />
           <Route path="lessons/view/:lessonId" element={<LessonDetail />} />
+          <Route path="practise/list" element={<PractiseList />} />
+          <Route path="practise/form" element={<PractiseForm />} />
+          <Route
+            path="practise/view/:practiseId"
+            element={<PractiseDetail />}
+          />
         </Route>
       </Route>
     </Routes>

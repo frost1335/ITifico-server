@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Input, SelectOption, Upload } from "../../../../components";
-import { useGetCoursesQuery } from "../../../../services/courseApi";
+import {
+  useGetCoursesQuery,
+  useGetListQuery,
+} from "../../../../services/courseApi";
 import {
   useCreateImageMutation,
   useEditImageMutation,
@@ -30,6 +33,7 @@ const LessonForm = () => {
     editLesson,
     { data: editImgData, isSuccess: editSuccess, reset: editReset },
   ] = useEditLessonMutation();
+
   const { data: coursesList, isLoading: courseLoading } = useGetCoursesQuery();
   const { data: lessonsList, isLoading: lessonLoading } = useGetLessonsQuery();
   const { data: imageList, isLoading: imgLoading } =
@@ -132,15 +136,15 @@ const LessonForm = () => {
         let course = coursesList?.data?.find(
           (c) => c._id === currentLesson.courseId
         );
-        console.log(course);
-        setThemes({ en: [...course?.en.themes], uk: [...course?.uk.themes] });
+        setThemes({
+          en: [...(course?.en?.themes || [])],
+          uk: [...(course?.uk?.themes || [])],
+        });
       }
 
       if (currentLesson.courseId) {
         setTheme({ en: currentLesson.en?.theme, uk: currentLesson.uk?.theme });
       }
-
-      console.log(currentLesson);
 
       setLesson({ ...currentLesson });
     }
@@ -633,14 +637,11 @@ const LessonForm = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
-    console.log(theme);
     const lessonData = {
       en: { ...lesson.en, theme: theme.en },
       uk: { ...lesson.uk, theme: theme.uk },
       courseId,
     };
-
-    console.log(lessonData);
 
     if (lessonId) {
       lessonData._id = lessonId;
@@ -669,8 +670,6 @@ const LessonForm = () => {
   };
 
   const onChangeTheme = (event, lng) => {
-    console.log(event.target.selectedIndex);
-
     let enTheme =
       event.target.selectedIndex === 0
         ? ""

@@ -31,6 +31,16 @@ const Content = () => {
                 <NavLink to="/courses/lessons/form">Lesson Form</NavLink>
               </Button>
             </li>
+            <li className="menu__item">
+              <Button>
+                <NavLink to="/courses/practise/list">Practise List</NavLink>
+              </Button>
+            </li>
+            <li className="menu__item">
+              <Button>
+                <NavLink to="/courses/practise/form">Practise Form</NavLink>
+              </Button>
+            </li>
           </ul>
         </div>
         <div className="content__body">

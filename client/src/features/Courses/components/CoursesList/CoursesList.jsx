@@ -8,8 +8,6 @@ import "./CoursesList.scss";
 const CoursesList = () => {
   const { data: coursesList, isLoading } = useGetCoursesQuery();
 
-  console.log(coursesList);
-
   return (
     <div className="courses__list">
       <Typography

@@ -30,7 +30,7 @@ export const AccordionDetails = styled(MuiAccordionDetails)({});
 const Sidebar = ({ setNumber }) => {
   const navigate = useNavigate();
   const { courseId, unitName, lessonId } = useParams();
-  const { data: units, isLoading } = useGetListQuery(courseId);
+  const { data: units, isLoading, refetch } = useGetListQuery(courseId);
   const [sidebarExpended, setSidebarExpended] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { lng } = useSelector((state) => state.lngDetect);
@@ -51,7 +51,7 @@ const Sidebar = ({ setNumber }) => {
   useEffect(() => {
     if (!unitName && !lessonId) {
       navigate(
-        `/courses/view/${courseId}/${units?.data?.[0]?.["name-en"]}/${units?.data?.[0].lessons[0]._id}`
+        `/courses/view/${courseId}/${units?.data?.[0]?.lessons?.[0]?._id}/${units?.data?.[0]?.["name-en"]}`
       );
     }
     if (unitName && lessonId && !isLoading) {
@@ -59,13 +59,14 @@ const Sidebar = ({ setNumber }) => {
 
       units?.data?.forEach((unit, index) => {
         if (unit["name-en"] === unitName) {
-          unit.lessons.forEach((lesson, idx) => {
-            if (lesson._id === lessonId)
+          unit?.lessons?.forEach((lesson, idx) => {
+            if (lesson?._id === lessonId)
               setNumber({ index: index + 1, idx: idx + 1 });
           });
         }
       });
     }
+    refetch();
   }, [isLoading, lessonId, unitName, courseId, units, navigate, setNumber]);
 
   useEffect(() => {}, [unitName, lessonId, isLoading]);
@@ -125,7 +126,7 @@ const Sidebar = ({ setNumber }) => {
                   expanded={expanded === unit["name-en"]}
                   onChange={handleChange(unit["name-en"])}
                   className="sidebar__item"
-                  key={unit._id + idx}
+                  key={unit?.["name-en"] + idx}
                 >
                   <AccordionSummary
                     aria-controls="panel1d-content"
@@ -134,21 +135,21 @@ const Sidebar = ({ setNumber }) => {
                   >
                     <Typography className="title__text">
                       {" "}
-                      {unit[`name-${lng}`]}
+                      {unit?.[`name-${lng}`]}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails className="item__body">
                     <ol className="body__menu">
-                      {unit.lessons.length ? (
-                        unit.lessons.map((lesson, index) => (
+                      {unit?.lessons?.length ? (
+                        unit?.lessons?.map((lesson, index) => (
                           <li
                             className="menu__item"
                             key={index + "lesson-item"}
                           >
                             <NavLink
-                              to={`/courses/view/${courseId}/${
+                              to={`/courses/view/${courseId}/${lesson._id}/${
                                 unit[`name-en`]
-                              }/${lesson._id}`}
+                              }`}
                             >
                               {lesson[lng]}
                             </NavLink>

@@ -118,7 +118,9 @@ const LessonList = () => {
                   </Link>
                 </td>
                 <td>
-                  <Link to={`/courses/lessons/view/${lesson._id}`}>
+                  <Link
+                    to={`/courses/view/${lesson?.courseId}/${lesson._id}/${lesson?.["en"].theme}`}
+                  >
                     {lesson[lng].title}
                   </Link>
                 </td>
