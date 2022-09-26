@@ -1,0 +1,19 @@
+.textarea__input {
+  width: 100%;
+  outline: none;
+  border: 1px solid #b7c4cf;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 16px;
+  color: #000;
+  font-weight: 400;
+  padding: 8px 10px;
+  margin-bottom: 20px;
+
+  &::placeholder {
+    font-size: 16px;
+    color: #000;
+    font-weight: 400;
+    opacity: 0.6;
+  }
+}

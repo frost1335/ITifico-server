@@ -703,6 +703,7 @@ const LessonForm = () => {
             </div>
             <div className="input__group">
               <SelectOption
+                title="Select Course"
                 value={courseId}
                 arr={coursesList?.data}
                 lng="en"
@@ -715,6 +716,7 @@ const LessonForm = () => {
             </div>
             <div className="input__group">
               <SelectOption
+                title="Select Theme"
                 value={theme.en}
                 arr={themes.en}
                 disabled={!themes.en.length}

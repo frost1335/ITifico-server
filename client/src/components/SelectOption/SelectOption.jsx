@@ -9,6 +9,7 @@ const SelectOption = ({
   onChange,
   disabled,
   lng = "en",
+  title,
 }) => {
   return (
     <div className="select__option">
@@ -20,7 +21,7 @@ const SelectOption = ({
         className="option__list"
       >
         <option value={"null"} key={0 + "course"}>
-          Select course
+          {title}
         </option>
         {isLoading ? (
           <option>Loading...</option>
