@@ -18,8 +18,17 @@ import {
   Courses,
   LessonDetail,
 } from "./pages";
+import { useGetCoursesQuery } from "./services/courseApi";
+import { useGetImagesQuery } from "./services/imagesApi";
+import { useGetLessonsQuery } from "./services/lessonApi";
+import { useGetPractisesQuery } from "./services/practiseApi";
 
 const App = () => {
+  useGetCoursesQuery();
+  useGetLessonsQuery();
+  useGetImagesQuery();
+  useGetPractisesQuery();
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/auth" />} />
