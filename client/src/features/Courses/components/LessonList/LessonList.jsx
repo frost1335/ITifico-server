@@ -76,6 +76,7 @@ const LessonList = () => {
       <div className="list__filter">
         <div className="input__group">
           <SelectOption
+            title={"Select Course"}
             value={course}
             arr={courseList?.data}
             disabled={courseLoading}
@@ -85,6 +86,7 @@ const LessonList = () => {
         </div>
         <div className="input__group">
           <SelectOption
+            title={"Select Lesson"}
             value={theme}
             arr={themesMenu}
             disabled={course === "null"}
@@ -119,7 +121,9 @@ const LessonList = () => {
                 </td>
                 <td>
                   <Link
-                    to={`/courses/view/${lesson?.courseId}/${lesson._id}/${lesson?.["en"].theme}`}
+                    to={`/courses/view/${lesson?.courseId}/${
+                      lesson._id
+                    }/${lesson?.["en"].theme.replace("#", "").trim()}`}
                   >
                     {lesson[lng].title}
                   </Link>

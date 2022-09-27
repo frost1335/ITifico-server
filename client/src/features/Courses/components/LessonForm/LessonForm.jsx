@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Input, SelectOption, Upload } from "../../../../components";
 import {
   useGetCoursesQuery,
-  useGetListQuery,
 } from "../../../../services/courseApi";
 import {
   useCreateImageMutation,

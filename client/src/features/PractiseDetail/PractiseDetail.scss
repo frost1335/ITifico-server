@@ -1,0 +1,31 @@
+@import "../../assets/styles/global";
+
+.course__practise {
+  background: $white-color;
+  box-shadow: 0px 3px 23px rgba(0, 0, 0, 0.07);
+  border-radius: 8px;
+
+  .practise__container {
+    .container__bottom {
+      display: flex;
+      flex-grow: 1;
+      justify-content: flex-end;
+
+      .bottom__link {
+        font-family: "Bitter";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 19px;
+        text-decoration-line: underline;
+        color: $red-color;
+      }
+    }
+  }
+
+  @media (max-width: $maxWidthMobile) {
+    background: transparent;
+    box-shadow: unset;
+    border-radius: unset;
+  }
+}

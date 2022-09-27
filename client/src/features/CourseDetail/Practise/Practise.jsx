@@ -1,18 +1,20 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { useGetPractiseQuery } from "../../services/practiseApi";
-import PractiseAccordion from "./components/PractiseAccordion/PractiseAccordion";
-import PractiseQuestion from "./components/PractiseQuestion/PractiseQuestion";
 
-import './PractiseDetail.scss'
+import "./Practise.scss";
+import { useSelector } from "react-redux";
+import { useGetByLessonQuery } from "../../../services/practiseApi";
+import PractiseAccordion from "../../PractiseDetail/components/PractiseAccordion/PractiseAccordion";
+import PractiseQuestion from "../../PractiseDetail/components/PractiseQuestion/PractiseQuestion";
 
-const PractiseDetail = () => {
-  const { practiseId } = useParams();
-  const { data: practise, isLoading } = useGetPractiseQuery(practiseId);
+const Practise = () => {
+  const { lessonId } = useParams();
+  const { data: practise, isLoading } = useGetByLessonQuery(lessonId);
   const { lng } = useSelector((state) => state.lngDetect);
 
-  console.log(practise);
+  if (isLoading) return "Loading...";
+  if (!practise?.data && !isLoading)
+    return "There is no practise in this lesson";
 
   return (
     <div className="course__practise">
@@ -39,4 +41,4 @@ const PractiseDetail = () => {
   );
 };
 
-export default PractiseDetail;
+export default Practise;

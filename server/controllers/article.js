@@ -30,7 +30,7 @@ exports.getOne = async (req, res, next) => {
   }
 };
 
-exports.create = (req, res, next) => {
+exports.create = async (req, res, next) => {
   const article = {
     image: req.file?.filename,
     ...req.body,
@@ -39,10 +39,8 @@ exports.create = (req, res, next) => {
     uk: JSON.parse(req.body.uk),
   };
 
-  const newArticle = new Article({ ...article });
-
   try {
-    newArticle.save();
+    const newArticle = await Article.create({ ...article });
 
     res.status(201).json({ success: true, data: newArticle });
   } catch (err) {

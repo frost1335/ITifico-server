@@ -28,7 +28,7 @@ const SelectOption = ({
         ) : arr?.length ? (
           arr?.map((c, i) => (
             <option value={c?._id || c} key={i + 1 + "course"}>
-              {c?.[lng]?.title || c}
+              {c?.[lng]?.title ?? c}
             </option>
           ))
         ) : (

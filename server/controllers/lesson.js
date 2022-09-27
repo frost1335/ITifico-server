@@ -30,13 +30,11 @@ exports.getOne = async (req, res, next) => {
   }
 };
 
-exports.create = (req, res, next) => {
+exports.create = async (req, res, next) => {
   const lesson = req.body;
 
-  const newLesson = new Lesson({ ...lesson });
-
   try {
-    newLesson.save();
+    const newLesson = await Lesson.create({ ...lesson });
 
     res.status(201).json({ success: true, data: newLesson });
   } catch (err) {

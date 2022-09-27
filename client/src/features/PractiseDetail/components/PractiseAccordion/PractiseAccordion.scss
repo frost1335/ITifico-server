@@ -1,0 +1,112 @@
+@import "../../../../assets/styles/global";
+
+.practise__accordion {
+  &.practise__container {
+    margin-bottom: 160px !important;
+    border: 2px solid $border-color;
+
+    .accordion__title h3.title__text {
+      font-family: "Bitter";
+      font-style: normal;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 50px;
+      letter-spacing: 0.01em;
+      color: $black-color;
+    }
+  }
+
+  &.practise__answer {
+    .accordion__title {
+      h3.title__text {
+        font-family: "Bitter";
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 18px;
+        color: $black-color !important;
+      }
+    }
+  }
+
+  .accordion__body {
+    .detail__text {
+      @include textH6;
+    }
+
+    .detail__menu {
+      .menu__title {
+        @include textH6;
+        line-height: 16px;
+        margin-bottom: 9px;
+      }
+
+      .menu__list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 36px;
+
+        .list__item {
+          @include textH6;
+          line-height: 34px;
+
+          &::marker {
+            color: $red-color;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: $maxWidthMobile) {
+    &.practise__container {
+      margin-bottom: 60px !important;
+      background: transparent;
+
+      .MuiAccordionSummary-content {
+        margin: 20px 0 !important;
+      }
+
+      & > .MuiButtonBase-root {
+        padding: 0 !important;
+        background: transparent !important;
+      }
+
+      & > .accordion__title h3.title__text {
+        font-size: 24px;
+        line-height: 24px;
+      }
+
+      & .accordion__body {
+        background: transparent;
+        margin: 0;
+      }
+    }
+
+    &.practise__answer {
+      margin-bottom: 40px !important;
+      background: transparent;
+
+      .MuiButtonBase-root {
+        padding: 0 15px !important;
+      }
+
+      .MuiAccordionSummary-content {
+        margin: 15px 0 !important;
+      }
+
+      .accordion__title {
+        h3.title__text {
+          font-size: 16px;
+          line-height: 18px;
+        }
+      }
+
+      & .accordion__body {
+        margin: 0 15px;
+        padding: 10px 0 !important;
+      }
+    }
+  }
+}

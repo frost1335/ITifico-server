@@ -68,7 +68,7 @@ exports.getOne = async (req, res, next) => {
   }
 };
 
-exports.create = (req, res, next) => {
+exports.create = async (req, res, next) => {
   const course = {
     icon: req.file?.filename,
     ...req.body,
@@ -76,10 +76,8 @@ exports.create = (req, res, next) => {
     uk: JSON.parse(req.body.uk),
   };
 
-  const newCourse = new Course({ ...course });
-
   try {
-    newCourse.save();
+    const newCourse = await Course.create({ ...course });
 
     res.status(201).json({ success: true, data: newCourse });
   } catch (err) {

@@ -1,0 +1,35 @@
+@import "../../../../assets/styles/global";
+
+.practise__question {
+  margin-bottom: 20px;
+
+  h3.question__title {
+    @include titleH4;
+    font-family: "Bitter";
+    line-height: 29px;
+    margin-bottom: 5px;
+  }
+
+  p.question__description {
+    @include text($black-color);
+    margin-bottom: 15px;
+  }
+
+  pre.question__code {
+    padding: 2px 20px;
+    background: $code-bg-color;
+    border: 2px solid $border-color;
+    border-radius: 8px;
+    font-family: "Consolas";
+    font-style: normal;
+    font-weight: 400;
+    overflow: auto;
+  }
+
+  @media (max-width: $maxWidthMobile) {
+    h3.question__title {
+      line-height: 24px;
+      margin-bottom: 10px;
+    }
+  }
+}

@@ -8,6 +8,7 @@ import {
   TextBlock,
 } from "../../../../components";
 import { useGetLessonQuery } from "../../../../services/lessonApi";
+import Practise from "../../Practise/Practise";
 import Sidebar from "../Sidebar/Sidebar";
 
 import "./Content.scss";
@@ -25,9 +26,6 @@ const Content = () => {
     <div className="container">
       <div className="course__sidebarbg" />
       <div className="course__content">
-        <div className="header__banner">
-          <h1 className="banner__text">Курс по C#</h1>
-        </div>
         <div className="content__sidebar">
           <Sidebar setNumber={setNumber} />
         </div>
@@ -77,7 +75,9 @@ const Content = () => {
               </button>
             </div>
           </div>
-          <div className="content__practise">{/* <Practise /> */}</div>
+          <div className="content__practise">
+            <Practise />
+          </div>
         </div>
       </div>
     </div>

@@ -39,6 +39,7 @@ const Sidebar = ({ setNumber }) => {
   const [expanded, setExpanded] = React.useState("");
   const [menuList, setMenuList] = React.useState("");
 
+  console.log(unitName, expanded);
   // sidebar accordion handler
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -51,7 +52,9 @@ const Sidebar = ({ setNumber }) => {
   useEffect(() => {
     if (!unitName && !lessonId) {
       navigate(
-        `/courses/view/${courseId}/${units?.data?.[0]?.lessons?.[0]?._id}/${units?.data?.[0]?.["name-en"]}`
+        `/courses/view/${courseId}/${
+          units?.data?.[0]?.lessons?.[0]?._id
+        }/${units?.data?.[0]?.["name-en"].trim().replace("#", "")}`
       );
     }
     if (unitName && lessonId && !isLoading) {
@@ -123,8 +126,12 @@ const Sidebar = ({ setNumber }) => {
             {units?.data?.length ? (
               units?.data?.map((unit, idx) => (
                 <Accordion
-                  expanded={expanded === unit["name-en"]}
-                  onChange={handleChange(unit["name-en"])}
+                  expanded={
+                    expanded === unit["name-en"].replace("#", "").trim()
+                  }
+                  onChange={handleChange(
+                    unit["name-en"].replace("#", "").trim()
+                  )}
                   className="sidebar__item"
                   key={unit?.["name-en"] + idx}
                 >
@@ -147,9 +154,12 @@ const Sidebar = ({ setNumber }) => {
                             key={index + "lesson-item"}
                           >
                             <NavLink
-                              to={`/courses/view/${courseId}/${lesson._id}/${
-                                unit[`name-en`]
-                              }`}
+                              className={
+                                lessonId === lesson._id ? "active" : ""
+                              }
+                              to={`/courses/view/${courseId}/${
+                                lesson._id
+                              }/${unit[`name-en`].trim().replace("#", "")}`}
                             >
                               {lesson[lng]}
                             </NavLink>

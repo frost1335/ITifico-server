@@ -5,6 +5,7 @@ import { courseApi } from "../services/courseApi";
 import { imagesApi } from "../services/imagesApi";
 import { lessonApi } from "../services/lessonApi";
 import { lngDetectReducer } from "../services/lngDetector";
+import { practiseApi } from "../services/practiseApi";
 import { tagApi } from "../services/tagApi";
 
 export default configureStore({
@@ -14,6 +15,7 @@ export default configureStore({
     [tagApi.reducerPath]: tagApi.reducer,
     [imagesApi.reducerPath]: imagesApi.reducer,
     [lessonApi.reducerPath]: lessonApi.reducer,
+    [practiseApi.reducerPath]: practiseApi.reducer,
     lngDetect: lngDetectReducer,
     auth: authReducer,
   },
@@ -23,6 +25,7 @@ export default configureStore({
       tagApi.middleware,
       imagesApi.middleware,
       courseApi.middleware,
-      lessonApi.middleware
+      lessonApi.middleware,
+      practiseApi.middleware
     ),
 });

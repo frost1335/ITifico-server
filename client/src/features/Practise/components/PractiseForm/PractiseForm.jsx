@@ -1,16 +1,29 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Input, SelectOption, TextArea } from "../../../../components";
 import { langs } from "../../../../constants";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useGetLessonsQuery } from "../../../../services/lessonApi";
 
 import "./PractiseForm.scss";
+import {
+  useCreatePractiseMutation,
+  useEditPractiseMutation,
+  useGetPractisesQuery,
+} from "../../../../services/practiseApi";
+import { useEffect } from "react";
+import _ from "lodash";
 
 const PractiseForm = () => {
   const { search } = useLocation();
-  const practiseId = search.replace("?lessonId=", "");
+  const practiseId = search.replace("?practiseId=", "");
+  const navigate = useNavigate();
+
   const { data: lessonsList, isLoading: lessonLoading } = useGetLessonsQuery();
+  const { data: practiseList, isLoading: practiseLoading } =
+    useGetPractisesQuery();
+  const [createPractise] = useCreatePractiseMutation();
+  const [editPractise] = useEditPractiseMutation();
 
   const [lessonId, setLessonId] = useState("");
   const [practise, setPractise] = useState({
@@ -22,7 +35,19 @@ const PractiseForm = () => {
     },
   });
 
-  const onChangeLanguage = () => {};
+  useEffect(() => {
+    if (practiseId && !practiseLoading) {
+      const currentPractise = practiseList?.data?.find(
+        (p) => p._id === practiseId
+      );
+
+      let practise = _.cloneDeep(currentPractise);
+
+      setPractise({ ...practise });
+      setLessonId(currentPractise?.lessonId);
+    }
+  }, [practiseId, practiseList, practiseLoading]);
+
   const onChangeInput = (...argument) => {
     const arg = argument[0];
     const practiseClone = { ...practise };
@@ -53,7 +78,6 @@ const PractiseForm = () => {
         value;
     }
 
-    console.log(practiseClone);
     setPractise({ ...practiseClone });
   };
 
@@ -128,9 +152,37 @@ const PractiseForm = () => {
     setPractise({ ...practiseClone });
   };
 
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+
+    const data = { ...practise, lessonId };
+
+    if (practiseId) {
+      data._id = practiseId;
+      editPractise(data);
+    } else {
+      createPractise(data);
+    }
+
+    clean();
+  };
+
+  const clean = () => {
+    setPractise({
+      en: {
+        fields: [],
+      },
+      uk: {
+        fields: [],
+      },
+    });
+    setLessonId("");
+    navigate("/courses/practise/form");
+  };
+
   const renderFields = (lng) => {
-    return practise[lng].fields.map((field, index) => (
-      <div className="input__field">
+    return practise[lng]?.fields?.map((field, index) => (
+      <div className="input__field" key={index}>
         <div className="field__header">
           <Button onClick={() => removeField(index)}>Delete field</Button>
         </div>
@@ -302,7 +354,7 @@ const PractiseForm = () => {
             <div className="input__list">
               <h3>Practise fields</h3>
               <div className="article__buttons">
-                <Button onClick={() => addField()}>Add text</Button>
+                <Button onClick={() => addField()}>Add field</Button>
               </div>
               {renderFields("en")}
             </div>
@@ -323,10 +375,15 @@ const PractiseForm = () => {
             <div className="input__list">
               <h3>Practise fields</h3>
               <div className="article__buttons">
-                <Button onClick={() => addField()}>Add text</Button>
+                <Button onClick={() => addField()}>Add field</Button>
               </div>
               {renderFields("uk")}
             </div>
+          </div>
+          <div className="box__submit">
+            <Button onClick={onSubmitHandler} style={{ padding: "15px 45px" }}>
+              {!practiseId ? "Create article" : "Edit article"}
+            </Button>
           </div>
         </div>
       </div>

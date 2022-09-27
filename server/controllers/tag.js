@@ -12,11 +12,10 @@ exports.getAll = async (re1, res, next) => {
   }
 };
 
-exports.create = (req, res, next) => {
+exports.create = async (req, res, next) => {
   const tag = req.body;
-  const newTag = new Tag({ ...tag });
   try {
-    newTag.save();
+    const newTag = await Tag.create({ ...tag });
 
     res.status(201).json({ success: true, data: newTag });
   } catch (err) {

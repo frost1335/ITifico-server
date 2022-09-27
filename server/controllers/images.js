@@ -15,12 +15,14 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
-exports.create = (req, res, next) => {
+exports.create = async (req, res, next) => {
   const image = req.body;
-  const newImage = new Images({ ...image, file: req.file?.filename });
 
   try {
-    newImage.save();
+    const newImage = await Images.create({
+      ...image,
+      file: req.file?.filename,
+    });
 
     res.status(201).json({ success: true, data: newImage });
   } catch (err) {
