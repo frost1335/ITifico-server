@@ -25,7 +25,7 @@ import { useGetLessonsQuery } from "./services/lessonApi";
 import { useGetPractisesQuery } from "./services/practiseApi";
 import ReactGA from "react-ga";
 
-ReactGA.initialize(process.env.REACT_APP_GA_ID);
+ReactGA.initialize("G-VWTC6D0WLB");
 const App = () => {
   const location = useLocation();
 
