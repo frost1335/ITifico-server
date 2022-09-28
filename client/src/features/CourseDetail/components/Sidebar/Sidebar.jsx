@@ -39,7 +39,6 @@ const Sidebar = ({ setNumber }) => {
   const [expanded, setExpanded] = React.useState("");
   const [menuList, setMenuList] = React.useState("");
 
-  console.log(unitName, expanded);
   // sidebar accordion handler
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -50,7 +49,7 @@ const Sidebar = ({ setNumber }) => {
   };
 
   useEffect(() => {
-    if (!unitName && !lessonId) {
+    if ((!unitName || !lessonId) && !isLoading) {
       navigate(
         `/courses/view/${courseId}/${
           units?.data?.[0]?.lessons?.[0]?._id

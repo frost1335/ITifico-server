@@ -12,8 +12,6 @@ const PractiseDetail = () => {
   const { data: practise, isLoading } = useGetPractiseQuery(practiseId);
   const { lng } = useSelector((state) => state.lngDetect);
 
-  console.log(practise);
-
   return (
     <div className="course__practise">
       <PractiseAccordion title={"Practice"} className="practise__container">

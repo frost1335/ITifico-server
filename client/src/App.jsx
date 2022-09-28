@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { TagControl } from "./components";
 import { ArticleList, CreateArticle } from "./features/Articles";
 import {
@@ -22,12 +23,21 @@ import { useGetCoursesQuery } from "./services/courseApi";
 import { useGetImagesQuery } from "./services/imagesApi";
 import { useGetLessonsQuery } from "./services/lessonApi";
 import { useGetPractisesQuery } from "./services/practiseApi";
+import ReactGA from "react-ga";
 
+ReactGA.initialize("G-Q00TCSHTYC");
 const App = () => {
+  const location = useLocation();
+
   useGetCoursesQuery();
   useGetLessonsQuery();
   useGetImagesQuery();
   useGetPractisesQuery();
+
+  useEffect(() => {
+    const data = ReactGA.pageview(location.pathname);
+    console.log(data);
+  }, [location]);
 
   return (
     <Routes>

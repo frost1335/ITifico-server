@@ -54,8 +54,6 @@ const PractiseForm = () => {
 
     const value = arg?.event?.target?.value;
 
-    console.log(practiseClone[arg.lng].fields[arg.index].question);
-
     if (arg.element === "question-desc") {
       practiseClone[arg.lng].fields[arg.index].question.description = value;
     }
