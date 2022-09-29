@@ -72,7 +72,6 @@ const CreateArticle = () => {
   }, [articleId, imgLoading, imageList]);
 
   useEffect(() => {
-    console.log(articleImg.fields);
     if (createSuccess) {
       articleImg.fields.map((field, index) => {
         const formData = new FormData();
@@ -104,7 +103,6 @@ const CreateArticle = () => {
           editImage(formData);
         } else {
           formData.append("parentId", articleId);
-          console.log("create");
           createImage(formData);
         }
       });
