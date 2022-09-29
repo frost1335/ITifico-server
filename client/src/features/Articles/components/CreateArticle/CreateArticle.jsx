@@ -29,11 +29,18 @@ const CreateArticle = () => {
 
   const [createImage] = useCreateImageMutation();
   const [editImage] = useEditImageMutation();
-  const [createArticle, { data, isSuccess: createSuccess, reset }] =
-    useCreateArticleMutation();
+  const [
+    createArticle,
+    { data, isSuccess: createSuccess, isLoading: createLoading, reset },
+  ] = useCreateArticleMutation();
   const [
     editArticle,
-    { data: editImgData, isSuccess: editSuccess, reset: editReset },
+    {
+      data: editImgData,
+      isSuccess: editSuccess,
+      isLoading: editLoading,
+      reset: editReset,
+    },
   ] = useEditArticleMutation();
 
   const [article, setArticle] = useState(() => ({
@@ -834,6 +841,7 @@ const CreateArticle = () => {
               >
                 {!articleId ? "Create article" : "Edit article"}
               </Button>
+              {createLoading || editLoading ? "...Loading" : ""}
             </div>
           </div>
         </div>
