@@ -32,10 +32,12 @@ exports.create = async (req, res, next) => {
 
 exports.edit = async (req, res, next) => {
   const { id } = req.params;
+
   const image = {
     ...req.body,
     file: req.file ? req.file?.filename : req.body.file,
   };
+
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return next(new ErrorResponse("This Images is not exsist"));

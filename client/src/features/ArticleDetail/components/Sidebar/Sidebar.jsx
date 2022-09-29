@@ -17,12 +17,8 @@ const Sidebar = () => {
       let randomCourse =
         courses?.data?.[Math.floor(Math.random() * courses?.data?.length)];
       setCourse(randomCourse);
-
-      console.log(randomCourse, courses?.data?.length);
     }
   }, [loadingCourse, courses]);
-
-  console.log(course);
 
   return (
     <div className="blog__sidebar">

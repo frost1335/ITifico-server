@@ -12,7 +12,12 @@ const ImageBlock = ({ data, index, component }) => {
   useEffect(() => {
     if (!isLoading) {
       let imageClone = imageList?.data.filter((img) => {
-        return img.parentId === lessonId || articleId;
+        if (component === "article") {
+          return img.parentId === articleId;
+        }
+        if (component === "lesson") {
+          return img.parentId === lessonId;
+        }
       });
 
       imageClone = imageClone.filter((img) => img.index === index);
