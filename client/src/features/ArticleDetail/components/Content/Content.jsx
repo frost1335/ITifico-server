@@ -10,16 +10,54 @@ import {
 } from "../../../../components";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
-import { useGetArticleQuery } from "../../../../services/articleApi";
-import { useParams } from "react-router-dom";
+import {
+  useGetArticleQuery,
+  useGetArticlesQuery,
+} from "../../../../services/articleApi";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatter } from "../../../../utils";
 import { useSelector } from "react-redux";
 import Sidebar from "../Sidebar/Sidebar";
+import { useState } from "react";
+import { useEffect } from "react";
+
+import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import SocialButton from "../../../../components/SocialButton/SocialButton";
+import LeftArrowIcon from "../../../../components/ArrowIcon/LeftArrowIcon";
+import RightArrowIcon from "../../../../components/ArrowIcon/RightArrowIcon";
 
 const Content = () => {
+  const navigate = useNavigate();
+
   const { articleId } = useParams();
   const { data: article, isLoading } = useGetArticleQuery(articleId);
+  const { data: articles, isLoading: articlesLoading } = useGetArticlesQuery();
   const { lng } = useSelector((state) => state.lngDetect);
+  const [currentId, setCurrentId] = useState(0);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+    if (!articlesLoading) {
+      articles?.data?.forEach((elem, index) => {
+        if (elem._id === articleId) {
+          setCurrentId(index);
+        }
+      });
+    }
+  }, [isLoading, articles, articleId]);
+
+  const onSlideArticle = (side) => {
+    if (currentId >= 0 && articles?.data?.length - 1 >= currentId) {
+      if (side === "left" && currentId > 0) {
+        setCurrentId((prev) => prev - 1);
+        navigate(`/articles/view/${articles?.data?.[currentId - 1]._id}`);
+      }
+      if (side === "right" && articles?.data?.length - 1 > currentId) {
+        setCurrentId((prev) => prev + 1);
+        navigate(`/articles/view/${articles?.data?.[currentId + 1]._id}`);
+      }
+    }
+  };
 
   if (isLoading) return "Loading...";
 
@@ -66,6 +104,59 @@ const Content = () => {
               }
             })}
           </div>
+          <footer className="content__footer">
+            <div className="footer__social">
+              <div className="social__left">
+                <h6 className="left__text">Share:</h6>
+                <div className="social__icons">
+                  <Link to="#facebook" key="1" className="icon__box">
+                    <FaFacebookF />
+                  </Link>
+                  <Link to="#twitter" key="2" className="icon__box">
+                    <FaTwitter />
+                  </Link>
+                  <Link to="#linkedin" key="3" className="icon__box">
+                    <FaLinkedinIn />
+                  </Link>
+                </div>
+              </div>
+              <div className="social__right">
+                <Link to="#buycoffe" className="right__button">
+                  <SocialButton />
+                </Link>
+              </div>
+            </div>
+            <div className="slide__article">
+              <div className="slide__box">
+                <button
+                  onClick={() => onSlideArticle("left")}
+                  className="prev__button"
+                >
+                  <LeftArrowIcon
+                    disabled={
+                      !articles?.data?.length || !currentId || currentId === 0
+                    }
+                  />
+                </button>
+                <p className="box__text">Prev article</p>
+              </div>
+              <div className="slide__box">
+                <p className="box__text">Next article</p>
+                <button
+                  onClick={() => onSlideArticle("right")}
+                  className="next__button"
+                >
+                  <RightArrowIcon
+                    disabled={
+                      !articles?.data?.length ||
+                      articles?.data?.length === currentId + 1
+                    }
+                  />
+                </button>
+              </div>
+            </div>
+            <div className="footer__articles"></div>
+          </footer>
         </div>
         <div className="content__sidebar">
           <Sidebar />

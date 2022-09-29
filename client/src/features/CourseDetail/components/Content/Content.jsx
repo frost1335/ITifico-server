@@ -7,6 +7,8 @@ import {
   QuoteBlock,
   TextBlock,
 } from "../../../../components";
+import LeftArrowIcon from "../../../../components/ArrowIcon/LeftArrowIcon";
+import RightArrowIcon from "../../../../components/ArrowIcon/RightArrowIcon";
 import Loader from "../../../../components/Loader/Loader";
 import { useGetListQuery } from "../../../../services/courseApi";
 import { useGetLessonQuery } from "../../../../services/lessonApi";
@@ -24,8 +26,11 @@ const Content = () => {
   const { data: units, isLoading: unitLoading } = useGetListQuery(courseId);
   const { lng } = useSelector((state) => state.lngDetect);
   const [number, setNumber] = useState({ index: 1, idx: 1 });
+  const [allLessons, setAllLessons] = useState([]);
+  const [currentId, setCurrentId] = useState(0);
 
   useEffect(() => {
+    window.scrollTo({ top: 0 });
     if ((!unitName || !lessonId) && !unitLoading) {
       navigate(
         `/courses/view/${courseId}/${
@@ -35,7 +40,41 @@ const Content = () => {
     }
   }, [unitName, courseId, unitLoading, units, navigate, lessonId]);
 
+  useEffect(() => {
+    if (!unitLoading) {
+      let arr = [];
+      units?.data?.forEach((th) =>
+        th.lessons.forEach((l) => arr.push({ ...l, theme: th["name-en"] }))
+      );
+      setAllLessons([...arr]);
+      arr.forEach((l, i) => (l._id === lessonId ? setCurrentId(i) : l));
+    }
+  }, [unitLoading, units, lessonId]);
+
   if (lessonLoading || unitLoading || !unitName || !lessonId) return <Loader />;
+
+  const onSlideLesson = (side) => {
+    if (currentId >= 0 && allLessons.length - 1 >= currentId) {
+      if (side === "left" && currentId > 0) {
+        let cLess = allLessons?.[currentId - 1];
+        setCurrentId((prev) => prev - 1);
+        navigate(
+          `/courses/view/${courseId}/${cLess._id}/${cLess.theme
+            .trim()
+            .replace("#", "")}`
+        );
+      }
+      if (side === "right" && allLessons.length - 1 > currentId) {
+        let cLess = allLessons?.[currentId + 1];
+        setCurrentId((prev) => prev + 1);
+        navigate(
+          `/courses/view/${courseId}/${cLess._id}/${cLess.theme
+            .trim()
+            .replace("#", "")}`
+        );
+      }
+    }
+  };
 
   return (
     <React.Suspense fallback={<Loader />}>
@@ -79,15 +118,29 @@ const Content = () => {
             </div>
             <div className="slide__lesson">
               <div className="slide__box">
-                <button className="prev__button">
-                  {/* <LeftArrowIcon /> */}
+                <button
+                  onClick={() => onSlideLesson("left")}
+                  className="prev__button"
+                >
+                  <LeftArrowIcon
+                    disabled={
+                      !currentId || currentId === 0 || !allLessons.length
+                    }
+                  />
                 </button>
-                <p className="box__text">{}</p>
+                <p className="box__text">Prev lesson</p>
               </div>
               <div className="slide__box">
-                <p className="box__text">{}</p>
-                <button className="next__button">
-                  {/* <RightArrowIcon /> */}
+                <p className="box__text">Next lesson</p>
+                <button
+                  onClick={() => onSlideLesson("right")}
+                  className="next__button"
+                >
+                  <RightArrowIcon
+                    disabled={
+                      !allLessons.length || allLessons.length === currentId + 1
+                    }
+                  />
                 </button>
               </div>
             </div>

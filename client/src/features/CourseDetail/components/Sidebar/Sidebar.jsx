@@ -50,8 +50,6 @@ const Sidebar = ({ setNumber }) => {
 
   useEffect(() => {
     if (unitName && lessonId && !isLoading) {
-      setExpanded(unitName);
-
       units?.data?.forEach((unit, index) => {
         if (unit["name-en"] === unitName) {
           unit?.lessons?.forEach((lesson, idx) => {
@@ -62,9 +60,20 @@ const Sidebar = ({ setNumber }) => {
       });
     }
     refetch();
-  }, [isLoading, lessonId, unitName, courseId, units, navigate, setNumber]);
+  }, [
+    isLoading,
+    lessonId,
+    unitName,
+    courseId,
+    units,
+    navigate,
+    setNumber,
+    refetch,
+  ]);
 
-  useEffect(() => {}, [unitName, lessonId, isLoading]);
+  useEffect(() => {
+    setExpanded(unitName);
+  }, [unitName, navigate]);
 
   useEffect(() => {
     const handleResize = () => {
