@@ -73,39 +73,43 @@ const CreateArticle = () => {
 
   useEffect(() => {
     if (createSuccess) {
-      articleImg.fields.map((field, index) => {
-        const formData = new FormData();
+      Promise.all(
+        articleImg.fields.map(async (field, index) => {
+          const formData = new FormData();
 
-        formData.append("index", field.index);
-        formData.append("idx", field.idx);
-        formData.append("file", field.file);
-        formData.append("component", articleImg.component);
-        formData.append("parentId", data.data._id);
+          formData.append("index", field.index);
+          formData.append("idx", field.idx);
+          formData.append("file", field.file);
+          formData.append("component", articleImg.component);
+          formData.append("parentId", data.data._id);
 
-        createImage(formData);
-      });
+          await createImage(formData);
+        })
+      );
 
       clean();
       reset();
     }
     if (editSuccess) {
-      articleImg.fields.map((field, index) => {
-        const formData = new FormData();
+      Promise.all(
+        articleImg.fields.map(async (field, index) => {
+          const formData = new FormData();
 
-        formData.append("index", field.index);
-        formData.append("idx", field.idx);
-        formData.append("file", field.file);
-        formData.append("component", articleImg.component);
+          formData.append("index", field.index);
+          formData.append("idx", field.idx);
+          formData.append("file", field.file);
+          formData.append("component", articleImg.component);
 
-        if (field.editable) {
-          formData.append("parentId", articleId);
-          formData.append("_id", field._id);
-          editImage(formData);
-        } else {
-          formData.append("parentId", articleId);
-          createImage(formData);
-        }
-      });
+          if (field.editable) {
+            formData.append("parentId", articleId);
+            formData.append("_id", field._id);
+            await editImage(formData);
+          } else {
+            formData.append("parentId", articleId);
+            await createImage(formData);
+          }
+        })
+      );
 
       clean();
       editReset();
