@@ -6,13 +6,14 @@ import { useSelector } from "react-redux";
 import { useGetByLessonQuery } from "../../../services/practiseApi";
 import PractiseAccordion from "../../PractiseDetail/components/PractiseAccordion/PractiseAccordion";
 import PractiseQuestion from "../../PractiseDetail/components/PractiseQuestion/PractiseQuestion";
+import Loader from "../../../components/Loader/Loader";
 
 const Practise = () => {
   const { lessonId } = useParams();
   const { data: practise, isLoading } = useGetByLessonQuery(lessonId);
   const { lng } = useSelector((state) => state.lngDetect);
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <Loader />;
   if (!practise?.data && !isLoading)
     return "There is no practise in this lesson";
 

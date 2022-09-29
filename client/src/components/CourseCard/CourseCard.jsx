@@ -12,6 +12,8 @@ const CourseCard = ({ course }) => {
   const navigate = useNavigate();
   const { lng } = useSelector((state) => state.lngDetect);
 
+  if (!course) return "Loading...";
+
   return (
     <div className="course__card">
       <div className="course__buttons">

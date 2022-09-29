@@ -49,13 +49,6 @@ const Sidebar = ({ setNumber }) => {
   };
 
   useEffect(() => {
-    if ((!unitName || !lessonId) && !isLoading) {
-      navigate(
-        `/courses/view/${courseId}/${
-          units?.data?.[0]?.lessons?.[0]?._id
-        }/${units?.data?.[0]?.["name-en"].trim().replace("#", "")}`
-      );
-    }
     if (unitName && lessonId && !isLoading) {
       setExpanded(unitName);
 

@@ -23,21 +23,12 @@ import { useGetCoursesQuery } from "./services/courseApi";
 import { useGetImagesQuery } from "./services/imagesApi";
 import { useGetLessonsQuery } from "./services/lessonApi";
 import { useGetPractisesQuery } from "./services/practiseApi";
-import ReactGA from "react-ga";
 
-ReactGA.initialize("G-VWTC6D0WLB");
 const App = () => {
-  const location = useLocation();
-
   useGetCoursesQuery();
   useGetLessonsQuery();
   useGetImagesQuery();
   useGetPractisesQuery();
-
-  useEffect(() => {
-    const data = ReactGA.pageview(location.pathname);
-    console.log(data);
-  }, [location]);
 
   return (
     <Routes>

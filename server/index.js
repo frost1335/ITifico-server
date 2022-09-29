@@ -22,7 +22,7 @@ app.use(
         cb(new ErrorResponse("Not allowed by CORS", 400));
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
 );

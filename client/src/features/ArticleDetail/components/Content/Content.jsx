@@ -14,22 +14,12 @@ import { useGetArticleQuery } from "../../../../services/articleApi";
 import { useParams } from "react-router-dom";
 import { formatter } from "../../../../utils";
 import { useSelector } from "react-redux";
+import Sidebar from "../Sidebar/Sidebar";
 
 const Content = () => {
   const { articleId } = useParams();
   const { data: article, isLoading } = useGetArticleQuery(articleId);
   const { lng } = useSelector((state) => state.lngDetect);
-
-  const images1 = [{ img: "imageBlockHead" }];
-  const images2 = [
-    { img: "imageBlockImg", text: "1/25 Коментар до зображення" },
-    { img: "imageBlockImg", text: "1/25 Коментар до зображення" },
-  ];
-  const images3 = [
-    { img: "imageBlockImg", text: "1/25 Коментар до зображення" },
-    { img: "imageBlockImg", text: "1/25 Коментар до зображення" },
-    { img: "imageBlockImg", text: "1/25 Коментар до зображення" },
-  ];
 
   if (isLoading) return "Loading...";
 
@@ -44,13 +34,13 @@ const Content = () => {
                 <span>
                   <MdOutlineDateRange />
                 </span>
-                {formatter(article?.data[lng].date)}
+                {formatter(article?.data.date)}
               </h5>
               <h5>
                 <span>
                   <IoMdEye />
                 </span>
-                {article?.data[lng].views}
+                {Math.floor(article?.data.views / 2)}
               </h5>
             </div>
           </header>
@@ -76,6 +66,9 @@ const Content = () => {
               }
             })}
           </div>
+        </div>
+        <div className="content__sidebar">
+          <Sidebar />
         </div>
       </div>
     </Container>

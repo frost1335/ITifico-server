@@ -6,6 +6,7 @@ import "./Content.scss";
 import { Button } from "../../../../components";
 
 const Content = () => {
+ 
   return (
     <div className="articles__list">
       <Container maxWidth={"xl"}>

@@ -5,6 +5,7 @@ const {
   edit,
   deleteOne,
   getOne,
+  editView,
 } = require("../controllers/article");
 const ImageUpload = require("../utils/upload");
 
@@ -14,6 +15,7 @@ router.route("/").get(getAll).post(ImageUpload.single("image"), create);
 router
   .route("/:id")
   .get(getOne)
+  .patch(editView)
   .put(ImageUpload.single("image"), edit)
   .delete(deleteOne);
 

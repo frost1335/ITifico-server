@@ -60,7 +60,7 @@ const Card = ({ article }) => {
               <MdOutlineDateRange /> <span>{formatter(article?.date)}</span>
             </h5>
             <h5 className="footer__views">
-              <IoMdEye /> <span>{article?.views}</span>
+              <IoMdEye /> <span>{Math.floor(article?.views / 2)}</span>
             </h5>
           </div>
         </div>
