@@ -7,7 +7,13 @@ import {
   useEditArticleMutation,
   useGetArticlesQuery,
 } from "../../../../services/articleApi";
-import { Button, Input, Select, Upload } from "../../../../components";
+import {
+  Button,
+  Input,
+  Select,
+  TextArea,
+  Upload,
+} from "../../../../components";
 import {
   useCreateImageMutation,
   useEditImageMutation,
@@ -184,6 +190,9 @@ const CreateArticle = () => {
     if (arg.element === "text") {
       articleClone[arg.lng].fields[arg.index].content = value;
     }
+    if (arg.element === "text-title") {
+      articleClone[arg.lng].fields[arg.index].title = value;
+    }
     if (arg.element === "images") {
       if (arg.content === "image") {
         articleClone["en"].fields[arg.index].content[arg.idx].img =
@@ -309,8 +318,20 @@ const CreateArticle = () => {
               </Button>
             </div>
             <Input
-              placeholder="Field text"
+              placeholder="Field title"
+              value={item.title}
+              onChange={(event) =>
+                onChangeInput({
+                  event,
+                  index,
+                  element: "text-title",
+                  lng,
+                })
+              }
+            />
+            <TextArea
               value={item.content}
+              placeholder="Field text"
               onChange={(event) =>
                 onChangeInput({
                   event,
@@ -319,6 +340,7 @@ const CreateArticle = () => {
                   lng,
                 })
               }
+              row={5}
             />
           </div>
         );
@@ -425,10 +447,12 @@ const CreateArticle = () => {
       en: {
         element: "text",
         content: "",
+        title: "",
       },
       uk: {
         element: "text",
         content: "",
+        title: "",
       },
     };
 

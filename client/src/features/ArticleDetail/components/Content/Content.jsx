@@ -37,6 +37,9 @@ const Content = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+  }, []);
+
+  useEffect(() => {
     if (!articlesLoading) {
       articles?.data?.forEach((elem, index) => {
         if (elem._id === articleId) {

@@ -2,7 +2,7 @@ import React from "react";
 
 import "./TextArea.scss";
 
-const TextArea = ({ onChange, value, name, placeholder, row = "10" }) => {
+const TextArea = ({ onChange, value, placeholder, row = "10" }) => {
   return (
     <textarea
       className="textarea__input"

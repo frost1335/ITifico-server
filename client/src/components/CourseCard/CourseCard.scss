@@ -60,7 +60,7 @@
 
     p.card__text {
       @include textH7($black-color);
-
+      overflow-wrap: break-word;
       transition: all 0.4s;
 
       .text__extra {

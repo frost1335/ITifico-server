@@ -46,6 +46,16 @@
       }
     }
 
+    a {
+      color: #e36f59;
+      text-decoration: underline;
+    }
+
+    b {
+      color: #23262d;
+      font-weight: 700;
+    }
+
     .quote__text {
       @include text($black-color);
     }

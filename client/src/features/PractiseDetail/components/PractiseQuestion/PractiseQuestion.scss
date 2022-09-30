@@ -15,6 +15,16 @@
     margin-bottom: 15px;
   }
 
+  a {
+    color: #e36f59;
+    text-decoration: underline;
+  }
+
+  b {
+    color: #23262d;
+    font-weight: 700;
+  }
+
   pre.question__code {
     padding: 2px 20px;
     background: $code-bg-color;

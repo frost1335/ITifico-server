@@ -17,6 +17,8 @@ import Sidebar from "../Sidebar/Sidebar";
 
 import "./Content.scss";
 
+const parser = new DOMParser();
+
 const Content = () => {
   const { unitName, lessonId, courseId } = useParams();
   const navigate = useNavigate();
@@ -31,6 +33,9 @@ const Content = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+  }, []);
+
+  useEffect(() => {
     if ((!unitName || !lessonId) && !unitLoading) {
       navigate(
         `/courses/view/${courseId}/${
@@ -128,7 +133,7 @@ const Content = () => {
                     }
                   />
                 </button>
-                <p className="box__text">Prev lesson</p>
+                <p className="box__text">Prev lesson </p>
               </div>
               <div className="slide__box">
                 <p className="box__text">Next lesson</p>

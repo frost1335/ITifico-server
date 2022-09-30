@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useEffect } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atelierForestLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
@@ -21,10 +22,18 @@ const PractiseQuestion = ({
   question: { language, description, code },
   index,
 }) => {
+  const descriptionElem = useRef(null);
+
+  useEffect(() => {
+    descriptionElem.current.innerHTML = description || "";
+  }, [descriptionElem, description]);
+
   return (
     <div className="practise__question">
       <h3 className="question__title">{`Question ${index + 1}`}</h3>
-      <p className="question__description">{description}</p>
+      <p className="question__description" ref={descriptionElem}>
+        {description}
+      </p>
       <SyntaxHighlighter
         className="question__code"
         customStyle={highlighterStyles}

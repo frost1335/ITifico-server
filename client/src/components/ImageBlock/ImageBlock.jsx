@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetImagesQuery } from "../../services/imagesApi";
 
@@ -8,6 +8,25 @@ const ImageBlock = ({ data, index, component }) => {
   const { lessonId, articleId } = useParams();
   const { data: imageList, isLoading } = useGetImagesQuery(component);
   const [image, setImage] = useState([]);
+  const [elRefs, setElRefs] = React.useState([]);
+
+  useEffect(() => {
+    setElRefs((elRefs) =>
+      Array(data.content.length)
+        .fill()
+        .map((_, i) => elRefs[i] || createRef())
+    );
+  }, [data]);
+
+  useEffect(() => {
+    if (elRefs.length) {
+      data.content.forEach((img, i) => {
+        elRefs[i].current.innerHTML = img?.description || "";
+      });
+    }
+  }, [data, elRefs]);
+
+  console.log(elRefs);
 
   useEffect(() => {
     if (!isLoading) {
@@ -26,6 +45,8 @@ const ImageBlock = ({ data, index, component }) => {
     }
   }, [isLoading, imageList, lessonId]);
 
+  useEffect(() => {}, []);
+
   return (
     <div className="image__block">
       {data.content.length ? (
@@ -40,7 +61,7 @@ const ImageBlock = ({ data, index, component }) => {
               }
               alt="img-block"
             />
-            <p>{img?.description}</p>
+            <p ref={elRefs[idx]}>{img?.description}</p>
           </div>
         ))
       ) : (

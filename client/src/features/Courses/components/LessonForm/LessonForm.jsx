@@ -2,10 +2,14 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Input, SelectOption, Upload } from "../../../../components";
 import {
-  useGetCoursesQuery,
-} from "../../../../services/courseApi";
+  Button,
+  Input,
+  SelectOption,
+  TextArea,
+  Upload,
+} from "../../../../components";
+import { useGetCoursesQuery } from "../../../../services/courseApi";
 import {
   useCreateImageMutation,
   useEditImageMutation,
@@ -185,6 +189,9 @@ const LessonForm = () => {
     if (arg.element === "text") {
       lessonClone[arg.lng].fields[arg.index].content = value;
     }
+    if (arg.element === "text-title") {
+      lessonClone[arg.lng].fields[arg.index].title = value;
+    }
     if (arg.element === "images") {
       if (arg.content === "image") {
         lessonClone["en"].fields[arg.index].content[arg.idx].img =
@@ -307,8 +314,20 @@ const LessonForm = () => {
               </Button>
             </div>
             <Input
-              placeholder="Field text"
+              placeholder="Field title"
+              value={item.title}
+              onChange={(event) =>
+                onChangeInput({
+                  event,
+                  index,
+                  element: "text-title",
+                  lng,
+                })
+              }
+            />
+            <TextArea
               value={item.content}
+              placeholder="Field text"
               onChange={(event) =>
                 onChangeInput({
                   event,
@@ -317,6 +336,7 @@ const LessonForm = () => {
                   lng,
                 })
               }
+              row={5}
             />
           </div>
         );
@@ -423,10 +443,12 @@ const LessonForm = () => {
       en: {
         element: "text",
         content: "",
+        title: "",
       },
       uk: {
         element: "text",
         content: "",
+        title: "",
       },
     };
 

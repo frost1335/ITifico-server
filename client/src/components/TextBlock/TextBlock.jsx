@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useEffect } from "react";
 
 import "./TextBlock.scss";
 
 const TextBlock = ({ data }) => {
+  const text = useRef(null);
+  const title = useRef(null);
+
+  useEffect(() => {
+    text.current.innerHTML = data.content || "";
+    title.current.innerHTML = data.title || "";
+  }, [text, title, data]);
+
   return (
     <div className="text__block">
-      <p>{data.content}</p>
+      <h2 ref={title}>{data.title || ""}</h2>
+      <p ref={text} />
     </div>
   );
 };

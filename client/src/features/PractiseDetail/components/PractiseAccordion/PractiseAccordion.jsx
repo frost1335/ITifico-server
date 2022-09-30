@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef, useEffect, useRef } from "react";
 import { styled } from "@mui/material/styles";
 import { GoTriangleRight } from "react-icons/go";
 import MuiAccordion from "@mui/material/Accordion";
@@ -7,6 +7,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { accordion, accordionDetail, accordionItem } from "./styles";
 
 import "./PractiseAccordion.scss";
+import { useState } from "react";
 
 // accordion component
 const Accordion = styled((props) => (
@@ -23,6 +24,10 @@ const AccordionDetails = styled(MuiAccordionDetails)(accordionDetail);
 
 const PractiseAccordion = ({ title, className, children, answer }) => {
   // practise accordion state
+  const content = useRef(null);
+  const titleMenu = useRef(null);
+  const [elRefs, setElRefs] = useState([]);
+
   const [expanded, setExpanded] = React.useState("accordion-main");
 
   // is answer accordion expand variable
@@ -33,17 +38,52 @@ const PractiseAccordion = ({ title, className, children, answer }) => {
     setExpanded(newExpanded ? panel : false);
   };
 
+  console.log(answer);
+  useEffect(() => {
+    if (answer?.element === "menu") {
+      setElRefs((elRefs) =>
+        Array(answer.content.items.length)
+          .fill()
+          .map((_, i) => elRefs[i] || createRef())
+      );
+    }
+  }, [answer]);
+
+  useEffect(() => {
+    if (answer?.element === "text") {
+      content.current.innerHTML = answer?.content || "";
+    }
+    if (answer?.element === "menu") {
+      titleMenu.current.innerHTML = answer?.content?.title || "";
+      if (elRefs.length) {
+        answer.content.items.forEach((item, i) => {
+          elRefs[i].current.innerHTML = item || "";
+        });
+      }
+    }
+  }, [elRefs, answer]);
+
   const detailContent = () => {
     if (answer.element === "text") {
-      return <p className="detail__text">{answer.content}</p>;
+      return (
+        <p className="detail__text" ref={content}>
+          {answer.content}
+        </p>
+      );
     }
     if (answer.element === "menu") {
       return (
         <div className="detail__menu">
-          <h4 className="menu__title">{answer.content.title}</h4>
+          <h4 className="menu__title" ref={titleMenu}>
+            {answer.content.title}
+          </h4>
           <ul className="menu__list">
             {answer.content.items.map((item, idx) => (
-              <li className="list__item" key={idx + "detail-menu-item"}>
+              <li
+                className="list__item"
+                ref={elRefs[idx]}
+                key={idx + "detail-menu-item"}
+              >
                 {item}
               </li>
             ))}
