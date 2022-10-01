@@ -10,7 +10,7 @@ const TextBlock = ({ data }) => {
   useEffect(() => {
     text.current.innerHTML = data.content || "";
     title.current.innerHTML = data.title || "";
-  }, [text, title, data]);
+  });
 
   return (
     <div className="text__block">

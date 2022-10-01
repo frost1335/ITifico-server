@@ -10,22 +10,11 @@ import { Button } from "@mui/material";
 import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { useDeleteArticleMutation } from "../../services/articleApi";
-import { useRef } from "react";
-import { useEffect } from "react";
 
 const Card = ({ article }) => {
-  const description = useRef(null);
-
   const [deleteArticle] = useDeleteArticleMutation();
   const navigate = useNavigate();
   const { lng } = useSelector((state) => state.lngDetect);
-
-  useEffect(() => {
-    description.current.innerHTML =
-      article?.[lng]?.description?.length > 100
-        ? `${article?.[lng]?.description.substring(0, 100)}...`
-        : article?.[lng]?.description;
-  }, [article, lng]);
 
   return (
     <div className="article__card">
@@ -60,7 +49,7 @@ const Card = ({ article }) => {
                 {article?.[lng]?.title}
               </Link>
             </h4>
-            <p className="article__text" ref={description}>
+            <p className="article__text">
               {article?.[lng]?.description?.length > 100
                 ? `${article?.[lng]?.description.substring(0, 100)}...`
                 : article?.[lng]?.description}

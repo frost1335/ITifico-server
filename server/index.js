@@ -15,13 +15,7 @@ const whitelist = [process.env.CLIENT_URL, process.env.ADMIN_URL];
 
 app.use(
   cors({
-    origin: (origin, cb) => {
-      if (whitelist.indexOf(origin) !== 1 || !origin) {
-        cb(null, true);
-      } else {
-        cb(new ErrorResponse("Not allowed by CORS", 400));
-      }
-    },
+    origin: [process.env.CLIENT_URL, process.env.ADMIN_URL],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })

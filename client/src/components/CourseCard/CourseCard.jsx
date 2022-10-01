@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,20 +8,9 @@ import { useDeleteCourseMutation } from "../../services/courseApi";
 import "./CourseCard.scss";
 
 const CourseCard = ({ course }) => {
-  const description1 = useRef(null);
-  const description2 = useRef(null);
-
   const [deleteCourse] = useDeleteCourseMutation();
   const navigate = useNavigate();
   const { lng } = useSelector((state) => state.lngDetect);
-
-  useEffect(() => {
-    description2.current.innerHTML =
-      course[lng]?.description.length > 160
-        ? `${course[lng]?.description.substring(85, 160)}...`
-        : course[lng]?.description.substring(85, 160);
-    description1.current.innerHTML = course[lng]?.description.substring(0, 85);
-  }, [course, lng]);
 
   if (!course) return "Loading...";
 
@@ -46,11 +35,9 @@ const CourseCard = ({ course }) => {
         </div>
         <h3 className="card__title">{course[lng]?.title}</h3>
         <p className="card__text">
-          <span ref={description1}>
-            {course[lng]?.description.substring(0, 85)}
-          </span>
+          <span>{course[lng]?.description.substring(0, 85)}</span>
           <span className="text__dots">...</span>{" "}
-          <span className="text__extra" ref={description2}>
+          <span className="text__extra">
             {course[lng]?.description.length > 160
               ? `${course[lng]?.description.substring(85, 160)}...`
               : course[lng]?.description.substring(85, 160)}
