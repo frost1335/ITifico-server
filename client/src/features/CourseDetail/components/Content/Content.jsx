@@ -17,8 +17,6 @@ import Sidebar from "../Sidebar/Sidebar";
 
 import "./Content.scss";
 
-const parser = new DOMParser();
-
 const Content = () => {
   const { unitName, lessonId, courseId } = useParams();
   const navigate = useNavigate();

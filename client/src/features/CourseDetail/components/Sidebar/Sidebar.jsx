@@ -12,7 +12,6 @@ import { useState } from "react";
 import { GoTriangleRight } from "react-icons/go";
 import { useGetListQuery } from "../../../../services/courseApi";
 import { useSelector } from "react-redux";
-import { useGetLessonQuery } from "../../../../services/lessonApi";
 
 // accordion component
 const Accordion = styled((props) => (
