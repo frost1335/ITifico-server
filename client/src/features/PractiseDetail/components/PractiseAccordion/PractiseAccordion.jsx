@@ -22,11 +22,24 @@ const AccordionSummary = styled((props) => (
 // accordion detail component
 const AccordionDetails = styled(MuiAccordionDetails)(accordionDetail);
 
+export const AccordionItem = ({ item }) => {
+  const itemMenu = useRef(null);
+
+  useEffect(() => {
+    itemMenu.current.innerHTML = item || "";
+  });
+
+  return (
+    <li className="list__item" ref={itemMenu}>
+      {item}
+    </li>
+  );
+};
+
 const PractiseAccordion = ({ title, className, children, answer }) => {
   // practise accordion state
-  const content = useRef(null);
   const titleMenu = useRef(null);
-  const [elRefs, setElRefs] = useState([]);
+  const text = useRef(null);
 
   const [expanded, setExpanded] = React.useState("accordion-main");
 
@@ -38,60 +51,14 @@ const PractiseAccordion = ({ title, className, children, answer }) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  console.log(answer);
-  useEffect(() => {
-    if (answer?.element === "menu") {
-      setElRefs((elRefs) =>
-        Array(answer.content.items.length)
-          .fill()
-          .map((_, i) => elRefs[i] || createRef())
-      );
-    }
-  }, [answer]);
-
   useEffect(() => {
     if (answer?.element === "text") {
-      content.current.innerHTML = answer?.content || "";
+      text.current.innerHTML = answer?.content || "";
     }
     if (answer?.element === "menu") {
       titleMenu.current.innerHTML = answer?.content?.title || "";
-      if (elRefs.length) {
-        answer.content.items.forEach((item, i) => {
-          elRefs[i].current.innerHTML = item || "";
-        });
-      }
     }
-  }, [elRefs, answer]);
-
-  const detailContent = () => {
-    if (answer.element === "text") {
-      return (
-        <p className="detail__text" ref={content}>
-          {answer.content}
-        </p>
-      );
-    }
-    if (answer.element === "menu") {
-      return (
-        <div className="detail__menu">
-          <h4 className="menu__title" ref={titleMenu}>
-            {answer.content.title}
-          </h4>
-          <ul className="menu__list">
-            {answer.content.items.map((item, idx) => (
-              <li
-                className="list__item"
-                ref={elRefs[idx]}
-                key={idx + "detail-menu-item"}
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    }
-  };
+  });
 
   return (
     <Accordion
@@ -103,7 +70,24 @@ const PractiseAccordion = ({ title, className, children, answer }) => {
         <h3 className="title__text">{title ? title : "Answer"}</h3>
       </AccordionSummary>
       <AccordionDetails className="accordion__body">
-        {children ? children : detailContent()}
+        {children ? (
+          children
+        ) : answer.element === "text" ? (
+          <p className="detail__text" ref={text}>
+            {answer.content}
+          </p>
+        ) : (
+          <div className="detail__menu">
+            <h4 className="menu__title" ref={titleMenu}>
+              {answer.content.title}
+            </h4>
+            <ul className="menu__list">
+              {answer.content.items.map((item, idx) => (
+                <AccordionItem item={item} key={idx} />
+              ))}
+            </ul>
+          </div>
+        )}
       </AccordionDetails>
     </Accordion>
   );

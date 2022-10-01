@@ -8,6 +8,8 @@
     margin-bottom: 10px;
   }
 
+  @include link-bold;
+
   .menu__list {
     display: flex;
     flex-direction: column;

@@ -59,6 +59,8 @@
     .quote__text {
       @include text($black-color);
     }
+
+    @include link-bold;
   }
 
   @media (max-width: $maxWidthTablet) {

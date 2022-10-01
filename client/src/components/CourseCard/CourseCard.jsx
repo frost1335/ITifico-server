@@ -12,8 +12,6 @@ const CourseCard = ({ course }) => {
   const navigate = useNavigate();
   const { lng } = useSelector((state) => state.lngDetect);
 
-  console.log(course);
-
   if (!course) return "Loading...";
 
   return (

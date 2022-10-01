@@ -1,8 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { defaultImg } from "../../assets";
+import { useImgExsist } from "../../hooks/useImgExsist";
 import { useGetImagesQuery } from "../../services/imagesApi";
 
 import "./ImageBlock.scss";
+
+export const Image = ({ img, description }) => {
+  const imgExsist = useImgExsist(img?.img);
+  const descriptionText = useRef(null);
+
+  useEffect(() => {
+    descriptionText.current.innerHTML = description || "";
+  });
+
+  return (
+    <div className="block__picture">
+      <img
+        src={
+          imgExsist
+            ? process.env.REACT_APP_BASE_URL + "/Uploads/" + img
+            : defaultImg
+        }
+        alt="img-block"
+      />
+      <p ref={descriptionText}>{description || ""}</p>
+    </div>
+  );
+};
 
 const ImageBlock = ({ data, index, component }) => {
   const { lessonId, articleId } = useParams();
@@ -24,24 +49,17 @@ const ImageBlock = ({ data, index, component }) => {
 
       setImage([...imageClone]);
     }
-  }, [isLoading, imageList, lessonId]);
+  }, [isLoading, imageList, lessonId, articleId, index, component]);
 
   return (
     <div className="image__block">
       {data.content.length ? (
-        data.content.map((img, idx) => (
-          <div className="block__picture" key={idx + "img"}>
-            <img
-              src={
-                process.env.REACT_APP_BASE_URL +
-                  "/Uploads/" +
-                  image?.find((img) => img.idx === idx)?.file ||
-                "not yet uploaded"
-              }
-              alt="img-block"
-            />
-            <p>{img?.description}</p>
-          </div>
+        data.content.map((imag, idx) => (
+          <Image
+            idx={idx}
+            description={imag.description}
+            img={image?.find?.((img) => img.idx === idx) || ""}
+          />
         ))
       ) : (
         <p>Images not found</p>

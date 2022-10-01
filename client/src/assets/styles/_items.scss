@@ -18,6 +18,30 @@
   }
 }
 
+@mixin link-bold {
+  a {
+    color: $red-color;
+    text-decoration: underline;
+    font-family: "Segoe UI";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+  }
+
+  b {
+    color: $black-color;
+    font-weight: 700;
+    font-family: "Segoe UI";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+  }
+}
+
 @mixin titleH1($part: "strong") {
   font-family: "Bitter";
   font-style: normal;

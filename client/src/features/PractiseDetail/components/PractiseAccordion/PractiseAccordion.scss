@@ -1,6 +1,7 @@
 @import "../../../../assets/styles/global";
 
 .practise__accordion {
+  @include link-bold;
   &.practise__container {
     margin-bottom: 160px !important;
     border: 2px solid $border-color;

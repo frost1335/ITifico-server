@@ -22,16 +22,16 @@ const PractiseQuestion = ({
   question: { language, description, code },
   index,
 }) => {
-  const descriptionElem = useRef(null);
+  const questionDescription = useRef(null);
 
   useEffect(() => {
-    descriptionElem.current.innerHTML = description || "";
-  }, [descriptionElem, description]);
+    questionDescription.current.innerHTML = description || "";
+  });
 
   return (
     <div className="practise__question">
       <h3 className="question__title">{`Question ${index + 1}`}</h3>
-      <p className="question__description" ref={descriptionElem}>
+      <p className="question__description" ref={questionDescription}>
         {description}
       </p>
       <SyntaxHighlighter
