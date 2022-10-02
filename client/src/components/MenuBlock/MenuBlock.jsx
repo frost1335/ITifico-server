@@ -17,9 +17,17 @@ export const MenuItem = ({ item }) => {
 };
 
 const MenuBlock = ({ data }) => {
+  const title = useRef(null);
+
+  useEffect(() => {
+    title.current.innerHTML = data.content?.title || "";
+  });
+
   return (
     <div className="menu__block">
-      <h2 className="menu__title">{data.content?.title || ""}</h2>
+      <h2 className="menu__title" ref={title}>
+        {data.content?.title || ""}
+      </h2>
       <ul className="menu__list">
         {data.content.menu.map((item, index) => (
           <MenuItem item={item} key={index + "item"} />
