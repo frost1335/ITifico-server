@@ -19,7 +19,7 @@ export const Image = ({ img, description }) => {
       <img
         src={
           imgExsist
-            ? process.env.REACT_APP_BASE_URL + "/Uploads/" + img
+            ? process.env.REACT_APP_BASE_URL + "/Uploads/" + img?.img
             : defaultImg
         }
         alt="img-block"
