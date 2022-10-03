@@ -7,7 +7,7 @@ import { useGetImagesQuery } from "../../services/imagesApi";
 import "./ImageBlock.scss";
 
 export const Image = ({ img, description }) => {
-  const imgExsist = useImgExsist(img?.img);
+  const imgExsist = useImgExsist(img?.file);
   const descriptionText = useRef(null);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export const Image = ({ img, description }) => {
       <img
         src={
           imgExsist
-            ? process.env.REACT_APP_BASE_URL + "/Uploads/" + img?.img
+            ? process.env.REACT_APP_BASE_URL + "/Uploads/" + img?.file
             : defaultImg
         }
         alt="img-block"
