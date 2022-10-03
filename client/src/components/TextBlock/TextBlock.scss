@@ -7,7 +7,7 @@
     @include text;
   }
 
-  h2.menu__title {
+  h2 {
     @include titleH3;
     margin-bottom: 10px;
   }

@@ -25,6 +25,7 @@ import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import SocialButton from "../../../../components/SocialButton/SocialButton";
 import LeftArrowIcon from "../../../../components/ArrowIcon/LeftArrowIcon";
 import RightArrowIcon from "../../../../components/ArrowIcon/RightArrowIcon";
+import CodeBlock from "../../../../components/CodeBlock/CodeBlock";
 
 const Content = () => {
   const navigate = useNavigate();
@@ -102,6 +103,8 @@ const Content = () => {
                 );
               } else if (field.element === "quote") {
                 return <QuoteBlock data={field} key={index + "field"} />;
+              } else if (field.element === "code") {
+                return <CodeBlock data={field} key={index + "field"} />;
               } else {
                 return <p>Loading</p>;
               }
