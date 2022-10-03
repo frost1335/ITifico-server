@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./config.env" });
+require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 
 const errorHandler = require("./middlewares/error");
 const mongoDB = require("./config/db");
-const ErrorResponse = require("./utils/errorResponse");
 const app = express();
 
 mongoDB(process.env.MONGOURI);
