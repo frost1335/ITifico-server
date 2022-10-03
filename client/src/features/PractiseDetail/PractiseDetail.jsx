@@ -5,16 +5,22 @@ import { useGetPractiseQuery } from "../../services/practiseApi";
 import PractiseAccordion from "./components/PractiseAccordion/PractiseAccordion";
 import PractiseQuestion from "./components/PractiseQuestion/PractiseQuestion";
 
-import './PractiseDetail.scss'
+import "./PractiseDetail.scss";
 
 const PractiseDetail = () => {
   const { practiseId } = useParams();
   const { data: practise, isLoading } = useGetPractiseQuery(practiseId);
   const { lng } = useSelector((state) => state.lngDetect);
+  const [collapse, setCollapse] = React.useState(false);
 
   return (
     <div className="course__practise">
-      <PractiseAccordion title={"Practice"} className="practise__container">
+      <PractiseAccordion
+        setCollapse={setCollapse}
+        collapse={collapse}
+        title={"Practice"}
+        className="practise__container"
+      >
         {isLoading ? (
           "Loading..."
         ) : practise?.data ? (
@@ -28,9 +34,9 @@ const PractiseDetail = () => {
           <p>Practise items not found</p>
         )}
         <div className="container__bottom">
-          <Link to="#less" className="bottom__link">
+          <button onClick={() => setCollapse(true)} className="bottom__link">
             Collapse
-          </Link>
+          </button>
         </div>
       </PractiseAccordion>
     </div>

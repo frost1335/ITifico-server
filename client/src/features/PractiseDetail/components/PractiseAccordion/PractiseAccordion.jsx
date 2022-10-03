@@ -36,7 +36,14 @@ export const AccordionItem = ({ item }) => {
   );
 };
 
-const PractiseAccordion = ({ title, className, children, answer }) => {
+const PractiseAccordion = ({
+  title,
+  className,
+  children,
+  answer,
+  collapse,
+  setCollapse,
+}) => {
   // practise accordion state
   const titleMenu = useRef(null);
   const text = useRef(null);
@@ -52,6 +59,10 @@ const PractiseAccordion = ({ title, className, children, answer }) => {
   };
 
   useEffect(() => {
+    if (collapse) {
+      setExpanded("");
+      setCollapse(false);
+    }
     if (answer?.element === "text") {
       text.current.innerHTML = answer?.content || "";
     }
