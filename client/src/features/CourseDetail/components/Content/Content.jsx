@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   ImageBlock,
   MenuBlock,
@@ -20,6 +20,7 @@ import "./Content.scss";
 const Content = () => {
   const { unitName, lessonId, courseId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation()
 
   const { data: lesson, isLoading: lessonLoading } =
     useGetLessonQuery(lessonId);
@@ -31,7 +32,7 @@ const Content = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if ((!unitName || !lessonId) && !unitLoading) {

@@ -19,18 +19,19 @@ const highlighterLineNumbersStyles = {
 
 const CodeBlock = ({ data }) => {
   const title = useRef(null);
+  const text = useRef(null);
 
   useEffect(() => {
     title.current.innerHTML = data.title || "";
+    text.current.innerHTML = data.text || "";
   });
-
-  console.log(data);
 
   return (
     <div className="code__block">
       <h2 className="code__title" ref={title}>
         {data.title}
       </h2>
+      <p ref={text} />
       <SyntaxHighlighter
         className="question__code"
         customStyle={highlighterStyles}

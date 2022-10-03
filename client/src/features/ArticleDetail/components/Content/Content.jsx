@@ -14,7 +14,7 @@ import {
   useGetArticleQuery,
   useGetArticlesQuery,
 } from "../../../../services/articleApi";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { formatter } from "../../../../utils";
 import { useSelector } from "react-redux";
 import Sidebar from "../Sidebar/Sidebar";
@@ -29,6 +29,7 @@ import CodeBlock from "../../../../components/CodeBlock/CodeBlock";
 
 const Content = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { articleId } = useParams();
   const { data: article, isLoading } = useGetArticleQuery(articleId);
@@ -38,7 +39,7 @@ const Content = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if (!articlesLoading) {
@@ -48,7 +49,7 @@ const Content = () => {
         }
       });
     }
-  }, [isLoading, articles, articleId]);
+  }, [isLoading, articles, articleId, articlesLoading]);
 
   const onSlideArticle = (side) => {
     if (currentId >= 0 && articles?.data?.length - 1 >= currentId) {

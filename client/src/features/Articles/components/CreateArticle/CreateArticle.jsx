@@ -203,6 +203,9 @@ const CreateArticle = () => {
     if (arg.element === "code-title") {
       articleClone[arg.lng].fields[arg.index].title = value;
     }
+    if (arg.element === "code-text") {
+      articleClone[arg.lng].fields[arg.index].text = value;
+    }
     if (arg.element === "text-title") {
       articleClone[arg.lng].fields[arg.index].title = value;
     }
@@ -378,6 +381,19 @@ const CreateArticle = () => {
                   lng,
                 })
               }
+            />
+            <TextArea
+              value={item.text}
+              placeholder="Code text"
+              onChange={(event) =>
+                onChangeInput({
+                  event,
+                  index,
+                  element: "code-text",
+                  lng,
+                })
+              }
+              row={5}
             />
             <SelectOption
               value={item.language}
