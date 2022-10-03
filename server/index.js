@@ -11,11 +11,9 @@ const app = express();
 
 mongoDB(process.env.MONGOURI);
 
-const whitelist = [process.env.CLIENT_URL, process.env.ADMIN_URL];
-
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL, process.env.ADMIN_URL],
+    origin: process.env.CLIENT_URLS.split(","),
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
