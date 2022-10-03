@@ -22,8 +22,9 @@ const PractiseForm = () => {
   const { data: lessonsList, isLoading: lessonLoading } = useGetLessonsQuery();
   const { data: practiseList, isLoading: practiseLoading } =
     useGetPractisesQuery();
-  const [createPractise] = useCreatePractiseMutation();
-  const [editPractise] = useEditPractiseMutation();
+  const [createPractise, { isLoading: createLoading }] =
+    useCreatePractiseMutation();
+  const [editPractise, { isLoading: editLoading }] = useEditPractiseMutation();
 
   const [lessonId, setLessonId] = useState("");
   const [practise, setPractise] = useState({
@@ -382,6 +383,7 @@ const PractiseForm = () => {
             <Button onClick={onSubmitHandler} style={{ padding: "15px 45px" }}>
               {!practiseId ? "Create article" : "Edit article"}
             </Button>
+            {createLoading || editLoading ? "...Loading" : ""}
           </div>
         </div>
       </div>

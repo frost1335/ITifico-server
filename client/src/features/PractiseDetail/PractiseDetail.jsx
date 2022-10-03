@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetPractiseQuery } from "../../services/practiseApi";
 import PractiseAccordion from "./components/PractiseAccordion/PractiseAccordion";
 import PractiseQuestion from "./components/PractiseQuestion/PractiseQuestion";

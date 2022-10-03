@@ -27,14 +27,22 @@ const LessonForm = () => {
   const { search } = useLocation();
   const lessonId = search.replace("?lessonId=", "");
   const navigate = useNavigate();
+  const [imgError, setImgError] = useState({});
 
   const [createImage] = useCreateImageMutation();
   const [editImage] = useEditImageMutation();
-  const [createLesson, { data, isSuccess: createSuccess, reset }] =
-    useCreateLessonMutation();
+  const [
+    createLesson,
+    { data, isSuccess: createSuccess, isLoading: createLoading, reset },
+  ] = useCreateLessonMutation();
   const [
     editLesson,
-    { data: editImgData, isSuccess: editSuccess, reset: editReset },
+    {
+      data: editImgData,
+      isSuccess: editSuccess,
+      isLoading: editLoading,
+      reset: editReset,
+    },
   ] = useEditLessonMutation();
 
   const { data: coursesList, isLoading: courseLoading } = useGetCoursesQuery();
@@ -194,29 +202,43 @@ const LessonForm = () => {
     }
     if (arg.element === "images") {
       if (arg.content === "image") {
-        lessonClone["en"].fields[arg.index].content[arg.idx].img =
-          arg.event.target?.files[0]?.name;
-        lessonClone["uk"].fields[arg.index].content[arg.idx].img =
-          arg.event.target?.files[0]?.name;
+        setImgError(() => {});
+        if (arg.event.target?.files[0]?.size <= 3145728) {
+          lessonClone["en"].fields[arg.index].content[arg.idx].img =
+            arg.event.target?.files[0]?.name;
+          lessonClone["uk"].fields[arg.index].content[arg.idx].img =
+            arg.event.target?.files[0]?.name;
 
-        if (
-          lessonImgClone.find((i) => i.idx === arg.idx && i.index === arg.index)
-        ) {
-          lessonImgClone = lessonImgClone.map((i) => {
-            if (i.idx === arg.idx && i.index === arg.index) {
-              return {
-                ...i,
-                file: arg.event.target?.files[0],
-              };
-            }
-            return i;
-          });
+          if (
+            lessonImgClone.find(
+              (i) => i.idx === arg.idx && i.index === arg.index
+            )
+          ) {
+            lessonImgClone = lessonImgClone.map((i) => {
+              if (i.idx === arg.idx && i.index === arg.index) {
+                return {
+                  ...i,
+                  file: arg.event.target?.files[0],
+                };
+              }
+              return i;
+            });
+          } else {
+            lessonImgClone.push({
+              file: arg.event.target?.files[0],
+              index: arg.index,
+              idx: arg.idx,
+            });
+          }
         } else {
-          lessonImgClone.push({
-            file: arg.event.target?.files[0],
+          setImgError(() => ({
             index: arg.index,
             idx: arg.idx,
-          });
+            message: "Img must be less than 3 mb!",
+          }));
+          setTimeout(() => {
+            setImgError({});
+          }, 5000);
         }
       }
       if (arg.content === "description") {
@@ -360,6 +382,13 @@ const LessonForm = () => {
                   <Button onClick={() => removeField("image", index, idx)}>
                     <RiDeleteBinLine />
                   </Button>
+                  <span className="img__error">
+                    {imgError?.message &&
+                    imgError?.index === index &&
+                    imgError?.idx === idx
+                      ? imgError.message
+                      : ""}
+                  </span>
                 </div>
                 <div className="group__box">
                   <Upload
@@ -806,6 +835,7 @@ const LessonForm = () => {
             <Button onClick={onSubmitHandler} style={{ padding: "15px 45px" }}>
               {!lessonId ? "Create article" : "Edit article"}
             </Button>
+            {createLoading || editLoading ? "...Loading" : ""}
           </div>
         </div>
       </div>

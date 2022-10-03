@@ -34,6 +34,7 @@ const CreateArticle = () => {
   const { data: articleList, isLoading } = useGetArticlesQuery();
   const { data: imageList, isLoading: imgLoading } =
     useGetImagesQuery("article");
+  const [imgError, setImgError] = useState({});
 
   const [createImage] = useCreateImageMutation();
   const [editImage] = useEditImageMutation();
@@ -211,31 +212,43 @@ const CreateArticle = () => {
     }
     if (arg.element === "images") {
       if (arg.content === "image") {
-        articleClone["en"].fields[arg.index].content[arg.idx].img =
-          arg.event.target?.files[0]?.name;
-        articleClone["uk"].fields[arg.index].content[arg.idx].img =
-          arg.event.target?.files[0]?.name;
+        setImgError(() => {});
+        if (arg.event.target?.files[0]?.size <= 3145728) {
+          articleClone["en"].fields[arg.index].content[arg.idx].img =
+            arg.event.target?.files[0]?.name;
+          articleClone["uk"].fields[arg.index].content[arg.idx].img =
+            arg.event.target?.files[0]?.name;
 
-        if (
-          articleImgClone.fields.find(
-            (i) => i.idx === arg.idx && i.index === arg.index
-          )
-        ) {
-          articleImgFields = articleImgClone.fields.map((i) => {
-            if (i.idx === arg.idx && i.index === arg.index) {
-              return {
-                ...i,
-                file: arg.event.target?.files[0],
-              };
-            }
-            return i;
-          });
+          if (
+            articleImgClone.fields.find(
+              (i) => i.idx === arg.idx && i.index === arg.index
+            )
+          ) {
+            articleImgFields = articleImgClone.fields.map((i) => {
+              if (i.idx === arg.idx && i.index === arg.index) {
+                return {
+                  ...i,
+                  file: arg.event.target?.files[0],
+                };
+              }
+              return i;
+            });
+          } else {
+            articleImgFields = articleImgClone.fields.push({
+              file: arg.event.target?.files[0],
+              index: arg.index,
+              idx: arg.idx,
+            });
+          }
         } else {
-          articleImgFields = articleImgClone.fields.push({
-            file: arg.event.target?.files[0],
+          setImgError(() => ({
             index: arg.index,
             idx: arg.idx,
-          });
+            message: "Img must be less than 3 mb!",
+          }));
+          setTimeout(() => {
+            setImgError({});
+          }, 5000);
         }
       }
       if (arg.content === "description") {
@@ -445,6 +458,13 @@ const CreateArticle = () => {
                   <Button onClick={() => removeField("image", index, idx)}>
                     <RiDeleteBinLine />
                   </Button>
+                  <span className="img__error">
+                    {imgError?.message &&
+                    imgError?.index === index &&
+                    imgError?.idx === idx
+                      ? imgError.message
+                      : ""}
+                  </span>
                 </div>
                 <div className="group__box">
                   <Upload

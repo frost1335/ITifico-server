@@ -15,8 +15,9 @@ const CourseForm = () => {
   const { search } = useLocation();
   const courseId = search.replace("?courseId=", "");
   const { data: courseList, isLoading } = useGetCoursesQuery();
-  const [createCourse] = useCreateCourseMutation();
-  const [editCourse] = useEditCourseMutation();
+  const [createCourse, { isLoading: createLoading }] =
+    useCreateCourseMutation();
+  const [editCourse, { isLoading: editLoading }] = useEditCourseMutation();
 
   const [validationError, setValidationError] = useState(false);
   const [title, setTitle] = useState({ en: "", uk: "" });
@@ -317,6 +318,7 @@ const CourseForm = () => {
             {themesEn.length !== themesUk.length && (
               <p className="error__inputs">Theme inputs are not equal</p>
             )}
+            {createLoading || editLoading ? "...Loading" : ""}
           </div>
         </div>
       </div>
