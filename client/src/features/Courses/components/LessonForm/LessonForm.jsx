@@ -9,6 +9,7 @@ import {
   TextArea,
   Upload,
 } from "../../../../components";
+import { langs } from "../../../../constants";
 import { useGetCoursesQuery } from "../../../../services/courseApi";
 import {
   useCreateImageMutation,
@@ -194,6 +195,20 @@ const LessonForm = () => {
         lessonClone[arg.lng].fields[arg.index].content.menu[arg.idx] = value;
       }
     }
+    if (arg.element === "code") {
+      lessonClone["en"].fields[arg.index].content = value;
+      lessonClone["uk"].fields[arg.index].content = value;
+    }
+    if (arg.element === "code-language") {
+      lessonClone["en"].fields[arg.index].language = value;
+      lessonClone["uk"].fields[arg.index].language = value;
+    }
+    if (arg.element === "code-title") {
+      lessonClone[arg.lng].fields[arg.index].title = value;
+    }
+    if (arg.element === "code-text") {
+      lessonClone[arg.lng].fields[arg.index].text = value;
+    }
     if (arg.element === "text") {
       lessonClone[arg.lng].fields[arg.index].content = value;
     }
@@ -363,6 +378,71 @@ const LessonForm = () => {
           </div>
         );
       }
+      if (item.element === "code") {
+        return (
+          <div className="text__group" key={index}>
+            <div className="group__header">
+              <h4>Text box</h4>
+              <Button onClick={() => removeField("text", index)}>
+                Delete field
+              </Button>
+            </div>
+            <Input
+              placeholder="Code field title"
+              value={item.title}
+              onChange={(event) =>
+                onChangeInput({
+                  event,
+                  index,
+                  element: "code-title",
+                  lng,
+                })
+              }
+            />
+            <TextArea
+              value={item.text}
+              placeholder="Code text"
+              onChange={(event) =>
+                onChangeInput({
+                  event,
+                  index,
+                  element: "code-text",
+                  lng,
+                })
+              }
+              row={5}
+            />
+            <SelectOption
+              value={item.language}
+              arr={langs}
+              disabled={!langs}
+              title="Code language"
+              lng={lng}
+              onChange={(event) =>
+                onChangeInput({
+                  element: "code-language",
+                  index,
+                  event,
+                  lng,
+                })
+              }
+            />
+            <TextArea
+              value={item.content}
+              placeholder="Field code"
+              onChange={(event) =>
+                onChangeInput({
+                  event,
+                  index,
+                  element: "code",
+                  lng,
+                })
+              }
+              row={5}
+            />
+          </div>
+        );
+      }
       if (item.element === "images") {
         return (
           <div className="images__group" key={index}>
@@ -481,6 +561,21 @@ const LessonForm = () => {
       },
     };
 
+    const codeTemplate = {
+      en: {
+        element: "code",
+        content: "",
+        language: "",
+        title: "",
+      },
+      uk: {
+        element: "code",
+        content: "",
+        language: "",
+        title: "",
+      },
+    };
+
     const menuTemplate = {
       en: {
         element: "menu",
@@ -545,6 +640,10 @@ const LessonForm = () => {
     if (field === "quote") {
       enFields.push({ ...quoteTemplate.en });
       ukFields.push({ ...quoteTemplate.uk });
+    }
+    if (field === "code") {
+      enFields.push({ ...codeTemplate.en });
+      ukFields.push({ ...codeTemplate.uk });
     }
     if (field === "menu-item") {
       enFields = enFields.map((f, index) => {
@@ -780,6 +879,7 @@ const LessonForm = () => {
                 <Button onClick={() => addField("menu")}>Add menu</Button>
                 <Button onClick={() => addField("images")}>Add images</Button>
                 <Button onClick={() => addField("quote")}>Add quote</Button>
+                <Button onClick={() => addField("code")}>Add code</Button>
               </div>
               {renderFields("en")}
             </div>

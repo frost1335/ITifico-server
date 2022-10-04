@@ -9,6 +9,7 @@ import {
 } from "../../../../components";
 import LeftArrowIcon from "../../../../components/ArrowIcon/LeftArrowIcon";
 import RightArrowIcon from "../../../../components/ArrowIcon/RightArrowIcon";
+import CodeBlock from "../../../../components/CodeBlock/CodeBlock";
 import Loader from "../../../../components/Loader/Loader";
 import { useGetListQuery } from "../../../../services/courseApi";
 import { useGetLessonQuery } from "../../../../services/lessonApi";
@@ -20,7 +21,7 @@ import "./Content.scss";
 const Content = () => {
   const { unitName, lessonId, courseId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
 
   const { data: lesson, isLoading: lessonLoading } =
     useGetLessonQuery(lessonId);
@@ -115,6 +116,8 @@ const Content = () => {
                   );
                 } else if (field.element === "quote") {
                   return <QuoteBlock data={field} key={index + "field"} />;
+                } else if (field.element === "code") {
+                  return <CodeBlock data={field} key={index + "field"} />;
                 } else {
                   return <p>Loading</p>;
                 }
