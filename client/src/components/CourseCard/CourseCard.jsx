@@ -3,11 +3,14 @@ import React from "react";
 import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { defaultIcon } from "../../assets";
+import { useImgExsist } from "../../hooks/useImgExsist";
 import { useDeleteCourseMutation } from "../../services/courseApi";
 
 import "./CourseCard.scss";
 
 const CourseCard = ({ course }) => {
+  const iconExsist = useImgExsist(course?.icon);
   const [deleteCourse] = useDeleteCourseMutation();
   const navigate = useNavigate();
   const { lng } = useSelector((state) => state.lngDetect);
@@ -29,7 +32,11 @@ const CourseCard = ({ course }) => {
       <div className="card__content" style={{ background: course?.background }}>
         <div className="card__icon">
           <img
-            src={process.env.REACT_APP_BASE_URL + "/Uploads/" + course?.icon}
+            src={
+              iconExsist
+                ? process.env.REACT_APP_BASE_URL + "/Uploads/" + course?.icon
+                : defaultIcon
+            }
             alt="course-icon"
           />
         </div>

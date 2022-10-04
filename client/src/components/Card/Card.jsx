@@ -10,8 +10,11 @@ import { Button } from "@mui/material";
 import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { useDeleteArticleMutation } from "../../services/articleApi";
+import { useImgExsist } from "../../hooks/useImgExsist";
+import { defaultImg } from "../../assets";
 
 const Card = ({ article }) => {
+  const imgExsist = useImgExsist(article?.image);
   const [deleteArticle] = useDeleteArticleMutation();
   const navigate = useNavigate();
   const { lng } = useSelector((state) => state.lngDetect);
@@ -33,7 +36,10 @@ const Card = ({ article }) => {
           <div className="article__header">
             <img
               src={
-                process.env.REACT_APP_BASE_URL + `/Uploads/${article?.image}`
+                imgExsist
+                  ? process.env.REACT_APP_BASE_URL +
+                    `/Uploads/${article?.image}`
+                  : defaultImg
               }
               alt="article-img"
             />
