@@ -35,6 +35,7 @@ const CreateArticle = () => {
   const { data: imageList, isLoading: imgLoading } =
     useGetImagesQuery("article");
   const [imgError, setImgError] = useState({});
+  const [cardImgError, setCardImgError] = useState("");
 
   const [createImage] = useCreateImageMutation();
   const [editImage] = useEditImageMutation();
@@ -180,7 +181,15 @@ const CreateArticle = () => {
     const value = arg?.event?.target?.value;
 
     if (arg.element === "card-image") {
-      articleClone.image = arg.event.target.files[0];
+      setCardImgError("");
+      if (arg.event.target?.files[0]?.size <= 3145728) {
+        articleClone.image = arg.event.target.files[0];
+      } else {
+        setCardImgError(() => "Img must be less than 3 mb!");
+        setTimeout(() => {
+          setCardImgError("");
+        }, 5000);
+      }
     }
     if (arg.element === "menu") {
       if (arg.content === "title") {
@@ -859,6 +868,9 @@ const CreateArticle = () => {
                 />
               </div>
               <div className="input__group">
+                <span className="img__error">
+                  {cardImgError ? cardImgError : ""}
+                </span>
                 <div className="group__box">
                   <Upload
                     value={article.image?.name || article.image}
@@ -936,6 +948,9 @@ const CreateArticle = () => {
                 />
               </div>
               <div className="input__group">
+                <span className="img__error">
+                  {cardImgError ? cardImgError : ""}
+                </span>
                 <div className="group__box">
                   <Upload
                     value={article.image?.name || article.image}

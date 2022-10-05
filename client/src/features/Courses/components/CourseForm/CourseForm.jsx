@@ -28,6 +28,7 @@ const CourseForm = () => {
   const [themesUk, setThemesUk] = useState([]);
   const [themeInputEn, setThemeInputEn] = useState("");
   const [themeInputUk, setThemeInputUk] = useState("");
+  const [cardImgError, setCardImgError] = useState("");
 
   useEffect(() => {
     if (!isLoading && courseId) {
@@ -151,9 +152,22 @@ const CourseForm = () => {
         <div className="content__main">
           <div className="main__box">
             <h3>EN - forms</h3>
+            <span className="img__error">
+              {cardImgError ? cardImgError : ""}
+            </span>
             <Upload
               value={icon?.name || icon}
-              onChange={(event) => setIcon((prev) => event.target.files[0])}
+              onChange={(event) => {
+                setCardImgError("");
+                if (event.target?.files[0]?.size <= 3145728) {
+                  setIcon((prev) => event.target.files[0]);
+                } else {
+                  setCardImgError(() => "Img must be less than 3 mb!");
+                  setTimeout(() => {
+                    setCardImgError("");
+                  }, 5000);
+                }
+              }}
             />
             <div className="input__group">
               <Input
@@ -230,9 +244,22 @@ const CourseForm = () => {
           </div>
           <div className="main__box">
             <h3>UK - forms</h3>
+            <span className="img__error">
+              {cardImgError ? cardImgError : ""}
+            </span>
             <Upload
               value={icon.name || icon}
-              onChange={(event) => setIcon((prev) => event.target.files[0])}
+              onChange={(event) => {
+                setCardImgError("");
+                if (event.target?.files[0]?.size <= 3145728) {
+                  setIcon((prev) => event.target.files[0]);
+                } else {
+                  setCardImgError(() => "Img must be less than 3 mb!");
+                  setTimeout(() => {
+                    setCardImgError("");
+                  }, 5000);
+                }
+              }}
             />
             <div className="input__group">
               <Input

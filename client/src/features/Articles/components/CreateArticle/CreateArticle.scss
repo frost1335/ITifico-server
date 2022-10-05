@@ -16,6 +16,14 @@
     grid-template-columns: 1fr 1fr;
     gap: 40px;
 
+    .img__error {
+      font-size: 16px;
+      line-height: 23px;
+      color: #d61c4e;
+      margin-left: 20px;
+      margin-bottom: 5px;
+    }
+
     .main__box {
       display: flex;
       flex-direction: column;
@@ -109,13 +117,6 @@
             margin: 0;
             margin-left: 15px;
             padding: 5px 8px;
-          }
-
-          .img__error {
-            font-size: 16px;
-            line-height: 23px;
-            color: #d61c4e;
-            margin-left: 20px;
           }
         }
 
