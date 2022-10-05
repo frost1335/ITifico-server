@@ -382,8 +382,8 @@ const LessonForm = () => {
         return (
           <div className="text__group" key={index}>
             <div className="group__header">
-              <h4>Text box</h4>
-              <Button onClick={() => removeField("text", index)}>
+              <h4>Code box</h4>
+              <Button onClick={() => removeField("code", index)}>
                 Delete field
               </Button>
             </div>
@@ -873,7 +873,7 @@ const LessonForm = () => {
               />
             </div>
             <div className="input__list">
-              <h3>Article fields</h3>
+              <h3>Lesson fields</h3>
               <div className="article__buttons">
                 <Button onClick={() => addField("text")}>Add text</Button>
                 <Button onClick={() => addField("menu")}>Add menu</Button>
@@ -921,12 +921,13 @@ const LessonForm = () => {
               />
             </div>
             <div className="input__list">
-              <h3>Article fields</h3>
+              <h3>Lesson fields</h3>
               <div className="article__buttons">
                 <Button onClick={() => addField("text")}>Add text</Button>
                 <Button onClick={() => addField("menu")}>Add menu</Button>
                 <Button onClick={() => addField("images")}>Add images</Button>
                 <Button onClick={() => addField("quote")}>Add quote</Button>
+                <Button onClick={() => addField("code")}>Add code</Button>
               </div>
               {renderFields("uk")}
             </div>

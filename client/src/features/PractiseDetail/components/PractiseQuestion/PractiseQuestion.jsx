@@ -34,16 +34,20 @@ const PractiseQuestion = ({
       <p className="question__description" ref={questionDescription}>
         {description}
       </p>
-      <SyntaxHighlighter
-        className="question__code"
-        customStyle={highlighterStyles}
-        showLineNumbers={true}
-        lineNumberStyle={highlighterLineNumbersStyles}
-        language={language}
-        style={atelierForestLight}
-      >
-        {`${code}`}
-      </SyntaxHighlighter>
+      {code ? (
+        <SyntaxHighlighter
+          className="question__code"
+          customStyle={highlighterStyles}
+          showLineNumbers={true}
+          lineNumberStyle={highlighterLineNumbersStyles}
+          language={language}
+          style={atelierForestLight}
+        >
+          {`${code}`}
+        </SyntaxHighlighter>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

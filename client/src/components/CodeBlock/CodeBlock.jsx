@@ -32,16 +32,20 @@ const CodeBlock = ({ data }) => {
         {data.title}
       </h2>
       <p ref={text} />
-      <SyntaxHighlighter
-        className="question__code"
-        customStyle={highlighterStyles}
-        showLineNumbers={true}
-        lineNumberStyle={highlighterLineNumbersStyles}
-        language={data.language}
-        style={atelierForestLight}
-      >
-        {`${data.content}`}
-      </SyntaxHighlighter>
+      {data.content ? (
+        <SyntaxHighlighter
+          className="question__code"
+          customStyle={highlighterStyles}
+          showLineNumbers={true}
+          lineNumberStyle={highlighterLineNumbersStyles}
+          language={data.language}
+          style={atelierForestLight}
+        >
+          {`${data.content}`}
+        </SyntaxHighlighter>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

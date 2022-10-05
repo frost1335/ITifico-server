@@ -378,8 +378,8 @@ const CreateArticle = () => {
         return (
           <div className="text__group" key={index}>
             <div className="group__header">
-              <h4>Text box</h4>
-              <Button onClick={() => removeField("text", index)}>
+              <h4>Code box</h4>
+              <Button onClick={() => removeField("code", index)}>
                 Delete field
               </Button>
             </div>
