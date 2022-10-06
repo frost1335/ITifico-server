@@ -36,6 +36,7 @@ const ImageBlock = ({ data, index, component }) => {
         if (component === "lesson") {
           return img.parentId === lessonId;
         }
+        return "";
       });
 
       imageClone = imageClone.filter((img) => img.index === index);

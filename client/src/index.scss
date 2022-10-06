@@ -22,3 +22,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.code-segment {
+  line-height: 32px;
+  word-break: break-word;
+  font-size: 15px;
+  color: #23262d;
+  font-family: Menlo, Monaco, "Courier New", Courier, monospace;
+  font-weight: 400;
+  background: #f3f4f5;
+  padding: 2px 4px;
+}

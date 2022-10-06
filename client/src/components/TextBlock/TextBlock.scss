@@ -1,7 +1,7 @@
 @import "../../assets/styles/global";
 
 .text__block {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 
   p {
     @include text;
@@ -15,6 +15,6 @@
   @include link-bold;
 
   @media (max-width: $maxWidthTablet) {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 }
