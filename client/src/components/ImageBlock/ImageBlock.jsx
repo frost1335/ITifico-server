@@ -1,13 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { defaultImg } from "../../assets";
-import { useImgExsist } from "../../hooks/useImgExsist";
 import { useGetImagesQuery } from "../../services/imagesApi";
 
 import "./ImageBlock.scss";
 
 export const Image = ({ img, description }) => {
-  const imgExsist = useImgExsist(img?.file);
   const descriptionText = useRef(null);
 
   useEffect(() => {
@@ -17,11 +14,7 @@ export const Image = ({ img, description }) => {
   return (
     <div className="block__picture">
       <img
-        src={
-          imgExsist
-            ? process.env.REACT_APP_BASE_URL + "/Uploads/" + img?.file
-            : defaultImg
-        }
+        src={process.env.REACT_APP_BASE_URL + "/Uploads/" + img?.file}
         alt="img-block"
       />
       <p ref={descriptionText}>{description || ""}</p>
