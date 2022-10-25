@@ -26,6 +26,9 @@ import SocialButton from "../../../../components/SocialButton/SocialButton";
 import LeftArrowIcon from "../../../../components/ArrowIcon/LeftArrowIcon";
 import RightArrowIcon from "../../../../components/ArrowIcon/RightArrowIcon";
 import CodeBlock from "../../../../components/CodeBlock/CodeBlock";
+import FaceBookShare from "../FaceBookShare/FaceBookShare";
+import TwitterShare from "../TwitterShare/TwitterShare";
+import LinkedinShare from "../LinkedinShare/LinkedinShare";
 
 const Content = () => {
   const navigate = useNavigate();
@@ -116,15 +119,9 @@ const Content = () => {
               <div className="social__left">
                 <h6 className="left__text">Share:</h6>
                 <div className="social__icons">
-                  <Link to="#facebook" key="1" className="icon__box">
-                    <FaFacebookF />
-                  </Link>
-                  <Link to="#twitter" key="2" className="icon__box">
-                    <FaTwitter />
-                  </Link>
-                  <Link to="#linkedin" key="3" className="icon__box">
-                    <FaLinkedinIn />
-                  </Link>
+                  <FaceBookShare />
+                  <TwitterShare />
+                  <LinkedinShare />
                 </div>
               </div>
               <div className="social__right">
