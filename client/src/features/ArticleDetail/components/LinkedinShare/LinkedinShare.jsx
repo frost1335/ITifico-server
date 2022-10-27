@@ -4,9 +4,9 @@ import { LinkedinShareButton } from "react-share";
 
 import "./LinkedinShare.scss";
 
-const LinkedinShare = () => {
+const LinkedinShare = ({ id }) => {
   return (
-    <LinkedinShareButton url={"http://localhost:3000"}>
+    <LinkedinShareButton url={process.env.REACT_APP_URL + "/blog/view/" + id}>
       <div className="icon__box">
         <FaLinkedinIn />
       </div>

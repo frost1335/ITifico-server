@@ -119,9 +119,12 @@ const Content = () => {
               <div className="social__left">
                 <h6 className="left__text">Share:</h6>
                 <div className="social__icons">
-                  <FaceBookShare />
-                  <TwitterShare />
-                  <LinkedinShare />
+                  <FaceBookShare id={article?.data?._id} />
+                  <TwitterShare
+                    id={article?.data?._id}
+                    title={article?.data?.[lng]?.title}
+                  />
+                  <LinkedinShare id={article?.data?._id} />
                 </div>
               </div>
               <div className="social__right">
