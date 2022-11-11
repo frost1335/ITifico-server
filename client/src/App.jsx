@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { TagControl } from "./components";
 import { ArticleList, CreateArticle } from "./features/Articles";
@@ -28,6 +29,10 @@ const App = () => {
   useGetLessonsQuery();
   useGetImagesQuery();
   useGetPractisesQuery();
+
+  useEffect(() => {
+    console.clear();
+  });
 
   return (
     <Routes>

@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useRef } from "react";
+import React, {useEffect, useRef } from "react";
 import { styled } from "@mui/material/styles";
 import { GoTriangleRight } from "react-icons/go";
 import MuiAccordion from "@mui/material/Accordion";
@@ -7,7 +7,6 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { accordion, accordionDetail, accordionItem } from "./styles";
 
 import "./PractiseAccordion.scss";
-import { useState } from "react";
 
 // accordion component
 const Accordion = styled((props) => (
