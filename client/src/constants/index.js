@@ -191,3 +191,34 @@ export const langs = [
   "yaml",
   "zephir",
 ];
+
+export const helperTags = [
+  {
+    label: 'br-br',
+    content: '<br/><br/>'
+  },
+  {
+    label: 'br',
+    content: '<br/>'
+  },
+  {
+    label: 'space',
+    content: '<div class="space"></div>'
+  },
+  {
+    label: 'link',
+    content: '<a href="" target="_blank"></a>'
+  },
+  {
+    label: 'bold',
+    content: '<b></b>'
+  },
+  {
+    label: 'h5',
+    content: '<h5></h5>'
+  },
+  {
+    label: 'h2-h5',
+    content: '<h2><h5></h5></h2>'
+  },
+]

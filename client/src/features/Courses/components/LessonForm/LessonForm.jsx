@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -9,7 +10,7 @@ import {
   TextArea,
   Upload,
 } from "../../../../components";
-import { langs } from "../../../../constants";
+import { helperTags, langs } from "../../../../constants";
 import { useGetCoursesQuery } from "../../../../services/courseApi";
 import {
   useCreateImageMutation,
@@ -30,6 +31,7 @@ const LessonForm = () => {
   const navigate = useNavigate();
   const [imgError, setImgError] = useState({});
 
+  const [freeInput, setFreeInput] = useState("");
   const [createImage] = useCreateImageMutation();
   const [editImage] = useEditImageMutation();
   const [
@@ -923,11 +925,44 @@ const LessonForm = () => {
             <div className="input__list">
               <h3>Lesson fields</h3>
               <div className="article__buttons">
-                <Button onClick={() => addField("text")}>Add text</Button>
-                <Button onClick={() => addField("menu")}>Add menu</Button>
-                <Button onClick={() => addField("images")}>Add images</Button>
-                <Button onClick={() => addField("quote")}>Add quote</Button>
-                <Button onClick={() => addField("code")}>Add code</Button>
+                {helperTags.map((elem, index) => (
+                  <div class="tooltip" key={index}>
+                    <span className="tooltiptext" id={elem.label}>
+                      Copy to clipboard
+                    </span>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        navigator.clipboard.writeText(elem.content);
+                        var tooltip = document.getElementById(elem.label);
+                        tooltip.innerText = "Copied: " + elem.content;
+                      }}
+                    >
+                      {elem.label}
+                    </Button>
+                  </div>
+                ))}
+                <TextField
+                  style={{ margin: 0, width: 120 }}
+                  id="free-tooltip"
+                  onChange={(e) => setFreeInput(e.target.value)}
+                  value={freeInput}
+                />
+
+                <div class="tooltip">
+                  <Button
+                    onClick={() => {
+                      navigator.clipboard.writeText(freeInput);
+                      var tooltip = document.getElementById("myFreeTooltip");
+                      tooltip.innerText = "Copied: " + freeInput;
+                    }}
+                  >
+                    <span class="tooltiptext" id="myFreeTooltip">
+                      Copy to clipboard
+                    </span>
+                    Copy text
+                  </Button>
+                </div>
               </div>
               {renderFields("uk")}
             </div>
