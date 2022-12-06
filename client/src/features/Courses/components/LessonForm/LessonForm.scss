@@ -28,8 +28,8 @@
           .text__group {
             border: 1px solid #606268;
             border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 35px;
+            margin-bottom: 15px;
+            padding: 5px;
 
             .group__header {
               button {
@@ -38,6 +38,7 @@
               }
             }
           }
+
           .images__group {
             border: 1px solid #606268;
             border-radius: 5px;
@@ -54,12 +55,13 @@
               color: #00c897;
             }
 
-            .group__header ~ div {
+            .group__header~div {
               padding: 10px 15px;
               border: 1px solid #b7c4cf;
               border-radius: 5px;
             }
           }
+
           .menu__group {
             border: 1px solid #606268;
             border-radius: 5px;
@@ -76,6 +78,7 @@
               color: #00c897;
             }
           }
+
           .quote__group {
             border: 1px solid #606268;
             border-radius: 5px;
@@ -105,7 +108,7 @@
             align-items: center;
             margin-bottom: 10px;
 
-            & > button {
+            &>button {
               font-size: 15px;
               margin: 0;
               margin-left: 15px;
@@ -141,15 +144,20 @@
             color: #23262d;
           }
 
-          .images__group > div:not(.group__header) {
+          .images__group>div:not(.group__header) {
             padding-left: 20px;
           }
 
           .article__buttons {
-            height: 50px;
-            display: flex;
             align-items: center;
+            display: flex;
+            height: 50px;
             margin-bottom: 30px;
+            position: sticky;
+            top: -2px;
+            background: white;
+            padding: 50px 20px;
+            box-shadow: 0 3px 23px rgb(0 0 0 / 7%);
 
             button {
               margin-right: 15px;
@@ -161,7 +169,7 @@
             align-items: flex-start;
             margin-left: 20px;
 
-            & > button {
+            &>button {
               font-size: 15px;
               margin: 0;
               padding: 8px;
