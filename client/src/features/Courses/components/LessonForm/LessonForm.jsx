@@ -22,6 +22,7 @@ import {
   useEditLessonMutation,
   useGetLessonsQuery,
 } from "../../../../services/lessonApi";
+import copy from "copy-to-clipboard";
 
 import "./LessonForm.scss";
 
@@ -933,7 +934,7 @@ const LessonForm = () => {
                     <Button
                       variant="contained"
                       onClick={() => {
-                        navigator.clipboard.writeText(elem.content);
+                        copy(elem.content);
                         var tooltip = document.getElementById(elem.label);
                         tooltip.innerText = "Copied: " + elem.content;
                       }}
@@ -952,8 +953,8 @@ const LessonForm = () => {
                 <div class="tooltip">
                   <Button
                     onClick={() => {
-                      navigator.clipboard.writeText(freeInput);
-                      var tooltip = document.getElementById("myFreeTooltip");
+                      copy(freeInput);
+                      var tooltip = document.getElementById(freeInput);
                       tooltip.innerText = "Copied: " + freeInput;
                     }}
                   >
@@ -964,7 +965,7 @@ const LessonForm = () => {
                   </Button>
                 </div>
               </div>
-              {renderFields("uk")}
+              {renderFields("en")}
             </div>
           </div>
           <div className="box__submit">
