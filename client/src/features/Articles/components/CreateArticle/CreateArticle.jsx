@@ -25,7 +25,9 @@ import { RiDeleteBinLine } from "react-icons/ri";
 
 import "./CreateArticle.scss";
 import { useLocation, useNavigate } from "react-router-dom";
-import { langs } from "../../../../constants";
+import { helperTags, langs } from "../../../../constants";
+import copy from "copy-to-clipboard";
+import { TextField } from "@mui/material";
 
 const CreateArticle = () => {
   const navigate = useNavigate();
@@ -36,6 +38,7 @@ const CreateArticle = () => {
     useGetImagesQuery("article");
   const [imgError, setImgError] = useState({});
   const [cardImgError, setCardImgError] = useState("");
+  const [freeInput, setFreeInput] = useState("");
 
   const [createImage] = useCreateImageMutation();
   const [editImage] = useEditImageMutation();
@@ -990,8 +993,45 @@ const CreateArticle = () => {
               <div className="input__list">
                 <h3>Article fields</h3>
                 <div className="article__buttons">
-                  <h4> </h4>
+                {helperTags.map((elem, index) => (
+                  <div class="tooltip" key={index}>
+                    <span className="tooltiptext" id={elem.label}>
+                      Copy to clipboard
+                    </span>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        copy(elem.content);
+                        var tooltip = document.getElementById(elem.label);
+                        tooltip.innerText = "Copied: " + elem.content;
+                      }}
+                    >
+                      {elem.label}
+                    </Button>
+                  </div>
+                ))}
+                <TextField
+                  style={{ margin: 0, width: 120 }}
+                  id="free-tooltip"
+                  onChange={(e) => setFreeInput(e.target.value)}
+                  value={freeInput}
+                />
+
+                <div class="tooltip">
+                  <Button
+                    onClick={() => {
+                      copy(freeInput);
+                      var tooltip = document.getElementById(freeInput);
+                      tooltip.innerText = "Copied: " + freeInput;
+                    }}
+                  >
+                    <span class="tooltiptext" id="myFreeTooltip">
+                      Copy to clipboard
+                    </span>
+                    Copy text
+                  </Button>
                 </div>
+              </div>
                 {renderFields("uk")}
               </div>
             </div>

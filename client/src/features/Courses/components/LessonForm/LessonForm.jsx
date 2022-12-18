@@ -710,6 +710,7 @@ const LessonForm = () => {
       field === "menu" ||
       field === "images" ||
       field === "quote" ||
+      field === "code" ||
       field === "text"
     ) {
       filteredEnFields = enFields.filter((f, index) => {
@@ -965,7 +966,7 @@ const LessonForm = () => {
                   </Button>
                 </div>
               </div>
-              {renderFields("en")}
+              {renderFields("uk")}
             </div>
           </div>
           <div className="box__submit">

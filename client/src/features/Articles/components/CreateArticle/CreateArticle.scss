@@ -45,6 +45,7 @@
             }
           }
         }
+
         .images__group {
           border: 1px solid #606268;
           border-radius: 5px;
@@ -61,12 +62,13 @@
             color: #00c897;
           }
 
-          .group__header ~ div {
+          .group__header~div {
             padding: 10px 15px;
             border: 1px solid #b7c4cf;
             border-radius: 5px;
           }
         }
+
         .menu__group {
           border: 1px solid #606268;
           border-radius: 5px;
@@ -83,6 +85,7 @@
             color: #00c897;
           }
         }
+
         .quote__group {
           border: 1px solid #606268;
           border-radius: 5px;
@@ -112,7 +115,7 @@
           align-items: center;
           margin-bottom: 10px;
 
-          & > button {
+          &>button {
             font-size: 15px;
             margin: 0;
             margin-left: 15px;
@@ -141,18 +144,57 @@
           color: #23262d;
         }
 
-        .images__group > div:not(.group__header) {
+        .images__group>div:not(.group__header) {
           padding-left: 20px;
         }
 
         .article__buttons {
-          height: 50px;
-          display: flex;
           align-items: center;
+          display: flex;
+          height: 50px;
           margin-bottom: 30px;
+          position: sticky;
+          top: -2px;
+          background: white;
+          padding: 50px 20px;
+          box-shadow: 0 3px 23px rgb(0 0 0 / 7%);
 
-          button {
-            margin-right: 15px;
+          .tooltip {
+            position: relative;
+            display: inline-block;
+          }
+
+          .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 140px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            top: 150%;
+            left: 50%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+          }
+
+          .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+          }
+
+          .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
           }
         }
 
@@ -161,7 +203,7 @@
           align-items: flex-start;
           margin-left: 20px;
 
-          & > button {
+          &>button {
             font-size: 15px;
             margin: 0;
             padding: 8px;
